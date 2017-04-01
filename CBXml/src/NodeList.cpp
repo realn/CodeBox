@@ -7,9 +7,10 @@
 
 namespace cb {
   CXmlNodeList::CXmlNodeList() {}
-  CXmlNodeList::CXmlNodeList(const CXmlNodeList & other) 
-    : mNodeList(other.mNodeList)
-  {}
+
+  CXmlNodeList::CXmlNodeList(const CXmlNodeList & other)
+    : mNodeList(other.mNodeList) {}
+
   CXmlNodeList::~CXmlNodeList() {}
 
   void CXmlNodeList::AddNode(const CXmlNode & node) {
@@ -66,6 +67,18 @@ namespace cb {
     return mNodeList.erase(it);
   }
 
+  void CXmlNodeList::Remove(const string & name) {
+    iterator it = Begin();
+    while(it != End()) {
+      if(it->GetName() == name) {
+        it = Erase(it);
+      }
+      else {
+        it++;
+      }
+    }
+  }
+
   CXmlNodeList::iterator CXmlNodeList::Find(const string & name) {
     for(iterator it = Begin(); it != End(); it++) {
       if(it->GetName() == name) {
@@ -82,6 +95,26 @@ namespace cb {
       }
     }
     return End();
+  }
+
+  XmlNodePtrListT CXmlNodeList::Search(const string & name) {
+    XmlNodePtrListT list;
+    for(iterator it = Begin(); it != End(); it++) {
+      CXmlNode& node = *it;
+      if(node.GetName() == name)
+        list.push_back(&node);
+    }
+    return list;
+  }
+
+  XmlConstNodePtrListT CXmlNodeList::Search(const string & name) const {
+    XmlConstNodePtrListT list;
+    for(const_iterator it = Begin(); it != End(); it++) {
+      const CXmlNode& node = *it;
+      if(node.GetName() == name)
+        list.push_back(&node);
+    }
+    return list;
   }
 
   const size_t CXmlNodeList::Parse(const string & text, const size_t offset) {
@@ -112,7 +145,7 @@ namespace cb {
     }
     return join(list, genEnding(fmt));
   }
- 
+
   const CXmlNode & CXmlNodeList::operator[](const string & name) const {
     return *Find(name);
   }

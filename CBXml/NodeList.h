@@ -5,10 +5,16 @@
 #include "StringFormat.h"
 
 #include <vector>
+#include <map>
 
 namespace cb {
   class CXmlNode;
   enum class XmlNodeType;
+
+  typedef CXmlNode* XmlNodePtrT;
+  typedef CXmlNode const* XmlConstNodePtrT;
+  typedef std::vector<XmlNodePtrT> XmlNodePtrListT;
+  typedef std::vector<XmlConstNodePtrT> XmlConstNodePtrListT;
 
   class CXmlNodeList {
   public:
@@ -44,8 +50,13 @@ namespace cb {
 
     iterator Erase(const_iterator it);
 
+    void Remove(const string& name);
+
     iterator Find(const string& name);
     const_iterator Find(const string& name) const;
+
+    XmlNodePtrListT Search(const string& name);
+    XmlConstNodePtrListT Search(const string& name) const;
 
     const size_t Parse(const string& text, const size_t offset = 0);
 

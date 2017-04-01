@@ -137,12 +137,14 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="NodeList.h" />
     <ClInclude Include="Document.h" />
+    <ClInclude Include="Serialize.h" />
     <ClInclude Include="src\Funcs.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="StringFormat.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Serialize.cpp" />
     <ClCompile Include="src\Attribute.cpp" />
     <ClCompile Include="src\AttributeList.cpp" />
     <ClCompile Include="src\Document.cpp" />

@@ -12,6 +12,69 @@
 #include "../CBXml/NodeList.h"
 #include "../CBXml/Document.h"
 
+#include "../CBXml/Serialize.h"
+
+class CSubTest {
+public:
+  int OtherData;
+  float SixData;
+};
+
+typedef std::vector<CSubTest> testList;
+typedef std::map<cb::string, CSubTest> testMap;
+
+class CTest {
+public:
+  cb::string mSomeData;
+  CSubTest subData;
+  testList someList;
+  testMap someMap;
+};
+
+CB_DEFINEXMLREAD(testList) {
+  return GetNodeList(mObject, L"Item");
+}
+
+CB_DEFINEXMLWRITE(testList) {
+  return SetNodeList(mObject, L"Item");
+}
+
+CB_DEFINEXMLREAD(testMap) {
+  return GetNodeMap(mObject, L"Item", L"Key");
+}
+
+CB_DEFINEXMLWRITE(testMap) {
+  return SetNodeMap(mObject, L"Item", L"Key");
+}
+
+CB_DEFINEXMLREAD(CSubTest) {
+  return
+    GetAttribute(L"OtherData", mObject.OtherData) &&
+    GetAttribute(L"SixData", mObject.SixData);
+}
+
+CB_DEFINEXMLWRITE(CSubTest) {
+  return
+    SetAttribute(L"OtherData", mObject.OtherData) &&
+    SetAttribute(L"SixData", mObject.SixData);
+}
+
+CB_DEFINEXMLREAD(CTest) {
+  return
+    GetAttribute(L"someData", mObject.mSomeData) &&
+    GetNode(L"subData", mObject.subData) &&
+    GetNode(L"someList", mObject.someList) &&
+    GetNode(L"someMap", mObject.someMap);
+}
+
+CB_DEFINEXMLWRITE(CTest) {
+  return
+    SetAttribute(L"someData", mObject.mSomeData) &&
+    SetNode(L"subData", mObject.subData) &&
+    SetNode(L"someList", mObject.someList) &&
+    SetNode(L"someMap", mObject.someMap);
+}
+
 void main() {
   int num = 0;
 
@@ -64,9 +127,27 @@ void main() {
   text = rootNode.ToString(cb::CXmlStringFormat(true, true));
   cb::info(text);
 
-  cb::CXmlDocument xmlDoc(text);
-  rootNode.Parse(text);
-  cb::info(rootNode.Nodes[L"Sisi"].GetValue());
+  {
+    cb::CXmlDocument xmlDoc(text);
+    rootNode.Parse(text);
+    cb::info(rootNode.Nodes[L"Sisi"].GetValue());
+  }
+
+  CTest test;
+  test.mSomeData = L"Elo";
+  test.someList.push_back(CSubTest());
+  test.someMap[L"hoho"] = CSubTest();
+
+  {
+    cb::CXmlDocument xmlDoc;
+    xmlDoc.RootNode.SetName(L"SomeData");
+    cb::WriteXmlObject(xmlDoc.RootNode, test);
+
+    cb::info(xmlDoc.ToString());
+
+    cb::ReadXmlObject(xmlDoc.RootNode, test);
+  }
+
 
   std::cin.get();
 }
