@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "../StringEx.h"
+#include "utf8.h"
 
 #include <sstream>
 
@@ -117,5 +118,29 @@ namespace cb {
   const bool fromStr(const string& text, string& outVal) {
     outVal = text;
     return true;
+  }
+
+
+  const charvector toUtf8(const string & text) {
+    charvector result;
+    utf8::utf16to8(text.begin(), text.end(), std::back_inserter(result));
+    return result;
+  }
+
+  const string fromUtf8(const charvector & text) {
+    string result;
+    utf8::utf8to16(text.begin(), text.end(), std::back_inserter(result));
+    return result;
+  }
+
+  const size_t utf8len(const charvector & text) {
+    return utf8::distance(text.begin(), text.end());
+  }
+
+  const char * utf8ptr(const charvector & text) {
+    if(text.empty()) {
+      return nullptr;
+    }
+    return &text[0];
   }
 }

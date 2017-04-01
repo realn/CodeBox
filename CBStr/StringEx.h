@@ -57,7 +57,6 @@ namespace cb {
   extern const string toStr(const string& val);
 
 
-
   extern const bool fromStr(const string& text, signed char& outVal);
 
   extern const bool fromStr(const string& text, unsigned char& outVal);
@@ -80,6 +79,14 @@ namespace cb {
 
   extern const bool fromStr(const string& text, string& outVal);
 
+
+  extern const charvector toUtf8(const string& text);
+
+  extern const string fromUtf8(const charvector& text);
+
+  extern const size_t utf8len(const charvector& text);
+
+  extern const char* utf8ptr(const charvector& text);
 
   template<typename _T0>
   const string format(const string& fmt, const _T0& arg0) {
