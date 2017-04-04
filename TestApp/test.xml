@@ -1,0 +1,9 @@
+<SomeData someData="Elo">
+  <subData OtherData="0" SixData="0" />
+  <someList>
+    <Item OtherData="0" SixData="0" />
+  </someList>
+  <someMap>
+    <Item Key="hoho" OtherData="0" SixData="0" />
+  </someMap>
+</SomeData>

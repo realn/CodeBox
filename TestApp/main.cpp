@@ -11,8 +11,10 @@
 #include "../CBXml/Node.h"
 #include "../CBXml/NodeList.h"
 #include "../CBXml/Document.h"
-
 #include "../CBXml/Serialize.h"
+
+#include "../CBIO/File.h"
+#include "../CBIO/Path.h"
 
 class CSubTest {
 public:
@@ -146,8 +148,24 @@ void main() {
     cb::info(xmlDoc.ToString());
 
     cb::ReadXmlObject(xmlDoc.RootNode, test);
+
+    cb::string tmp = xmlDoc.ToString();
+
+    cb::writetextfileutf8(L"test.xml", tmp);
   }
 
+
+  {
+    cb::string tmp = cb::readtextfileutf8(L"test.xml");
+    cb::info(tmp);
+
+    cb::writetextfileutf16(L"test2.xml", tmp);
+  }
+  {
+    cb::string tmp = cb::readtextfileutf16(L"test2.xml");
+
+    cb::info(tmp);
+  }
 
   std::cin.get();
 }
