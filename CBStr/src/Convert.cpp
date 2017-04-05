@@ -17,7 +17,7 @@ const bool templFromString(const std::wstring& text, _T& outVal) {
   std::wstringstream ss;
   ss << text;
   ss >> outVal;
-  return ss.good();
+  return !ss.fail();
 }
 
 namespace cb {
@@ -63,6 +63,10 @@ namespace cb {
 
   const string toStr(const string& val) {
     return val;
+  }
+
+  const string toStr(const bool & val) {
+    return val ? L"true" : L"false";
   }
 
 
@@ -118,6 +122,18 @@ namespace cb {
   const bool fromStr(const string& text, string& outVal) {
     outVal = text;
     return true;
+  }
+
+  const bool fromStr(const string & text, bool & outVal) {
+    if(text == L"True" || text == L"true") {
+      outVal = true;
+      return true;
+    }
+    if(text == L"False" || text == L"false") {
+      outVal = false;
+      return true;
+    }
+    return false;
   }
 
 

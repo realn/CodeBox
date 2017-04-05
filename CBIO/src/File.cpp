@@ -54,7 +54,7 @@ namespace cb {
   const bool readfile(ifstream & stream, bytevector & outdata) {
     std::streamsize size = filesize(stream);
     outdata.resize((size_t)size);
-    char* ptr = vectorcastptr<char>(outdata);
+    byte* ptr = vectorcastptr<byte>(outdata);
     stream.read(ptr, size);
     return !stream.fail();
   }
@@ -70,7 +70,7 @@ namespace cb {
   const bool writefile(ofstream & stream, const bytevector & data) {
     if(data.size() == 0)
       return false;
-    const char* ptr = vectorcastptr<char>(data);
+    const byte* ptr = vectorcastptr<byte>(data);
     stream.write(ptr, data.size());
     return !stream.fail();
   }
@@ -89,7 +89,7 @@ namespace cb {
 
     charvector data;
     data.resize((size_t)size);
-    char* ptr = vectorptr(data);
+    byte* ptr = vectorcastptr<byte>(data);
     file.read(ptr, size);
 
     return fromUtf8(data);
@@ -109,7 +109,7 @@ namespace cb {
 
     string result;
     result.resize((size_t)size / sizeof(string::value_type));
-    char* ptr = reinterpret_cast<char*>(&result[0]);
+    byte* ptr = byteptr(result[0]);
     file.read(ptr, size);
 
     return result;
@@ -124,7 +124,7 @@ namespace cb {
 
   const bool writetextfileutf8(ofstream & file, const string & text) {
     charvector data = toUtf8(text);
-    const char* ptr = vectorptr(data);
+    const byte* ptr = vectorcastptr<byte>(data);
     file.write(ptr, data.size());
     return !file.fail();
   }
@@ -137,7 +137,7 @@ namespace cb {
   }
 
   const bool writetextfileutf16(ofstream & file, const string & text) {
-    const char* ptr = reinterpret_cast<const char*>(text.c_str());
+    const byte* ptr = byteptr(text.c_str());
     file.write(ptr, text.length() * sizeof(string::value_type));
     return !file.fail();
   }

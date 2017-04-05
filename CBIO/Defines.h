@@ -16,9 +16,33 @@ namespace cb {
   typedef std::wostream ostream;
   typedef std::wistream istream;
 
-  typedef std::fstream fstream;
-  typedef std::ifstream ifstream;
-  typedef std::ofstream ofstream;
+  //typedef std::fstream fstream;
+  //typedef std::ifstream ifstream;
+  //typedef std::ofstream ofstream;
+
+  typedef std::basic_fstream<byte> fstream;
+  typedef std::basic_ifstream<byte> ifstream;
+  typedef std::basic_ofstream<byte> ofstream;
+
+  template<typename _Type>
+  byte* byteptr(_Type& data) {
+    return reinterpret_cast<byte*>(&data);
+  }
+
+  template<typename _Type>
+  const byte* byteptr(const _Type& data) {
+    return reinterpret_cast<const byte*>(&data);
+  }
+
+  template<typename _Type>
+  byte* byteptr(_Type* data) {
+    return reinterpret_cast<byte*>(data);
+  }
+
+  template<typename _Type>
+  const byte* byteptr(const _Type* data) {
+    return reinterpret_cast<const byte*>(data);
+  }
 
   template<typename _Elem, typename _Alloc>
   const _Elem* vectorptr(const std::vector<_Elem, _Alloc>& data) {

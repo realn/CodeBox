@@ -56,6 +56,8 @@ namespace cb {
 
   extern const string toStr(const string& val);
 
+  extern const string toStr(const bool& val);
+
 
   extern const bool fromStr(const string& text, signed char& outVal);
 
@@ -78,6 +80,8 @@ namespace cb {
   extern const bool fromStr(const string& text, double& outVal);
 
   extern const bool fromStr(const string& text, string& outVal);
+
+  extern const bool fromStr(const string& text, bool& outVal);
 
 
   extern const charvector toUtf8(const string& text);
