@@ -26,8 +26,8 @@ namespace cb {
     CXmlSerialize(const CXmlNode& node, const _Type& object);
     virtual ~CXmlSerialize();
 
-    const bool Read() { return false; }
-    const bool Write() { return false; }
+    const bool Read();
+    const bool Write();
 
     template<typename _AttrType>
     const bool GetAttribute(const string& name, _AttrType& object) const;
@@ -77,6 +77,12 @@ namespace cb {
 
   template<typename _Type>
   inline CXmlSerialize<_Type>::~CXmlSerialize() {}
+
+  template<typename _Type>
+  const bool CXmlSerialize<_Type>::Read() { return false; }
+
+  template<typename _Type>
+  const bool CXmlSerialize<_Type>::Write() { return false; }
 
   template<typename _Type>
   template<typename _AttrType>
@@ -162,9 +168,9 @@ namespace cb {
       const CXmlNode& node = **it;
       _ObjType obj;
       _AttrType key;
-     
+
       CXmlSerialize<_ObjType> xml(node, obj);
-      
+
       if(!xml.GetAttribute(keyName, key)) {
         return false;
       }
