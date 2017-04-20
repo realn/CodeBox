@@ -159,4 +159,14 @@ namespace cb {
     }
     return &text[0];
   }
+
+  const charvector utf8vec(const char * szText) {
+    charvector result;
+    size_t i = 0;
+    while(szText[i] != 0) {
+      result.push_back(szText[i]);
+      i++;
+    }
+    return result;
+  }
 }

@@ -92,6 +92,8 @@ namespace cb {
 
   extern const char* utf8ptr(const charvector& text);
 
+  extern const charvector utf8vec(const char* szText);
+
   template<typename _T0>
   const string format(const string& fmt, const _T0& arg0) {
     strvector list = {toStr(arg0)};
