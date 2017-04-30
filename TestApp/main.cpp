@@ -33,48 +33,26 @@ public:
   testMap someMap;
 };
 
-CB_DEFINEXMLREAD(testList) {
-  return GetNodeList(mObject, L"Item");
+CB_DEFINEXMLRW(testList) {
+  return RWNodeList(mObject, L"Item");
 }
 
-CB_DEFINEXMLWRITE(testList) {
-  return SetNodeList(mObject, L"Item");
+CB_DEFINEXMLRW(testMap) {
+  return RWNodeMap(mObject, L"Item", L"Key");
 }
 
-CB_DEFINEXMLREAD(testMap) {
-  return GetNodeMap(mObject, L"Item", L"Key");
-}
-
-CB_DEFINEXMLWRITE(testMap) {
-  return SetNodeMap(mObject, L"Item", L"Key");
-}
-
-CB_DEFINEXMLREAD(CSubTest) {
+CB_DEFINEXMLRW(CSubTest) {
   return
-    GetAttribute(L"OtherData", mObject.OtherData) &&
-    GetAttribute(L"SixData", mObject.SixData);
+    RWAttribute(L"OtherData", mObject.OtherData) &&
+    RWAttribute(L"SixData", mObject.SixData);
 }
 
-CB_DEFINEXMLWRITE(CSubTest) {
+CB_DEFINEXMLRW(CTest) {
   return
-    SetAttribute(L"OtherData", mObject.OtherData) &&
-    SetAttribute(L"SixData", mObject.SixData);
-}
-
-CB_DEFINEXMLREAD(CTest) {
-  return
-    GetAttribute(L"someData", mObject.mSomeData) &&
-    GetNode(L"subData", mObject.subData) &&
-    GetNode(L"someList", mObject.someList) &&
-    GetNode(L"someMap", mObject.someMap);
-}
-
-CB_DEFINEXMLWRITE(CTest) {
-  return
-    SetAttribute(L"someData", mObject.mSomeData) &&
-    SetNode(L"subData", mObject.subData) &&
-    SetNode(L"someList", mObject.someList) &&
-    SetNode(L"someMap", mObject.someMap);
+    RWAttribute(L"someData", mObject.mSomeData) &&
+    RWNode(L"subData", mObject.subData) &&
+    RWNode(L"someList", mObject.someList) &&
+    RWNode(L"someMap", mObject.someMap);
 }
 
 void main() {
@@ -146,6 +124,7 @@ void main() {
     cb::WriteXmlObject(xmlDoc.RootNode, test);
 
     cb::info(xmlDoc.ToString());
+    test.someMap.clear();
 
     cb::ReadXmlObject(xmlDoc.RootNode, test);
 
