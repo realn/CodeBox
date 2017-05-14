@@ -135,6 +135,30 @@ namespace cb {
     strvector list = {toStr(arg0), toStr(arg1), toStr(arg2), toStr(arg3), toStr(arg4), toStr(arg5), toStr(arg6)};
     return varReplace(fmt, list);
   }
+
+
+  template<typename _Type>
+  const strvector toStr(const std::vector<_Type>& value) {
+    strvector result;
+    for(std::vector<_Type>::const_iterator it = value.begin(); it != value.end(); it++) {
+      result.push_back(toStr(*it));
+    }
+    return result;
+  }
+
+  template<typename _Type>
+  const bool fromStr(const strvector& text, std::vector<_Type>& outValue) {
+    outValue.clear();
+    for(strvector::const_iterator it = text.begin(); it != text.end(); it++) {
+      _Type value;
+      if(!fromStr(*it, value)) {
+        return false;
+      }
+
+      outValue.push_back(value);
+    }
+    return true;
+  }
 }
 
 #endif // !__CB_STRING_EX_H__
