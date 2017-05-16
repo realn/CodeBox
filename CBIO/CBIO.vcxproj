@@ -150,6 +150,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="Ptr.h" />
     <ClInclude Include="src\stdafx.h" />
   </ItemGroup>
   <ItemGroup>

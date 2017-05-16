@@ -1,4 +1,4 @@
-<SomeData someData="Elo">
+<SomeData someData="Elo" someEnumVec="Some" Some="Some,Some">
   <subData OtherData="0" SixData="0" />
   <someList>
     <Item OtherData="0" SixData="0" />

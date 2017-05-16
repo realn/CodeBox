@@ -15,6 +15,21 @@
 
 #include "../CBIO/File.h"
 #include "../CBIO/Path.h"
+#include "../CBIO/Ptr.h"
+
+enum class SomeEnum {
+  some = 0,
+};
+typedef std::vector<SomeEnum> SomeEnumVecT;
+typedef std::map<SomeEnum, SomeEnumVecT> SomeEnumMapT;
+
+const cb::string toStr(const SomeEnum val) {
+  return L"Some";
+}
+const bool fromStr(const cb::string& text, SomeEnum& outVal) {
+  outVal = SomeEnum::some;
+  return true;
+}
 
 class CSubTest {
 public:
@@ -31,6 +46,8 @@ public:
   CSubTest subData;
   testList someList;
   testMap someMap;
+  SomeEnumVecT someEnumVec;
+  SomeEnumMapT someEnumMap;
 };
 
 CB_DEFINEXMLRW(testList) {
@@ -52,11 +69,25 @@ CB_DEFINEXMLRW(CTest) {
     RWAttribute(L"someData", mObject.mSomeData) &&
     RWNode(L"subData", mObject.subData) &&
     RWNode(L"someList", mObject.someList) &&
-    RWNode(L"someMap", mObject.someMap);
+    RWNode(L"someMap", mObject.someMap) &&
+    RWAttribute(L"someEnumVec", mObject.someEnumVec) &&
+    RWAttribute(mObject.someEnumMap);
 }
 
 void main() {
   int num = 0;
+
+  cb::ptr<CSubTest> pTest = new CSubTest();
+
+  const CSubTest* otherPtr = pTest;
+
+  delete otherPtr;
+
+  const cb::ptr<CSubTest> cpPtr = pTest;
+
+  const cb::ptr<CSubTest> cpTest = cpPtr;
+
+  int vla = cpTest->OtherData;
 
   cb::CLogger log;
   log.AddStream(&std::wcout);
@@ -117,6 +148,8 @@ void main() {
   test.mSomeData = L"Elo";
   test.someList.push_back(CSubTest());
   test.someMap[L"hoho"] = CSubTest();
+  test.someEnumVec = {SomeEnum::some};
+  test.someEnumMap[SomeEnum::some] = {SomeEnum::some, SomeEnum::some};
 
   {
     cb::CXmlDocument xmlDoc;
