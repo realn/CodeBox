@@ -12,6 +12,30 @@ namespace cb {
   typedef std::wstringstream strstream;
   typedef std::map<string, string> strmap;
   typedef std::vector<char> charvector;
+
+  template<typename _Type, typename _TypeMapT = std::map<_Type, string>>
+  const string templToStr(const _TypeMapT& typeMap,
+                          const _Type& value,
+                          const string& defReturn) {
+    typename _TypeMapT::const_iterator it = typeMap.find(value);
+    if(it != typeMap.end()) {
+      return it->second;
+    }
+    return defReturn;
+  }
+
+  template<typename _Type, typename _TypeMapT = std::map<_Type, string>>
+  const bool templFromStr(const _TypeMapT& typeMap,
+                          const string& text,
+                          _Type& outValue) {
+    for(_TypeMapT::const_iterator it = typeMap.begin(); it != typeMap.end(); it++) {
+      if(it->second == text) {
+        outValue = it->first;
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 #endif // !__CB_STRING_DEFINES_H__
