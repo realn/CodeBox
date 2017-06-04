@@ -67,6 +67,28 @@ namespace cb {
   _Type* vectorcastptr(std::vector<_Elem, _Alloc>& data) {
     return reinterpret_cast<_Type*>(vectorptr(data));
   }
+
+  template<typename _TypeL, typename _TypeR>
+  const bool all(const _TypeL& lvalue, const std::vector<_TypeR>& rvalues) {
+    for(typename std::vector<_TypeR>::const_iterator it = rvalues.begin();
+        it != rvalues.end(); it++) {
+      if(lvalue != *it) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  template<typename _TypeL, typename _TypeR>
+  const bool any(const _TypeL& lvalue, const std::initializer_list<_TypeR>& rvalues) {
+    for(typename std::initializer_list<_TypeR>::const_iterator it = rvalues.begin();
+        it != rvalues.end(); it++) {
+      if(lvalue == *it) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 #endif // !__CB_IO_DEFINES_H__
