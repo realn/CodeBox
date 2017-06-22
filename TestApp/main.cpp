@@ -15,7 +15,6 @@
 
 #include "../CBIO/File.h"
 #include "../CBIO/Path.h"
-#include "../CBIO/Ptr.h"
 
 enum class SomeEnum {
   some = 0,
@@ -76,18 +75,6 @@ CB_DEFINEXMLRW(CTest) {
 
 void main() {
   int num = 0;
-
-  cb::ptr<CSubTest> pTest = new CSubTest();
-
-  const CSubTest* otherPtr = pTest;
-
-  delete otherPtr;
-
-  const cb::ptr<CSubTest> cpPtr = pTest;
-
-  const cb::ptr<CSubTest> cpTest = cpPtr;
-
-  int vla = cpTest->OtherData;
 
   cb::CLogger log;
   log.AddStream(&std::wcout);
