@@ -25,64 +25,54 @@ namespace cb {
     , mName(other.mName)
   {}
 
+  CXmlNode::CXmlNode(CXmlNode && other) 
+    : Attributes(std::move(other.Attributes))
+    , Nodes(std::move(other.Nodes))
+    , mType(other.mType)
+    , mName(std::move(other.mName))
+  {}
+
   CXmlNode::~CXmlNode() {}
-
-  void CXmlNode::SetType(const XmlNodeType type) {
-    mType = type;
-  }
-
-  const XmlNodeType CXmlNode::GetType() const {
-    return mType;
-  }
-
-  void CXmlNode::SetName(const string & name) {
-    mName = name;
-  }
-
-  const string CXmlNode::GetName() const {
-    return mName;
-  }
 
   void CXmlNode::SetValue(const string & value, const bool cdata) {
     if(Nodes.GetSize() != 1) {
       Nodes.Clear();
       Nodes.AddNode(XmlNodeType::Text);
     }
-    CXmlNode& node = Nodes.Get(0);
+    auto& node = Nodes.Get(0);
 
     node.SetType(cdata ? XmlNodeType::CData : XmlNodeType::Text);
     node.SetName(value);
   }
 
-  const string CXmlNode::GetValue() const {
+  string CXmlNode::GetValue() const {
     if(Nodes.GetSize() != 1)
       return string();
-    const CXmlNode& node = Nodes.Get(0);
+    auto& node = Nodes.Get(0);
     if(node.GetType() != XmlNodeType::Text && node.GetType() != XmlNodeType::CData)
       return string();
     return node.GetName();
   }
 
-  const size_t CXmlNode::Parse(const string & text, const size_t offset) {
-    size_t pos = findNonWS(text, offset);
-    size_t endpos = 0;
+  size_t CXmlNode::Parse(const string & text, const size_t offset) {
+    auto pos = findNonWS(text, offset);
 
     // check for starting tag
-    if(!subcmp(text, g_xmlTagStart, pos)) {
+    if(!subcmp(text, XML_TAG_START, pos)) {
       // if there is no starting tag, then it's a text node
       mType = XmlNodeType::Text;
 
       // find begining of new node - this will mark the end of the text node
-      endpos = text.find(g_xmlTagStart, pos);
+      auto endpos = text.find(XML_TAG_START, pos);
 
       mName = unescapeXmlChars(substrpos(text, pos, endpos));
       return endpos;
     }
 
-    if(subcmp(text, g_cdataStartTag, pos)) {
+    if(subcmp(text, XML_CDATA_TAG_START, pos)) {
       // it's an cdata node
-      pos += g_cdataStartTag.length();
-      size_t endpos = text.find(g_cdataEndTag, pos);
+      pos += XML_CDATA_TAG_START.length();
+      auto endpos = text.find(XML_CDATA_TAG_END, pos);
 
       if(endpos == string::npos) {
         // it's an invaid node
@@ -91,10 +81,10 @@ namespace cb {
 
       mType = XmlNodeType::CData;
       mName = substrpos(text, pos, endpos);
-      return endpos + g_cdataEndTag.length();
+      return endpos + XML_CDATA_TAG_END.length();
     }
 
-    if(subcmp(text, g_xmlTagCloseStart, pos)) {
+    if(subcmp(text, XML_TAG_CLOSE_START, pos)) {
       // invalid end tag 
       return string::npos;
     }
@@ -103,10 +93,10 @@ namespace cb {
     mType = XmlNodeType::Normal;
     
     // find name begining
-    pos = findNonWS(text, pos + g_xmlTagStart.length());
+    pos = findNonWS(text, pos + XML_TAG_START.length());
 
     // find name ending
-    endpos = findWS(text, pos, g_xmlTagEndList);
+    auto endpos = findWS(text, pos, XML_TAG_END_LIST);
 
     if(pos == endpos || pos == string::npos || endpos == string::npos) {
       return string::npos;
@@ -119,26 +109,26 @@ namespace cb {
     pos = Attributes.Parse(text, endpos);
 
     // find tag ending
-    pos = findXml(text, g_xmlTagEndList, pos);
+    pos = findXml(text, XML_TAG_END_LIST, pos);
     if(pos == string::npos) {
       return string::npos;
     }
 
-    if(subcmp(text, g_xmlTagCloseEnd, pos)) {
+    if(subcmp(text, XML_TAG_CLOSE_END, pos)) {
       // tag is self closed - finished parsing
-      return pos + g_xmlTagCloseEnd.length();
+      return pos + XML_TAG_CLOSE_END.length();
     }
 
     // tag has possible sub nodes;
-    pos = Nodes.Parse(text, pos + g_xmlTagEnd.length());
+    pos = Nodes.Parse(text, pos + XML_TAG_END.length());
 
-    if(!subcmp(text, g_xmlTagCloseStart, pos)) {
+    if(!subcmp(text, XML_TAG_CLOSE_START, pos)) {
       // missing close tag start
       return string::npos;
     }
 
-    pos = findNonWS(text, pos + g_xmlTagCloseStart.length());
-    endpos = findWS(text, pos, g_xmlTagEndList);
+    pos = findNonWS(text, pos + XML_TAG_CLOSE_START.length());
+    endpos = findWS(text, pos, XML_TAG_END_LIST);
 
     if(mName != substrpos(text, pos, endpos)) {
       // invalid closing tag name
@@ -147,40 +137,40 @@ namespace cb {
 
     pos = findNonWS(text, endpos);
 
-    if(!subcmp(text, g_xmlTagEnd, pos)) {
+    if(!subcmp(text, XML_TAG_END, pos)) {
       // invalid closing tag ending
       return string::npos;
     }
 
-    return pos + g_xmlTagEnd.length();
+    return pos + XML_TAG_END.length();
   }
 
-  const string CXmlNode::ToString(const CXmlStringFormat& fmt) const {
-    string padding = genPadding(fmt);
-    string ending = genEnding(fmt);
+  string CXmlNode::ToString(const CXmlStringFormat& fmt) const {
+    auto padding = genPadding(fmt);
+    auto ending = genEnding(fmt);
 
     if(mType == XmlNodeType::Text) {
       return padding + escapeXmlChars(mName);
     }
     if(mType == XmlNodeType::CData) {
-      return padding + g_cdataStartTag + mName + g_cdataEndTag;
+      return padding + XML_CDATA_TAG_START + mName + XML_CDATA_TAG_END;
     }
 
-    string result = padding + L"<" + mName;
-    if(!Attributes.IsEmpty()) {
-      result += L" " + Attributes.ToString();
+    string result = padding + XML_TAG_START + mName;
+    if(!Attributes.empty()) {
+      result += XML_SPACE + Attributes.ToString();
     }
 
     if(Nodes.IsEmpty()) {
-      result += L" />";
+      result += XML_SPACE + XML_TAG_CLOSE_END;
     }
     else {
-      CXmlStringFormat format(fmt);
+      auto format = CXmlStringFormat(fmt);
       format.mNestingLevel++;
 
-      result += L">" + ending;
+      result += XML_TAG_END + ending;
       result += Nodes.ToString(format) + ending;
-      result += padding + L"</" + mName + L">";
+      result += padding + XML_TAG_CLOSE_START + mName + XML_TAG_END;
     }
     return result;
   }
@@ -192,4 +182,10 @@ namespace cb {
     Nodes = other.Nodes;
   }
 
+  void CXmlNode::operator=(CXmlNode && other) {
+    mType = other.mType;
+    mName = std::move(other.mName);
+    Attributes = std::move(other.Attributes);
+    Nodes = std::move(other.Nodes);
+  }
 }

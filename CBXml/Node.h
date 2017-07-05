@@ -25,22 +25,24 @@ namespace cb {
     CXmlNode(const string name = string());
     CXmlNode(const XmlNodeType type, const string value = string());
     CXmlNode(const CXmlNode& other);
+    CXmlNode(CXmlNode&& other);
     ~CXmlNode();
 
-    void SetType(const XmlNodeType type);
-    const XmlNodeType GetType() const;
+    void SetType(const XmlNodeType type) { mType = type; }
+    XmlNodeType GetType() const { return mType; }
 
-    void SetName(const string& name);
-    const string GetName() const;
+    void SetName(const string& name) { mName = name; }
+    string GetName() const { return mName; }
 
     void SetValue(const string& value, const bool cdata = false);
-    const string GetValue() const;
+    string GetValue() const;
 
-    const size_t Parse(const string& text, const size_t offset = 0);
+    size_t Parse(const string& text, const size_t offset = 0);
 
-    const string ToString(const CXmlStringFormat& fmt = CXmlStringFormat()) const;
+    string ToString(const CXmlStringFormat& fmt = CXmlStringFormat()) const;
 
     void operator=(const CXmlNode& other);
+    void operator=(CXmlNode&& other);
   };
 }
 

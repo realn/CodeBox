@@ -11,61 +11,64 @@ namespace cb {
   class CXmlNode;
   enum class XmlNodeType;
 
-  typedef CXmlNode* XmlNodePtrT;
-  typedef CXmlNode const* XmlConstNodePtrT;
-  typedef std::vector<XmlNodePtrT> XmlNodePtrListT;
-  typedef std::vector<XmlConstNodePtrT> XmlConstNodePtrListT;
+  using XmlNodePtrT = CXmlNode*;
+  using XmlNodeConstPtrT = CXmlNode const*;
+  using XmlNodePtrListT = std::vector<XmlNodePtrT>;
+  using XmlNodeConstPtrListT = std::vector<XmlNodeConstPtrT>;
 
   class CXmlNodeList {
   public:
-    typedef std::vector<CXmlNode> vector;
-    typedef vector::iterator iterator;
-    typedef vector::const_iterator const_iterator;
+    using NodeListT = std::vector<CXmlNode>;
+    using iterator = NodeListT::iterator;
+    using const_iterator = NodeListT::const_iterator;
 
   private:
-    vector mNodeList;
+    NodeListT mNodeList;
 
   public:
     CXmlNodeList();
     CXmlNodeList(const CXmlNodeList& other);
+    CXmlNodeList(CXmlNodeList&& other);
     ~CXmlNodeList();
 
     void AddNode(const CXmlNode& node);
     CXmlNode& AddNode(const string& name);
     CXmlNode& AddNode(const XmlNodeType type);
 
-    const size_t GetSize() const;
-    const bool IsEmpty() const;
+    size_t size() const { return mNodeList.size(); }
+    bool empty() const { return mNodeList.empty(); }
 
-    void Clear();
+    void clear();
 
-    CXmlNode& Get(const size_t index);
-    const CXmlNode& Get(const size_t index) const;
+    CXmlNode& Get(const size_t index) { return mNodeList[index]; }
+    const CXmlNode& Get(const size_t index) const { return mNodeList[index]; }
 
-    iterator Begin();
-    const_iterator Begin() const;
+    iterator begin() { return mNodeList.begin(); }
+    const_iterator begin() const { return mNodeList.begin(); }
 
-    iterator End();
-    const_iterator End() const;
+    iterator end() { return mNodeList.end(); }
+    const_iterator end() const { return mNodeList.end(); }
 
-    iterator Erase(const_iterator it);
+    iterator erase(const_iterator it);
+    iterator erase(const_iterator beg, const_iterator end);
 
     void Remove(const string& name);
 
-    iterator Find(const string& name);
-    const_iterator Find(const string& name) const;
+    iterator find(const string& name);
+    const_iterator find(const string& name) const;
 
     XmlNodePtrListT Search(const string& name);
-    XmlConstNodePtrListT Search(const string& name) const;
+    XmlNodeConstPtrListT Search(const string& name) const;
 
-    const size_t Parse(const string& text, const size_t offset = 0);
+    size_t Parse(const string& text, const size_t offset = 0);
 
-    const string ToString(const CXmlStringFormat& fmt = CXmlStringFormat()) const;
+    string ToString(const CXmlStringFormat& fmt = CXmlStringFormat()) const;
 
     const CXmlNode& operator[](const string& name) const;
     CXmlNode& operator[](const string& name);
 
     void operator=(const CXmlNodeList& other);
+    void operator=(CXmlNodeList&& other);
   };
 }
 

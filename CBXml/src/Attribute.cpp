@@ -6,27 +6,33 @@
 #include <CBStr/StringEx.h>
 
 namespace cb {
-  static const string g_equal = L"=";
+  using namespace std::string_literals;
 
-  CXmlAttribute::CXmlAttribute(const string name, const string value) 
-    : mName(name)
-    , mValue(value)
-  {}
+  const auto XML_EQUAL = L"="s;
 
   CXmlAttribute::CXmlAttribute() {}
 
   CXmlAttribute::CXmlAttribute(const CXmlAttribute & other)
     : mName(other.mName)
-    , mValue(other.mValue)
+    , mValue(other.mValue) {}
+
+  CXmlAttribute::CXmlAttribute(CXmlAttribute && other) 
+    : mName(std::move(other.mName))
+    , mValue(std::move(other.mValue))
+  {}
+
+  CXmlAttribute::CXmlAttribute(const string name, const string value)
+    : mName(name)
+    , mValue(value)
   {}
 
   CXmlAttribute::~CXmlAttribute() {}
   
-  const string CXmlAttribute::GetName() const {
+  string CXmlAttribute::GetName() const {
     return mName;
   }
 
-  const string CXmlAttribute::GetValue() const {
+  string CXmlAttribute::GetValue() const {
     return mValue;
   }
 
@@ -34,17 +40,17 @@ namespace cb {
     mValue = val;
   }
 
-  const string CXmlAttribute::ToString() const {
-    return mName + g_equal + inQuotes(mValue);
+  string CXmlAttribute::ToString() const {
+    return mName + XML_EQUAL + inQuotes(mValue);
   }
 
-  const size_t CXmlAttribute::Parse(const string & text, const size_t offset) {
-    size_t pos = findNonWS(text, offset, g_xmlTagEndList);
-    if(subcmp(text, g_xmlTagEndList, pos)) {
+  size_t CXmlAttribute::Parse(const string & text, const size_t offset) {
+    auto pos = findNonWS(text, offset, XML_TAG_END_LIST);
+    if(subcmp(text, XML_TAG_END_LIST, pos)) {
       return pos;
     }
 
-    size_t endpos = findWS(text, pos, g_equal);
+    auto endpos = findWS(text, pos, XML_EQUAL);
     if(endpos == string::npos || pos == endpos) {
       return string::npos;
     }
@@ -52,16 +58,16 @@ namespace cb {
     mName = substrpos(text, pos, endpos);
 
     pos = findNonWS(text, endpos);
-    if(!subcmp(text, g_equal, pos)) {
+    if(!subcmp(text, XML_EQUAL, pos)) {
       return string::npos;
     }
 
-    pos = findNonWS(text, pos + g_equal.length(), g_xmlTagEndList);
-    if(subcmp(text, g_xmlTagEndList, pos)) {
+    pos = findNonWS(text, pos + XML_EQUAL.length(), XML_TAG_END_LIST);
+    if(subcmp(text, XML_TAG_END_LIST, pos)) {
       return string::npos;
     }
     
-    endpos = findWS(text, pos, g_xmlTagEndList);
+    endpos = findWS(text, pos, XML_TAG_END_LIST);
     if(endpos == string::npos) {
       return string::npos;
     }
@@ -73,6 +79,11 @@ namespace cb {
   void CXmlAttribute::operator=(const CXmlAttribute & other) {
     mName = other.mName;
     mValue = other.mValue;
+  }
+
+  void CXmlAttribute::operator=(CXmlAttribute && other) {
+    mName = std::move(other.mName);
+    mValue = std::move(other.mValue);
   }
 
   void CXmlAttribute::operator=(const string & value) {

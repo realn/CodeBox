@@ -12,19 +12,21 @@ namespace cb {
   public:
     CXmlAttribute();
     CXmlAttribute(const CXmlAttribute& other);
+    CXmlAttribute(CXmlAttribute&& other);
     explicit CXmlAttribute(const string name, const string value = string());
     ~CXmlAttribute();
 
-    const string GetName() const;
-    const string GetValue() const;
+    string GetName() const;
+    string GetValue() const;
 
     void SetValue(const string val);
 
-    const string ToString() const;
+    string ToString() const;
 
-    const size_t Parse(const string& text, const size_t offset = 0);
+    size_t Parse(const string& text, const size_t offset = 0);
 
     void operator=(const CXmlAttribute& other);
+    void operator=(CXmlAttribute&& other);
     void operator=(const string& value);
   };
 }

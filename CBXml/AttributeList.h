@@ -8,45 +8,47 @@
 namespace cb {
   class CXmlAttributeList {
   public:
-    typedef std::vector<CXmlAttribute> vector;
-    typedef vector::iterator iterator;
-    typedef vector::const_iterator const_iterator;
+    using AttributeListT = std::vector<CXmlAttribute>;
+    using iterator = AttributeListT::iterator;
+    using const_iterator = AttributeListT::const_iterator;
 
   private:
-    vector mAttrList;
+    AttributeListT mAttrList;
 
   public:
     CXmlAttributeList();
     CXmlAttributeList(const CXmlAttributeList& other);
+    CXmlAttributeList(CXmlAttributeList&& other);
     ~CXmlAttributeList();
 
     void SetValue(const string& name, const string& value = string());
-    const string GetValue(const string& name, const string& defValue = string()) const;
+    string GetValue(const string& name, const string& defValue = string()) const;
 
-    const size_t GetSize() const;
-    const bool IsEmpty() const;
+    size_t size() const { return mAttrList.size(); }
+    bool empty() const { return mAttrList.empty(); }
 
-    CXmlAttribute& Get(const size_t index);
-    const CXmlAttribute& Get(const size_t index) const;
+    CXmlAttribute& Get(const size_t index) { return mAttrList[index]; }
+    const CXmlAttribute& Get(const size_t index) const { return mAttrList[index]; }
 
-    void Clear();
+    void clear();
 
-    iterator Begin();
-    const_iterator Begin() const;
+    iterator begin() { return mAttrList.begin(); }
+    const_iterator begin() const { return mAttrList.begin(); }
 
-    iterator End();
-    const_iterator End() const;
+    iterator end() { return mAttrList.end(); }
+    const_iterator end() const { return mAttrList.end(); }
 
-    iterator Find(const string& name);
-    const_iterator Find(const string& name) const;
+    iterator find(const string& name);
+    const_iterator find(const string& name) const;
 
-    iterator Erase(iterator it);
+    iterator erase(iterator it);
 
-    const size_t Parse(const string& text, const size_t offset = 0);
-    const string ToString() const;
+    size_t Parse(const string& text, const size_t offset = 0);
+    string ToString() const;
 
     void operator=(const CXmlAttributeList& other);
-    const string operator[](const string& name) const;
+    void operator=(CXmlAttributeList&& other);
+    string operator[](const string& name) const;
   };
 }
 

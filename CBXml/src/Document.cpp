@@ -15,8 +15,8 @@ namespace cb {
   }
 
   void CXmlDocument::Clear() {
-    RootNode.Attributes.Clear();
-    RootNode.Nodes.Clear();
+    RootNode.Attributes.clear();
+    RootNode.Nodes.clear();
     mValid = false;
   }
 

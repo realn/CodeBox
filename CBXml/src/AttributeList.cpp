@@ -3,106 +3,67 @@
 
 #include "Funcs.h"
 
+#include <algorithm>
 #include <CBStr/StringEx.h>
 
 namespace cb {
   CXmlAttributeList::CXmlAttributeList() {}
 
-  CXmlAttributeList::CXmlAttributeList(const CXmlAttributeList & other) 
-    : mAttrList(other.mAttrList)
-  {}
+  CXmlAttributeList::CXmlAttributeList(const CXmlAttributeList & other)
+    : mAttrList(other.mAttrList) {}
+
+  CXmlAttributeList::CXmlAttributeList(CXmlAttributeList && other)
+    : mAttrList(std::move(other.mAttrList)) {}
 
   CXmlAttributeList::~CXmlAttributeList() {}
 
   void CXmlAttributeList::SetValue(const string & name, const string & value) {
-    iterator it = Find(name);
-    if(it == End()) {
+    auto it = find(name);
+    if(it == end()) {
       if(!value.empty()) {
         mAttrList.push_back(CXmlAttribute(name, value));
       }
       return;
     }
     if(value.empty()) {
-      Erase(it);
+      erase(it);
       return;
     }
     it->SetValue(value);
   }
 
-  const string CXmlAttributeList::GetValue(const string & name, const string & defValue) const {
-    const_iterator it = Find(name);
-    if(it == End()) {
+  string CXmlAttributeList::GetValue(const string & name, const string & defValue) const {
+    auto it = find(name);
+    if(it == end()) {
       return defValue;
     }
     return it->GetValue();
   }
 
-  const size_t CXmlAttributeList::GetSize() const {
-    return mAttrList.size();
+  inline void CXmlAttributeList::clear() { mAttrList.clear(); }
+
+  CXmlAttributeList::iterator CXmlAttributeList::find(const string & name) {
+    auto pred =
+      [name](const CXmlAttribute& item) -> auto {return item.GetName() == name; };
+    return std::find_if(begin(), end(), pred);
   }
 
-  const bool CXmlAttributeList::IsEmpty() const {
-    return mAttrList.empty();
+  CXmlAttributeList::const_iterator CXmlAttributeList::find(const string & name) const {
+    auto pred =
+      [name](const CXmlAttribute& item) -> auto {return item.GetName() == name; };
+    return std::find_if(begin(), end(), pred);
   }
 
-  CXmlAttribute & CXmlAttributeList::Get(const size_t index) {
-    return mAttrList[index];
-  }
+  inline CXmlAttributeList::iterator CXmlAttributeList::erase(iterator it) { return mAttrList.erase(it); }
 
-  const CXmlAttribute & CXmlAttributeList::Get(const size_t index) const {
-    return mAttrList[index];
-  }
+  size_t CXmlAttributeList::Parse(const string & text, const size_t offset) {
+    clear();
+    auto pos = findNonWS(text, offset, XML_TAG_END_LIST);
 
-  void CXmlAttributeList::Clear() {
-    mAttrList.clear();
-  }
-
-  CXmlAttributeList::iterator CXmlAttributeList::Begin() {
-    return mAttrList.begin();
-  }
-
-  CXmlAttributeList::const_iterator CXmlAttributeList::Begin() const {
-    return mAttrList.begin();
-  }
-
-  CXmlAttributeList::iterator CXmlAttributeList::End() {
-    return mAttrList.end();
-  }
-
-  CXmlAttributeList::const_iterator CXmlAttributeList::End() const {
-    return mAttrList.end();
-  }
-
-  CXmlAttributeList::iterator CXmlAttributeList::Find(const string & name) {
-    for(iterator it = Begin(); it != End(); it++) {
-      if(it->GetName() == name) {
-        return it;
-      }
-    }
-    return End();
-  }
-
-  CXmlAttributeList::const_iterator CXmlAttributeList::Find(const string & name) const {
-    for(const_iterator it = Begin(); it != End(); it++) {
-      if(it->GetName() == name) {
-        return it;
-      }
-    }
-    return End();
-  }
-
-  CXmlAttributeList::iterator CXmlAttributeList::Erase(iterator it) {
-    return mAttrList.erase(it);
-  }
-
-  const size_t CXmlAttributeList::Parse(const string & text, const size_t offset) {
-    Clear();
-    size_t pos = findNonWS(text, offset, g_xmlTagEndList);
-
-    while(pos != string::npos && !subcmp(text, g_xmlTagEndList, pos)) {
-      CXmlAttribute attr;
+    auto attr = CXmlAttribute();
+    while(pos != string::npos && !subcmp(text, XML_TAG_END_LIST, pos)) {
       pos = attr.Parse(text, pos);
-      
+
       if(pos != string::npos) {
         mAttrList.push_back(attr);
       }
@@ -110,25 +71,33 @@ namespace cb {
         return false;
       }
 
-      pos = findNonWS(text, pos, g_xmlTagEndList);
+      pos = findNonWS(text, pos, XML_TAG_END_LIST);
     }
 
     return pos;
   }
 
-  const string CXmlAttributeList::ToString() const {
-    strvector list;
-    for(const_iterator it = Begin(); it != End(); it++) {
-      list.push_back(it->ToString());
+  string CXmlAttributeList::ToString() const {
+    auto list = strvector();
+    for(auto& item : *this) {
+      list.push_back(item.ToString());
     }
-    return join(list, L" ");
+    return join(list, XML_SPACE);
   }
 
   void CXmlAttributeList::operator=(const CXmlAttributeList & other) {
     mAttrList = other.mAttrList;
   }
 
-  const string CXmlAttributeList::operator[](const string & name) const {
-    return Find(name)->GetValue();
+  void CXmlAttributeList::operator=(CXmlAttributeList && other) {
+    mAttrList = std::move(other.mAttrList);
+  }
+
+  string CXmlAttributeList::operator[](const string & name) const {
+    auto it = find(name);
+    if(it != end()) {
+      return it->GetValue();
+    }
+    throw std::invalid_argument("Invalid index argument for name in xml attribute list.");
   }
 }

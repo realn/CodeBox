@@ -7,4 +7,6 @@
 #include <sstream>
 #include <iostream>
 
+using namespace std::string_literals;
+
 #endif // !__CB_XML_STDAFX_H__
