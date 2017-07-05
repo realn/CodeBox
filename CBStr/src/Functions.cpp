@@ -1,20 +1,19 @@
 #include "stdafx.h"
-
 #include "../StringEx.h"
 
 namespace cb {
 
-  const size_t  count(const string& text, const string& what) {
-    size_t result = 0;
-    size_t pos = text.find(what, 0);
+  size_t  count(const string& text, const string& what) {
+    auto result = 0u;
+    auto pos = text.find(what, 0);
     while(pos != string::npos) {
-      result++;
       pos = text.find(what, pos + 1);
+      result++;
     }
     return result;
   }
 
-  const string substrpos(const string& text, const size_t pos, const size_t endpos) {
+  string substrpos(const string& text, const size_t pos, const size_t endpos) {
     if(pos == string::npos || pos >= text.length()) {
       return string();
     }
@@ -24,41 +23,41 @@ namespace cb {
     return text.substr(pos, endpos - pos);
   }
 
-  const bool subcmp(const string& text, const string& what, const size_t pos) {
+  bool subcmp(const string& text, const string& what, const size_t pos) {
     return text.compare(pos, what.length(), what) == 0;
   }
 
-  const bool subcmp(const string& text, const strvector& list, const size_t pos) {
-    for(strvector::const_iterator it = list.begin(); it != list.end(); it++) {
-      if(subcmp(text, *it, pos)) {
+  bool subcmp(const string& text, const strvector& list, const size_t pos) {
+    for(auto& item : list) {
+      if(subcmp(text, item, pos)) {
         return true;
       }
     }
     return false;
   }
 
-  const bool rsubcmp(const string & text, const string & what, const size_t roffset) {
+  bool rsubcmp(const string & text, const string & what, const size_t roffset) {
     if(roffset + 1 > text.length()) {
       return false;
     }
     return subcmp(text, what, text.length() - roffset - 1);
   }
 
-  const bool subrcmp(const string & text, const string & what, const size_t offset) {
+  bool subrcmp(const string & text, const string & what, const size_t offset) {
     if(offset < what.length())
       return false;
     return text.compare(offset - what.length(), what.length(), what) == 0;
   }
 
-  const string replace(const string& text, const string& what, const string& with) {
+  string replace(const string& text, const string& what, const string& with) {
     if(what.empty() || text.empty()) {
       return text;
     }
 
-    string result;
-    size_t pos = 0;
+    auto result = string();
+    auto pos = 0u;
     while(pos != string::npos) {
-      size_t next_pos = text.find(what, pos);
+      auto next_pos = text.find(what, pos);
       result += substrpos(text, pos, next_pos);
 
       if(next_pos != string::npos) {
@@ -67,26 +66,25 @@ namespace cb {
       }
       pos = next_pos;
     }
-
     return result;
   }
 
-  const string replace(const string & text, const strmap & list, const bool flip) {
-    string result = text;
-    for(strmap::const_iterator it = list.begin(); it != list.end(); it++) {
+  string replace(const string & text, const strmap & list, const bool flip) {
+    auto result = text;
+    for(auto& item : list) {
       if(!flip) {
-        result = replace(result, it->first, it->second);
+        result = replace(result, item.first, item.second);
       }
       else {
-        result = replace(result, it->second, it->first);
+        result = replace(result, item.second, item.first);
       }
     }
     return result;
   }
 
-  const string join(const strvector& list, const string& glue) {
-    string result;
-    strvector::const_iterator it = list.begin(); 
+  string join(const strvector& list, const string& glue) {
+    auto result = string();
+    auto it = list.begin(); 
 
     while(it != list.end()) {
       result += *it;
@@ -100,20 +98,19 @@ namespace cb {
     return result;
   }
 
-  const strvector split(const string& text, const string& knife, const bool skipEmpty) {
-    strvector result;
-
+  strvector split(const string& text, const string& knife, const bool skipEmpty) {
+    auto result = strvector();
     if(knife.empty()) {
-      for(size_t i = 0; i < text.length(); i++) {
-        result.push_back(text.substr(i, 1));
+      for(auto& item : text) {
+        result.push_back(string(1, item));
       }
       return result;
     }
 
-    size_t pos = 0;
+    auto pos = 0u;
     while(pos != string::npos) {
-      size_t next_pos = text.find(knife, pos);
-      string item = substrpos(text, pos, next_pos);
+      auto next_pos = text.find(knife, pos);
+      auto item = substrpos(text, pos, next_pos);
       if(!(item.empty() && skipEmpty)) {
         result.push_back(item);
       }
@@ -122,11 +119,10 @@ namespace cb {
       }
       pos = next_pos;
     }
-
     return result;
   }
 
-  const string varReplace(const string& format, const strvector& list) {
+  string varReplace(const string& format, const strvector& list) {
     if(format.empty()) {
       return string();
     }
@@ -134,16 +130,16 @@ namespace cb {
       return format;
     }
 
-    string result = format;
-    for(size_t i = 0; i < list.size(); i++) {
-      string var = L"{" + toStr(i) + L"}";
+    auto result = format;
+    for(auto i = 0u; i < list.size(); i++) {
+      auto var = L"{" + toStr(i) + L"}";
       result = replace(result, var, list[i]);
     }
 
     return result;
   }
 
-  const size_t strlastpos(const string & text, const size_t roffset) {
+  size_t strlastpos(const string & text, const size_t roffset) {
     if(text.empty()) {
       return string::npos;
     }
@@ -152,17 +148,17 @@ namespace cb {
     }
     return text.length() - 1 - roffset;
   }
-  const string repeat(const string & text, const size_t times) {
+
+  string repeat(const string & text, const size_t times) {
     if(times == 0)
       return string();
     if(times == 1)
       return text;
 
-    string result;
-    for(size_t i = 0; i < times; i++) {
+    auto result = string();
+    for(auto i = 0u; i < times; i++) {
       result += text;
     }
-
     return result;
   }
 }
