@@ -7,8 +7,8 @@ namespace cb {
     auto result = 0u;
     auto pos = text.find(what, 0);
     while(pos != string::npos) {
-      pos = text.find(what, pos + 1);
       result++;
+      pos = text.find(what, pos + what.length());
     }
     return result;
   }
@@ -37,10 +37,10 @@ namespace cb {
   }
 
   bool rsubcmp(const string & text, const string & what, const size_t roffset) {
-    if(roffset + 1 > text.length()) {
+    if(roffset > text.length()) {
       return false;
     }
-    return subcmp(text, what, text.length() - roffset - 1);
+    return subcmp(text, what, text.length() - roffset);
   }
 
   bool subrcmp(const string & text, const string & what, const size_t offset) {
