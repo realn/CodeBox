@@ -7,10 +7,10 @@
 #include <vector>
 
 namespace cb {
-  typedef std::wstring string;
-  typedef std::vector<string> strvector;
-  typedef std::wostream ostream;
-  typedef std::wstringstream stringstream;
+  using string = std::wstring;
+  using strvector = std::vector<string>;
+  using ostream = std::wostream;
+  using stringstream = std::wstringstream;
 }
 
 #endif // !__CB_LOG_DEFINES_H__

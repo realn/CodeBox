@@ -8,7 +8,7 @@ namespace cb {
     public ILogFormat {
   public:
     CPlainTextLogFormat();
-    ~CPlainTextLogFormat();
+    virtual ~CPlainTextLogFormat();
 
     // Inherited via ILogFormat
     virtual void BeginLog(ostream & stream, const string & msg) override;

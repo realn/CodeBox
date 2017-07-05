@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "../PlainTextLogFormat.h"
+#include <CBStr/Defines.h>
 
-#include <ctime>
 #include <iomanip>
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 namespace cb {
-  const string toStr(const LogLvl level) {
+  template<>
+  string toStr<LogLvl>(const LogLvl& level) {
     switch(level) {
     case LogLvl::Debug: return L"DBG";
     case LogLvl::Info:  return L"INF";
@@ -34,23 +38,14 @@ namespace cb {
   }
 
   string CPlainTextLogFormat::GetTimeStamp() const {
-    std::time_t t = std::time(nullptr);
-    std::tm lt;
-    if(localtime_s(&lt, &t) != 0) {
-      return L"0000.00.00|00:00:00";
+    auto timet = 
+      std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    auto ltimet = std::tm();
+    if(localtime_s(&ltimet, &timet) != 0) {
+      return L"[TIME ERROR]";
     }
+    auto timestr = std::put_time(&ltimet, L"%Y.%m.%d|%H:%M:%S");
 
-    cb::stringstream ss;
-    ss
-      << std::setfill(L'0') 
-      << std::setw(4) << (1900 + lt.tm_year)
-      << L"." << std::setw(2) << (lt.tm_mon + 1)
-      << L"." << std::setw(2) << lt.tm_mday
-      << L"|" << std::setw(2) << lt.tm_hour
-      << L":" << std::setw(2) << lt.tm_min
-      << L":" << std::setw(2) << lt.tm_sec;
-
-    return ss.str();
+    return toStr(timestr);
   }
-
 }

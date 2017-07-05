@@ -9,8 +9,6 @@ namespace cb {
     Error = 2,
     Critical = 3,
   };
-
-  
 }
 
 #endif // !__CB_LOG_CONSTS_H__

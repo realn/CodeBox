@@ -7,11 +7,15 @@
 namespace cb {
   class ILogFormat {
   public:
-    virtual ~ILogFormat() {}
+    ILogFormat() = default;
+    virtual ~ILogFormat() = default;
 
     virtual void BeginLog(ostream& stream, const string& msg) = 0;
     virtual void EndLog(ostream& stream, const string& msg) = 0;
     virtual void LogMsg(ostream& stream, const LogLvl level, const string& msg) = 0;
+
+    ILogFormat(const ILogFormat&) = delete;
+    void operator=(const ILogFormat&) = delete;
   };
 }
 

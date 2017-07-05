@@ -4,67 +4,57 @@
 #include "../PlainTextLogFormat.h"
 
 namespace cb {
-  CLogger* CLogger::mInstance = nullptr;
+  std::weak_ptr<CLogger> CLogger::mInstance;
 
-  CLogger::CLogger() {
+  CLogger::CLogger() {}
 
+  CLogger::~CLogger() {}
+
+  void CLogger::AddStream(std::shared_ptr<ostream> pStream) {
+    if(pStream) {
+      mStreamMap[pStream] = std::make_unique<CPlainTextLogFormat>();
+    }
   }
 
-  CLogger::~CLogger() {
-    for(streammap::iterator it = mStreamMap.begin(); it != mStreamMap.end(); it++) {
-      delete it->second;
+  void CLogger::AddStream(std::shared_ptr<ostream> pStream, 
+                          std::unique_ptr<ILogFormat> pFormat) {
+    if(pStream) {
+      if(pFormat) {
+        mStreamMap[pStream] = std::move(pFormat);
+      }
+      else {
+        mStreamMap[pStream] = std::make_unique<CPlainTextLogFormat>();
+      }
     }
+  }
+
+  void CLogger::ClearStreams() {
     mStreamMap.clear();
-
-    if(GetInstance() == this) {
-      SetInstance(nullptr);
-    }
-  }
-
-  void CLogger::AddStream(ostream* stream, ILogFormat* format) {
-    if(mStreamMap.count(stream) != 0) {
-      delete mStreamMap[stream];
-    }
-    if(format == nullptr) {
-      mStreamMap[stream] = new CPlainTextLogFormat();
-    }
-    else {
-      mStreamMap[stream] = format;
-    }
-  }
-
-  void CLogger::RemoveStream(ostream* stream) {
-    streammap::iterator it = mStreamMap.find(stream);
-    if(it == mStreamMap.end())
-      return;
-
-    delete it->second;
-    mStreamMap.erase(it);
   }
 
   void CLogger::BeginLog(const string & msg) {
-    for(streammap::iterator it = mStreamMap.begin(); it != mStreamMap.end(); it++) {
-      it->second->BeginLog(*it->first, msg);
+    for(auto& item : mStreamMap) {
+      item.second->BeginLog(*item.first, msg);
     }
   }
 
   void CLogger::LogMsg(const LogLvl level, const string & msg) {
-    for(streammap::iterator it = mStreamMap.begin(); it != mStreamMap.end(); it++) {
-      it->second->LogMsg(*it->first, level, msg);
+    for(auto& item : mStreamMap) {
+      item.second->LogMsg(*item.first, level, msg);
     }
   }
 
   void CLogger::EndLog(const string & msg) {
-    for(streammap::iterator it = mStreamMap.begin(); it != mStreamMap.end(); it++) {
-      it->second->EndLog(*it->first, msg);
+    for(auto& item : mStreamMap) {
+      item.second->EndLog(*item.first, msg);
     }
   }
 
-  void CLogger::SetInstance(CLogger * logger) {
+  void CLogger::SetInstance(std::shared_ptr<CLogger> logger) {
     mInstance = logger;
   }
 
-  CLogger * CLogger::GetInstance() {
-    return mInstance;
+  std::shared_ptr<CLogger> CLogger::GetInstance() {
+    return mInstance.lock();
   }
 }
