@@ -7,11 +7,11 @@
 #include <map>
 
 namespace cb {
-  typedef std::wstring string;
-  typedef std::vector<string> strvector;
-  typedef std::wstringstream stringstream;
-  typedef std::map<string, string> strmap;
-  typedef std::vector<char> charvector;
+  using string = std::wstring;
+  using strvector = std::vector<string>;
+  using stringstream = std::wstringstream;
+  using strmap = std::map<string, string>;
+  using charvector = std::vector<char>;
 
   template<typename _Type>
   string toStr(const _Type& value) {
@@ -29,10 +29,8 @@ namespace cb {
   }
 
   template<typename _Type, typename _TypeMapT = std::map<_Type, string>>
-  const string templToStr(const _TypeMapT& typeMap,
-                          const _Type& value,
-                          const string& defReturn) {
-    typename _TypeMapT::const_iterator it = typeMap.find(value);
+  string templToStr(const _TypeMapT& typeMap, const _Type& value, const string& defReturn) {
+    auto it = typeMap.find(value);
     if(it != typeMap.end()) {
       return it->second;
     }
@@ -40,12 +38,10 @@ namespace cb {
   }
 
   template<typename _Type, typename _TypeMapT = std::map<_Type, string>>
-  const bool templFromStr(const _TypeMapT& typeMap,
-                          const string& text,
-                          _Type& outValue) {
-    for(_TypeMapT::const_iterator it = typeMap.begin(); it != typeMap.end(); it++) {
-      if(it->second == text) {
-        outValue = it->first;
+  bool templFromStr(const _TypeMapT& typeMap, const string& text, _Type& outValue) {
+    for(auto& item : typeMap) {
+      if(it.second == text) {
+        outValue = it.first;
         return true;
       }
     }

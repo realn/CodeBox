@@ -8,9 +8,8 @@
 #include <vector>
 
 namespace cb {
+  // string checking
   extern size_t count(const string& text, const string& what);
-
-  extern string substrpos(const string& text, const size_t pos = 0, const size_t endpos = string::npos);
 
   extern bool subcmp(const string& text, const string& what, const size_t pos = 0);
 
@@ -19,6 +18,13 @@ namespace cb {
   extern bool rsubcmp(const string& text, const string& what, const size_t roffset = 0);
 
   extern bool subrcmp(const string& text, const string& what, const size_t offset = 0);
+
+  extern size_t strposrev(const string& text, const size_t roffset = 0);
+
+
+  // string manipulation
+
+  extern string substrpos(const string& text, const size_t pos = 0, const size_t endpos = string::npos);
 
   extern string replace(const string& text, const string& what, const string& with);
 
@@ -30,9 +36,10 @@ namespace cb {
 
   extern string varReplace(const string& format, const strvector& list);
 
-  extern size_t strlastpos(const string& text, const size_t roffset = 0);
-
   extern string repeat(const string& text, const size_t times);
+
+
+  // string convertion
 
   template<>
   extern string toStr<string>(const string& val);
@@ -46,7 +53,6 @@ namespace cb {
   template<>
   extern bool fromStr<bool>(const string& text, bool& outVal);
 
-
   extern charvector toUtf8(const string& text);
 
   extern string fromUtf8(const charvector& text);
@@ -57,15 +63,18 @@ namespace cb {
 
   extern charvector utf8vec(const char* szText);
 
+
+  // string formating
+
   namespace detail {
     template<typename _Type, typename ..._Args>
-    string formatList(const string& fmt, strvector& list, const _Type& arg0, const _Args... args) {
+    string format(const string& fmt, strvector& list, const _Type& arg0, const _Args... args) {
       list.push_back(toStr(arg0));
-      return formatList(fmt, list, args);
+      return format(fmt, list, args...);
     }
 
     template<typename _Type>
-    string formatList(const string& fmt, strvector& list, const _Type& arg0) {
+    string format(const string& fmt, strvector& list, const _Type& arg0) {
       list.push_back(toStr(arg0));
       return varReplace(fmt, list);
     }
@@ -73,30 +82,7 @@ namespace cb {
 
   template<typename ..._Args>
   string format(const string& fmt, const _Args... args) {
-    return detail::formatList(fmt, strvector(), args);
-  }
-
-  template<typename _Type>
-  const strvector toStr(const std::vector<_Type>& value) {
-    strvector result;
-    for(std::vector<_Type>::const_iterator it = value.begin(); it != value.end(); it++) {
-      result.push_back(toStr(*it));
-    }
-    return result;
-  }
-
-  template<typename _Type>
-  const bool fromStr(const strvector& text, std::vector<_Type>& outValue) {
-    outValue.clear();
-    for(strvector::const_iterator it = text.begin(); it != text.end(); it++) {
-      _Type value;
-      if(!fromStr(*it, value)) {
-        return false;
-      }
-
-      outValue.push_back(value);
-    }
-    return true;
+    return detail::format(fmt, strvector(), args...);
   }
 }
 

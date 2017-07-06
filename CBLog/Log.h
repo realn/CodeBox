@@ -5,6 +5,8 @@
 #include "Defines.h"
 
 namespace cb {
+  template<typename _Type> cb::string toStr(const _Type& value);
+
   extern void log(const LogLvl level, const string& msg);
 
   inline void debug(const string& msg) { log(LogLvl::Debug, msg); }
@@ -21,46 +23,40 @@ namespace cb {
              const string& fmt, 
              strvector& arglist, 
              _Type& arg0, 
-             _Args& ... args) {
-      arglist.push_back(arg0);
-      log(level, fmt, arglist, args);
+             _Args ... args) {
+      arglist.push_back(toStr(arg0));
+      log(level, fmt, arglist, args...);
     }
   }
 
   template<typename ..._Args>
-  inline void log(const LogLvl level, const string& fmt, _Args& ... args) {
-    strvector arglist;
-    detail::log(level, fmt, arglist, args);
+  inline void log(const LogLvl level, const string& fmt, _Args ... args) {
+    detail::log(level, fmt, strvector(), args...);
   }
 
   template<typename ..._Args>
-  inline void debug(const string& fmt, _Args& ... args) {
-    strvector arglist;
-    detail::log(LogLvl::Debug, fmt, arglist, args);
+  inline void debug(const string& fmt, _Args ... args) {
+    detail::log(LogLvl::Debug, fmt, strvector(), args...);
   }
 
   template<typename ..._Args>
-  inline void info(const string& fmt, _Args& ... args) {
-    strvector arglist;
-    detail::log(LogLvl::Info, fmt, arglist, args);
+  inline void info(const string& fmt, _Args ... args) {
+    detail::log(LogLvl::Info, fmt, strvector(), args...);
   }
 
   template<typename ..._Args>
-  inline void warn(const string& fmt, _Args& ... args) {
-    strvector arglist;
-    detail::log(LogLvl::Warning, fmt, arglist, args);
+  inline void warn(const string& fmt, _Args ... args) {
+    detail::log(LogLvl::Warning, fmt, strvector(), args...);
   }
 
   template<typename ..._Args>
-  inline void error(const string& fmt, _Args& ... args) {
-    strvector arglist;
-    detail::log(LogLvl::Error, fmt, arglist, args);
+  inline void error(const string& fmt, _Args ... args) {
+    detail::log(LogLvl::Error, fmt, strvector(), args...);
   }
 
   template<typename ..._Args>
-  inline void crit(const string& fmt, _Args& ... args) {
-    strvector arglist;
-    detail::log(LogLvl::Critical, fmt, arglist, args);
+  inline void crit(const string& fmt, _Args ... args) {
+    detail::log(LogLvl::Critical, fmt, strvector(), args...);
   }
 }
 

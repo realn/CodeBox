@@ -2,6 +2,7 @@
 #include "../StringEx.h"
 
 namespace cb {
+  // string checking
 
   size_t  count(const string& text, const string& what) {
     auto result = 0u;
@@ -11,16 +12,6 @@ namespace cb {
       pos = text.find(what, pos + what.length());
     }
     return result;
-  }
-
-  string substrpos(const string& text, const size_t pos, const size_t endpos) {
-    if(pos == string::npos || pos >= text.length()) {
-      return string();
-    }
-    if(endpos == string::npos) {
-      return text.substr(pos);
-    }
-    return text.substr(pos, endpos - pos);
   }
 
   bool subcmp(const string& text, const string& what, const size_t pos) {
@@ -49,11 +40,22 @@ namespace cb {
     return text.compare(offset - what.length(), what.length(), what) == 0;
   }
 
+  // string manipulation
+
+  string substrpos(const string& text, const size_t pos, const size_t endpos) {
+    if(pos == string::npos || pos >= text.length()) {
+      return string();
+    }
+    if(endpos == string::npos) {
+      return text.substr(pos);
+    }
+    return text.substr(pos, endpos - pos);
+  }
+
   string replace(const string& text, const string& what, const string& with) {
     if(what.empty() || text.empty()) {
       return text;
     }
-
     auto result = string();
     auto pos = 0u;
     while(pos != string::npos) {
@@ -71,11 +73,13 @@ namespace cb {
 
   string replace(const string & text, const strmap & list, const bool flip) {
     auto result = text;
-    for(auto& item : list) {
-      if(!flip) {
+    if(!flip) {
+      for(auto& item : list) {
         result = replace(result, item.first, item.second);
       }
-      else {
+    }
+    else {
+      for(auto& item : list) {
         result = replace(result, item.second, item.first);
       }
     }
@@ -84,17 +88,14 @@ namespace cb {
 
   string join(const strvector& list, const string& glue) {
     auto result = string();
-    auto it = list.begin(); 
-
+    auto it = list.begin();
     while(it != list.end()) {
       result += *it;
-
       it++;
       if(it != list.end()) {
         result += glue;
       }
     }
-
     return result;
   }
 
@@ -139,14 +140,11 @@ namespace cb {
     return result;
   }
 
-  size_t strlastpos(const string & text, const size_t roffset) {
-    if(text.empty()) {
+  size_t strposrev(const string & text, const size_t roffset) {
+    if(text.empty() || roffset + 1 > text.length()) {
       return string::npos;
     }
-    if(roffset + 1 > text.length()) {
-
-    }
-    return text.length() - 1 - roffset;
+    return text.length() - (1 + roffset);
   }
 
   string repeat(const string & text, const size_t times) {
