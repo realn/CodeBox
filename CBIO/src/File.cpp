@@ -16,7 +16,7 @@ namespace cb {
 
   bytevector readfile(const string & filepath) {
     auto file = ifstream(filepath, std::ios::binary | std::ios::in);
-    if(file.is_open())
+    if(!file.is_open())
       return bytevector();
     return readfile(file);
   }
@@ -38,7 +38,7 @@ namespace cb {
 
   bool readfile(ifstream & stream, bytevector & outdata) {
     auto size = filesize(stream);
-    outdata.resize(size);
+    outdata.resize(bytevector::size_type(size));
     stream.read(outdata.data(), size);
     return !stream.fail();
   }
@@ -70,7 +70,7 @@ namespace cb {
     if(size == 0)
       return string();
 
-    auto data = charvector(size);
+    auto data = charvector(charvector::size_type(size));
     file.read(data.data(), size);
 
     return fromUtf8(data);
@@ -88,7 +88,7 @@ namespace cb {
     if(size == 0)
       return string();
 
-    auto result = string(size, L'\0');
+    auto result = string(string::size_type(size), L'\0');
     file.read(&result[0], size);
 
     return result;

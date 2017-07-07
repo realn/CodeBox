@@ -7,7 +7,7 @@ namespace cb {
   const auto PATH_EXT_SEP = L"."s;
   const auto PATH_DIR_SEP = L"/"s;
   const auto PATH_DIR_BACKSEP = L"\\"s;
-  const auto PATH_DIR_DBL_SEP = PATH_DIR_SEP + PATH_DIR_DBL_SEP;
+  const auto PATH_DIR_DBL_SEP = PATH_DIR_SEP + PATH_DIR_SEP;
 
   size_t filenameextpos(const string & filename) {
     auto pos = filename.find_last_of(PATH_EXT_SEP);
