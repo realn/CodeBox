@@ -16,10 +16,10 @@ namespace cb {
     explicit CXmlAttribute(const string name, const string value = string());
     ~CXmlAttribute();
 
-    string GetName() const;
-    string GetValue() const;
+    const string& GetName() const { return mName; }
+    const string& GetValue() const { return mValue; }
 
-    void SetValue(const string val);
+    void SetValue(const string val) { mValue = val; }
 
     string ToString() const;
 
@@ -27,9 +27,11 @@ namespace cb {
 
     void operator=(const CXmlAttribute& other);
     void operator=(CXmlAttribute&& other);
-    void operator=(const string& value);
+    void operator=(const string& value) { mValue = value; }
+
+    operator const string&() const { return mValue; }
+    operator string&() { return mValue; }
   };
 }
-
 
 #endif // !__CB_XML_ATTRIBUTE_H__

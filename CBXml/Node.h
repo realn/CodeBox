@@ -43,6 +43,9 @@ namespace cb {
 
     void operator=(const CXmlNode& other);
     void operator=(CXmlNode&& other);
+
+    CXmlNode& operator[](const cb::string& name) { return Nodes[name]; };
+    const CXmlNode& operator[](const cb::string& name) const { return Nodes[name]; }
   };
 }
 

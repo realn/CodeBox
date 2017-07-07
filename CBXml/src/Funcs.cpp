@@ -162,7 +162,7 @@ namespace cb {
     }
 
     if(rsubcmp(result, XML_QUOTE_CHAR, 0) && !rsubcmp(result, XML_QUOTE_ESCAPE_CHAR, 1)) {
-      result = substrpos(result, 0, strlastpos(result));
+      result = substrpos(result, 0, strposrev(result));
     }
     
     return unescapeChars(result);
@@ -172,7 +172,7 @@ namespace cb {
     auto res = string();
     auto escape = false;
     auto quote = false;
-    for(auto i = 0; i < text.length(); i++) {
+    for(auto i = 0u; i < text.length(); i++) {
       if(subcmp(text, XML_ESCAPE_CHAR, i)) {
         res += XML_ESCAPE_CHAR;
         escape = true;

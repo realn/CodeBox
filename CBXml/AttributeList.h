@@ -48,7 +48,9 @@ namespace cb {
 
     void operator=(const CXmlAttributeList& other);
     void operator=(CXmlAttributeList&& other);
-    string operator[](const string& name) const;
+
+    const CXmlAttribute& operator[](const string& name) const { return *find(name); }
+    CXmlAttribute& operator[](const string& name) { return *find(name); }
   };
 }
 

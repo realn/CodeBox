@@ -35,20 +35,20 @@ namespace cb {
   CXmlNode::~CXmlNode() {}
 
   void CXmlNode::SetValue(const string & value, const bool cdata) {
-    if(Nodes.GetSize() != 1) {
-      Nodes.Clear();
+    if(Nodes.size() != 1) {
+      Nodes.clear();
       Nodes.AddNode(XmlNodeType::Text);
     }
-    auto& node = Nodes.Get(0);
+    auto& node = Nodes.first();
 
     node.SetType(cdata ? XmlNodeType::CData : XmlNodeType::Text);
     node.SetName(value);
   }
 
   string CXmlNode::GetValue() const {
-    if(Nodes.GetSize() != 1)
+    if(Nodes.size() != 1)
       return string();
-    auto& node = Nodes.Get(0);
+    auto& node = Nodes.first();
     if(node.GetType() != XmlNodeType::Text && node.GetType() != XmlNodeType::CData)
       return string();
     return node.GetName();
@@ -161,7 +161,7 @@ namespace cb {
       result += XML_SPACE + Attributes.ToString();
     }
 
-    if(Nodes.IsEmpty()) {
+    if(Nodes.empty()) {
       result += XML_SPACE + XML_TAG_CLOSE_END;
     }
     else {

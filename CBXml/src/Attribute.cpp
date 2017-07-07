@@ -28,18 +28,6 @@ namespace cb {
 
   CXmlAttribute::~CXmlAttribute() {}
   
-  string CXmlAttribute::GetName() const {
-    return mName;
-  }
-
-  string CXmlAttribute::GetValue() const {
-    return mValue;
-  }
-
-  void CXmlAttribute::SetValue(const string val) {
-    mValue = val;
-  }
-
   string CXmlAttribute::ToString() const {
     return mName + XML_EQUAL + inQuotes(mValue);
   }
@@ -84,9 +72,5 @@ namespace cb {
   void CXmlAttribute::operator=(CXmlAttribute && other) {
     mName = std::move(other.mName);
     mValue = std::move(other.mValue);
-  }
-
-  void CXmlAttribute::operator=(const string & value) {
-    mValue = value;
   }
 }

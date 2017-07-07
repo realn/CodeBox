@@ -182,7 +182,7 @@ namespace cb {
       if(!ReadXmlObject(*pNode, obj)) {
         return false;
       }
-      list.push_back(obj);
+      list.push_back(std::move(obj));
     }
     return true;
   }
@@ -217,17 +217,17 @@ namespace cb {
                                                const string & keyName) const {
     list.clear();
     auto nodeList = mNode.Nodes.Search(elemName);
-    for(auto& pNode, : nodeList) {
+    for(auto& pNode : nodeList) {
       auto obj = _ObjType();
       auto key = _AttrType();
-      auto xml = CXmlSerialize<_ObjType>(*pNode, obj);
+      auto xml = CXmlSerialize<_ObjType>(*pNode, obj, mWrite);
       if(!xml.GetAttribute(keyName, key)) {
         return false;
       }
       if(!xml.Read()) {
         return false;
       }
-      list[key] = obj;
+      list[key] = std::move(obj);
     }
     return true;
   }
@@ -239,14 +239,15 @@ namespace cb {
                                                const string & keyName) {
     mNode.Nodes.Remove(elemName);
     for(auto& item : list) {
-      auto& node = mNode.Nodes.AddNode(elemName);
-      auto xml = CXmlSerialize<_ObjType>(node, item.second);
-      if(!xml.SetAttribute(keyName, it.first)) {
+      auto node = CXmlNode(elemName);
+      auto xml = CXmlSerialize<_ObjType>(node, item.second, mWrite);
+      if(!xml.SetAttribute(keyName, item.first)) {
         return false;
       }
       if(!xml.Write()) {
         return false;
       }
+      mNode.Nodes.AddNode(std::move(node));
     }
     return true;
   }
@@ -262,8 +263,8 @@ namespace cb {
   }
 }
 
-#define CB_DEFINEXMLREAD(OBJ) template<> const bool cb::CXmlSerialize<OBJ>::Read() 
-#define CB_DEFINEXMLWRITE(OBJ) template<> const bool cb::CXmlSerialize<OBJ>::Write() 
-#define CB_DEFINEXMLRW(OBJ) template<> const bool cb::CXmlSerialize<OBJ>::RWObj() 
+#define CB_DEFINEXMLREAD(OBJ) template<> bool cb::CXmlSerialize<OBJ>::Read() 
+#define CB_DEFINEXMLWRITE(OBJ) template<> bool cb::CXmlSerialize<OBJ>::Write() 
+#define CB_DEFINEXMLRW(OBJ) template<> bool cb::CXmlSerialize<OBJ>::RWObj() 
 
 #endif // !__CB_XML_SERIALIZE_H__

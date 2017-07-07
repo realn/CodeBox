@@ -19,7 +19,7 @@ namespace cb {
 
   CXmlNodeList::~CXmlNodeList() {}
 
-  void CXmlNodeList::AddNode(const CXmlNode & node) {
+  void CXmlNodeList::AddNode(CXmlNode && node) {
     mNodeList.push_back(node);
   }
 
@@ -47,19 +47,19 @@ namespace cb {
 
   void CXmlNodeList::Remove(const string & name) {
     auto pred =
-      [name](const CXmlNode& node)->auto{return node.GetName() = name; };
+      [name](const CXmlNode& node)->auto{return node.GetName() == name; };
     erase(std::remove_if(begin(), end(), pred), end());
   }
 
   CXmlNodeList::iterator CXmlNodeList::find(const string & name) {
     auto pred =
-      [name](const CXmlNode& node)->auto{return node.GetName() = name; };
+      [name](const CXmlNode& node)->auto{return node.GetName() == name; };
     return std::find_if(begin(), end(), pred);
   }
 
   CXmlNodeList::const_iterator CXmlNodeList::find(const string & name) const {
     auto pred =
-      [name](const CXmlNode& node)->auto{return node.GetName() = name; };
+      [name](const CXmlNode& node)->auto{return node.GetName() == name; };
     return std::find_if(begin(), end(), pred);
   }
 

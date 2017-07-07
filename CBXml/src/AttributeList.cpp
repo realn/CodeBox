@@ -92,12 +92,4 @@ namespace cb {
   void CXmlAttributeList::operator=(CXmlAttributeList && other) {
     mAttrList = std::move(other.mAttrList);
   }
-
-  string CXmlAttributeList::operator[](const string & name) const {
-    auto it = find(name);
-    if(it != end()) {
-      return it->GetValue();
-    }
-    throw std::invalid_argument("Invalid index argument for name in xml attribute list.");
-  }
 }

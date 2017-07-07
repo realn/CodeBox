@@ -31,7 +31,7 @@ namespace cb {
     CXmlNodeList(CXmlNodeList&& other);
     ~CXmlNodeList();
 
-    void AddNode(const CXmlNode& node);
+    void AddNode(CXmlNode&& node);
     CXmlNode& AddNode(const string& name);
     CXmlNode& AddNode(const XmlNodeType type);
 
@@ -46,8 +46,14 @@ namespace cb {
     iterator begin() { return mNodeList.begin(); }
     const_iterator begin() const { return mNodeList.begin(); }
 
+    CXmlNode& first() { return *begin(); }
+    const CXmlNode& first() const { return *begin(); }
+
     iterator end() { return mNodeList.end(); }
     const_iterator end() const { return mNodeList.end(); }
+
+    CXmlNode& last() { return *(end() - 1); }
+    const CXmlNode& last() const { return *(end() - 1); }
 
     iterator erase(const_iterator it);
     iterator erase(const_iterator beg, const_iterator end);
