@@ -9,7 +9,7 @@ using namespace std::chrono_literals;
 
 namespace cb {
   template<>
-  string toStr<LogLvl>(const LogLvl& level) {
+  string toStr<LogLvl>(LogLvl const& level) {
     switch(level) {
     case LogLvl::Debug: return L"DBG";
     case LogLvl::Info:  return L"INF";
@@ -25,15 +25,15 @@ namespace cb {
 
   CPlainTextLogFormat::~CPlainTextLogFormat() {}
 
-  void CPlainTextLogFormat::BeginLog(ostream & stream, const string & msg) {
-    stream << GetTimeStamp() << L" LOG START" << std::endl;
+  void CPlainTextLogFormat::BeginLog(ostream & stream, string const & msg) {
+    stream << GetTimeStamp() << L" LOG START: " << msg << std::endl;
   }
 
-  void CPlainTextLogFormat::EndLog(ostream & stream, const string & msg) {
-    stream << GetTimeStamp() << L" LOG END" << std::endl;
+  void CPlainTextLogFormat::EndLog(ostream & stream, string const & msg) {
+    stream << GetTimeStamp() << L" LOG END" << msg << std::endl;
   }
 
-  void CPlainTextLogFormat::LogMsg(ostream & stream, const LogLvl level, const string & msg) {
+  void CPlainTextLogFormat::LogMsg(ostream & stream, LogLvl const level, string const & msg) {
     stream << GetTimeStamp() << L" " << toStr(level) << L" " << msg << std::endl;
   }
 

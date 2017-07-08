@@ -32,19 +32,19 @@ namespace cb {
     mStreamMap.clear();
   }
 
-  void CLogger::BeginLog(const string & msg) {
+  void CLogger::BeginLog(string const & msg) {
     for(auto& item : mStreamMap) {
       item.second->BeginLog(*item.first, msg);
     }
   }
 
-  void CLogger::LogMsg(const LogLvl level, const string & msg) {
+  void CLogger::LogMsg(LogLvl const level, string const & msg) {
     for(auto& item : mStreamMap) {
       item.second->LogMsg(*item.first, level, msg);
     }
   }
 
-  void CLogger::EndLog(const string & msg) {
+  void CLogger::EndLog(string const & msg) {
     for(auto& item : mStreamMap) {
       item.second->EndLog(*item.first, msg);
     }

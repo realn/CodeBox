@@ -29,9 +29,9 @@ namespace cb {
     void AddStream(std::shared_ptr<ostream> pStream, std::unique_ptr<ILogFormat> pFormat);
     void ClearStreams();
 
-    void BeginLog(const string& msg = string());
-    void LogMsg(const LogLvl level, const string& msg);
-    void EndLog(const string& msg = string());
+    void BeginLog(string const& msg = string());
+    void LogMsg(LogLvl const level, string const& msg);
+    void EndLog(string const& msg = string());
 
     static void SetInstance(std::shared_ptr<CLogger> logger);
     static std::shared_ptr<CLogger> GetInstance();

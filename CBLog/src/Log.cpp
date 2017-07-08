@@ -5,7 +5,7 @@
 #include <CBStr/StringEx.h>
 
 namespace cb {
-  void log(const LogLvl level, const string& msg) {
+  void log(LogLvl const level, string const& msg) {
     auto pLog = CLogger::GetInstance();
     if(pLog) {
       pLog->LogMsg(level, msg);
@@ -13,7 +13,7 @@ namespace cb {
   }
 
   namespace detail {
-    void log(const LogLvl level, const string & fmt, strvector & arglist) {
+    void log(LogLvl const level, string const & fmt, strvector & arglist) {
       cb::log(level, cb::varReplace(fmt, arglist));
     }
   }

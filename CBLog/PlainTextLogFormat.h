@@ -11,9 +11,9 @@ namespace cb {
     virtual ~CPlainTextLogFormat();
 
     // Inherited via ILogFormat
-    virtual void BeginLog(ostream & stream, const string & msg) override;
-    virtual void EndLog(ostream & stream, const string & msg) override;
-    virtual void LogMsg(ostream & stream, const LogLvl level, const string & msg) override;
+    virtual void BeginLog(ostream & stream, string const & msg) override;
+    virtual void EndLog(ostream & stream, string const & msg) override;
+    virtual void LogMsg(ostream & stream, LogLvl const level, string const & msg) override;
 
   private:
     string GetTimeStamp() const;
