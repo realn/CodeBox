@@ -9,14 +9,14 @@ namespace cb {
   const auto PATH_DIR_BACKSEP = L"\\"s;
   const auto PATH_DIR_DBL_SEP = PATH_DIR_SEP + PATH_DIR_SEP;
 
-  size_t filenameextpos(const string & filename) {
+  size_t filenameextpos(string const & filename) {
     auto pos = filename.find_last_of(PATH_EXT_SEP);
     if(pos != string::npos)
       pos++;
     return pos;
   }
 
-  string filenameext(const string & filename) {
+  string filenameext(string const & filename) {
     auto pos = filenameextpos(filename);
     if(pos == string::npos) {
       return string();
@@ -25,11 +25,11 @@ namespace cb {
     return filename.substr(pos);
   }
 
-  string makefilename(const string & name, const string & ext) {
+  string makefilename(string const & name, string const & ext) {
     return name + PATH_EXT_SEP + ext;
   }
 
-  string clearpath(const string & path) {
+  string clearpath(string const & path) {
     if(path.empty())
       return path;
 
@@ -55,14 +55,14 @@ namespace cb {
     return result;
   }
 
-  size_t pathnamepos(const string & path) {
+  size_t pathnamepos(string const & path) {
     auto pos = path.find_last_of(PATH_DIR_SEP);
     if(pos != string::npos)
       pos++;
     return pos;
   }
 
-  string pathname(const string & path) {
+  string pathname(string const & path) {
     auto pos = pathnamepos(path);
     if(pos == string::npos)
       return string();
@@ -70,7 +70,7 @@ namespace cb {
     return path.substr(pos);
   }
 
-  string pathbase(const string & path) {
+  string pathbase(string const & path) {
     auto pos = pathnamepos(path);
     if(pos == string::npos)
       return string();
@@ -78,7 +78,7 @@ namespace cb {
     return path.substr(0, pos - 1);
   }
 
-  string makepath(const string & path1, const string & path2) {
+  string makepath(string const & path1, string const & path2) {
     return clearpath(path1 + PATH_DIR_SEP + path2);
   }
 }
