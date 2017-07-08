@@ -34,4 +34,5 @@ namespace cb {
   };
 }
 
+
 #endif // !__CB_XML_ATTRIBUTE_H__

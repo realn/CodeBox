@@ -4,7 +4,7 @@
 namespace cb {
   // string checking
 
-  size_t  count(const string& text, const string& what) {
+  size_t  count(string const & text, string const & what) {
     auto result = 0u;
     auto pos = text.find(what, 0);
     while(pos != string::npos) {
@@ -14,11 +14,11 @@ namespace cb {
     return result;
   }
 
-  bool subcmp(const string& text, const string& what, const size_t pos) {
+  bool subcmp(string const& text, string const& what, size_t const pos) {
     return text.compare(pos, what.length(), what) == 0;
   }
 
-  bool subcmp(const string& text, const strvector& list, const size_t pos) {
+  bool subcmp(string const& text, strvector const& list, size_t const pos) {
     for(auto& item : list) {
       if(subcmp(text, item, pos)) {
         return true;
@@ -27,14 +27,14 @@ namespace cb {
     return false;
   }
 
-  bool rsubcmp(const string & text, const string & what, const size_t roffset) {
+  bool rsubcmp(string const & text, string const & what, size_t const roffset) {
     if(roffset > text.length()) {
       return false;
     }
     return subcmp(text, what, text.length() - roffset);
   }
 
-  bool subrcmp(const string & text, const string & what, const size_t offset) {
+  bool subrcmp(string const & text, string const & what, size_t const offset) {
     if(offset < what.length())
       return false;
     return text.compare(offset - what.length(), what.length(), what) == 0;
@@ -42,7 +42,7 @@ namespace cb {
 
   // string manipulation
 
-  string substrpos(const string& text, const size_t pos, const size_t endpos) {
+  string substrpos(string const& text, size_t const pos, size_t const endpos) {
     if(pos == string::npos || pos >= text.length()) {
       return string();
     }
@@ -52,7 +52,7 @@ namespace cb {
     return text.substr(pos, endpos - pos);
   }
 
-  string replace(const string& text, const string& what, const string& with) {
+  string replace(string const& text, string const& what, string const& with) {
     if(what.empty() || text.empty()) {
       return text;
     }
@@ -71,7 +71,7 @@ namespace cb {
     return result;
   }
 
-  string replace(const string & text, const strmap & list, const bool flip) {
+  string replace(string const & text, const strmap & list, bool const flip) {
     auto result = text;
     if(!flip) {
       for(auto& item : list) {
@@ -86,7 +86,7 @@ namespace cb {
     return result;
   }
 
-  string join(const strvector& list, const string& glue) {
+  string join(strvector const& list, string const& glue) {
     auto result = string();
     auto it = list.begin();
     while(it != list.end()) {
@@ -99,7 +99,7 @@ namespace cb {
     return result;
   }
 
-  strvector split(const string& text, const string& knife, const bool skipEmpty) {
+  strvector split(string const& text, string const& knife, bool const skipEmpty) {
     auto result = strvector();
     if(knife.empty()) {
       for(auto& item : text) {
@@ -123,7 +123,7 @@ namespace cb {
     return result;
   }
 
-  string varReplace(const string& format, const strvector& list) {
+  string varReplace(string const& format, strvector const& list) {
     if(format.empty()) {
       return string();
     }
@@ -140,14 +140,14 @@ namespace cb {
     return result;
   }
 
-  size_t strposrev(const string & text, const size_t roffset) {
+  size_t strposrev(string const & text, size_t const roffset) {
     if(text.empty() || roffset + 1 > text.length()) {
       return string::npos;
     }
     return text.length() - (1 + roffset);
   }
 
-  string repeat(const string & text, const size_t times) {
+  string repeat(string const & text, size_t const times) {
     if(times == 0)
       return string();
     if(times == 1)

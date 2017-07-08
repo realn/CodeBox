@@ -9,57 +9,73 @@
 
 namespace cb {
   // string checking
-  extern size_t count(const string& text, const string& what);
+  extern size_t count(string const & text, string const & what);
 
-  extern bool subcmp(const string& text, const string& what, const size_t pos = 0);
+  extern bool subcmp(string const& text, string const& what, size_t const pos = 0);
 
-  extern bool subcmp(const string& text, const strvector& list, const size_t pos = 0);
+  extern bool subcmp(string const& text, const strvector& list, size_t const pos = 0);
 
-  extern bool rsubcmp(const string& text, const string& what, const size_t roffset = 0);
+  extern bool rsubcmp(string const& text, string const& what, size_t const roffset = 0);
 
-  extern bool subrcmp(const string& text, const string& what, const size_t offset = 0);
+  extern bool subrcmp(string const& text, string const& what, size_t const offset = 0);
 
-  extern size_t strposrev(const string& text, const size_t roffset = 0);
+  extern size_t strposrev(string const& text, size_t const roffset = 0);
 
 
   // string manipulation
 
-  extern string substrpos(const string& text, const size_t pos = 0, const size_t endpos = string::npos);
+  extern string substrpos(string const& text, size_t const pos = 0, size_t const endpos = string::npos);
 
-  extern string replace(const string& text, const string& what, const string& with);
+  extern string replace(string const& text, string const& what, string const& with);
 
-  extern string replace(const string& text, const strmap& list, const bool flip = false);
+  extern string replace(string const& text, const strmap& list, bool const flip = false);
 
-  extern string join(const strvector& list, const string& glue = string());
+  extern string join(const strvector& list, string const& glue = string());
 
-  extern strvector split(const string& text, const string& knife = string(), const bool skipEmpty = false);
+  extern strvector split(string const& text, string const& knife = string(), bool const skipEmpty = false);
 
-  extern string varReplace(const string& format, const strvector& list);
+  extern string varReplace(string const& format, const strvector& list);
 
-  extern string repeat(const string& text, const size_t times);
+  extern string repeat(string const& text, size_t const times);
 
 
   // string convertion
 
-  template<>
-  extern string toStr<string>(const string& val);
+  extern string toStr(string const& val);
+
+  extern string toStr(bool const& val);
+
+  extern bool fromStr(string const& text, string& outVal);
+
+  extern bool fromStr(string const& text, bool& outVal);
 
   template<>
-  extern string toStr<bool>(const bool& val);
+  inline string toStr<string>(string const& val) {
+    return toStr(val);
+  }
 
   template<>
-  extern bool fromStr<string>(const string& text, string& outVal);
+  inline string toStr<bool>(bool const& val) {
+    return toStr(val);
+  }
 
   template<>
-  extern bool fromStr<bool>(const string& text, bool& outVal);
+  inline bool fromStr<string>(string const& text, string& outVal) {
+    return fromStr(text, outVal);
+  }
 
-  extern charvector toUtf8(const string& text);
+  template<>
+  inline bool fromStr<bool>(string const& text, bool& outVal) {
+    return fromStr(text, outVal);
+  }
 
-  extern string fromUtf8(const charvector& text);
+  extern charvector toUtf8(string const& text);
 
-  extern size_t utf8len(const charvector& text);
+  extern string fromUtf8(charvector const& text);
 
-  extern const char* utf8ptr(const charvector& text);
+  extern size_t utf8len(charvector const& text);
+
+  extern const char* utf8ptr(charvector const& text);
 
   extern charvector utf8vec(const char* szText);
 
@@ -68,20 +84,20 @@ namespace cb {
 
   namespace detail {
     template<typename _Type, typename ..._Args>
-    string format(const string& fmt, strvector& list, const _Type& arg0, const _Args... args) {
+    string format(string const& fmt, strvector& list, _Type const& arg0, _Args... args) {
       list.push_back(toStr(arg0));
       return format(fmt, list, args...);
     }
 
     template<typename _Type>
-    string format(const string& fmt, strvector& list, const _Type& arg0) {
+    string format(string const& fmt, strvector& list, _Type const& arg0) {
       list.push_back(toStr(arg0));
       return varReplace(fmt, list);
     }
   }
 
   template<typename ..._Args>
-  string format(const string& fmt, const _Args... args) {
+  string format(string const& fmt, _Args... args) {
     return detail::format(fmt, strvector(), args...);
   }
 }
