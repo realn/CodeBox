@@ -6,7 +6,7 @@ namespace cb {
   string const CXmlStringFormat::DefaultNewLineStr = L"\n";
 
   CXmlStringFormat::CXmlStringFormat(bool const newLines,
-                                     bool nesting, 
+                                     bool const nesting, 
                                      string const nestingStr,
                                      string const newLineStr)
     : mNewLines(newLines)
