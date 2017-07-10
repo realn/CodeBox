@@ -23,12 +23,12 @@ namespace cb {
     mNodeList.push_back(node);
   }
 
-  CXmlNode & CXmlNodeList::AddNode(const string & name) {
+  CXmlNode & CXmlNodeList::AddNode(string const & name) {
     mNodeList.push_back(CXmlNode(name));
     return *mNodeList.rbegin();
   }
 
-  CXmlNode & CXmlNodeList::AddNode(const XmlNodeType type) {
+  CXmlNode & CXmlNodeList::AddNode(XmlNodeType const type) {
     mNodeList.push_back(CXmlNode(type));
     return *mNodeList.rbegin();
   }
@@ -45,25 +45,25 @@ namespace cb {
     return mNodeList.erase(beg, end);
   }
 
-  void CXmlNodeList::Remove(const string & name) {
+  void CXmlNodeList::Remove(string const & name) {
     auto pred =
       [name](const CXmlNode& node)->auto{return node.GetName() == name; };
     erase(std::remove_if(begin(), end(), pred), end());
   }
 
-  CXmlNodeList::iterator CXmlNodeList::find(const string & name) {
+  CXmlNodeList::iterator CXmlNodeList::find(string const & name) {
     auto pred =
       [name](const CXmlNode& node)->auto{return node.GetName() == name; };
     return std::find_if(begin(), end(), pred);
   }
 
-  CXmlNodeList::const_iterator CXmlNodeList::find(const string & name) const {
+  CXmlNodeList::const_iterator CXmlNodeList::find(string const & name) const {
     auto pred =
       [name](const CXmlNode& node)->auto{return node.GetName() == name; };
     return std::find_if(begin(), end(), pred);
   }
 
-  XmlNodePtrListT CXmlNodeList::Search(const string & name) {
+  XmlNodePtrListT CXmlNodeList::Search(string const & name) {
     auto result = XmlNodePtrListT();
     for(auto& node : *this) {
       if(node.GetName() == name) {
@@ -73,7 +73,7 @@ namespace cb {
     return result;
   }
 
-  XmlNodeConstPtrListT CXmlNodeList::Search(const string & name) const {
+  XmlNodeConstPtrListT CXmlNodeList::Search(string const & name) const {
     auto result = XmlNodeConstPtrListT();
     for(auto& node : *this) {
       if(node.GetName() == name) {
@@ -83,7 +83,7 @@ namespace cb {
     return result;
   }
 
-  size_t CXmlNodeList::Parse(const string & text, const size_t offset) {
+  size_t CXmlNodeList::Parse(string const & text, size_t const offset) {
     clear();
 
     size_t pos = findNonWS(text, offset, XML_TAG_START);
@@ -104,7 +104,7 @@ namespace cb {
     return pos;
   }
 
-  string CXmlNodeList::ToString(const CXmlStringFormat& fmt) const {
+  string CXmlNodeList::ToString(CXmlStringFormat const & fmt) const {
     auto list = strvector();
     for(auto& node : *this) {
       list.push_back(node.ToString(fmt));
@@ -112,15 +112,15 @@ namespace cb {
     return join(list, genEnding(fmt));
   }
 
-  const CXmlNode & CXmlNodeList::operator[](const string & name) const {
+  const CXmlNode & CXmlNodeList::operator[](string const & name) const {
     return *find(name);
   }
 
-  CXmlNode & CXmlNodeList::operator[](const string & name) {
+  CXmlNode & CXmlNodeList::operator[](string const & name) {
     return *find(name);
   }
 
-  void CXmlNodeList::operator=(const CXmlNodeList & other) {
+  void CXmlNodeList::operator=(CXmlNodeList const & other) {
     mNodeList = other.mNodeList;
   }
 

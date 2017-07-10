@@ -27,21 +27,21 @@ namespace cb {
 
   public:
     CXmlNodeList();
-    CXmlNodeList(const CXmlNodeList& other);
+    CXmlNodeList(CXmlNodeList const & other);
     CXmlNodeList(CXmlNodeList&& other);
     ~CXmlNodeList();
 
     void AddNode(CXmlNode&& node);
-    CXmlNode& AddNode(const string& name);
-    CXmlNode& AddNode(const XmlNodeType type);
+    CXmlNode& AddNode(string const& name);
+    CXmlNode& AddNode(XmlNodeType const type);
 
     size_t size() const { return mNodeList.size(); }
     bool empty() const { return mNodeList.empty(); }
 
     void clear();
 
-    CXmlNode& Get(const size_t index) { return mNodeList[index]; }
-    const CXmlNode& Get(const size_t index) const { return mNodeList[index]; }
+    CXmlNode& Get(size_t const index) { return mNodeList[index]; }
+    const CXmlNode& Get(size_t const index) const { return mNodeList[index]; }
 
     iterator begin() { return mNodeList.begin(); }
     const_iterator begin() const { return mNodeList.begin(); }
@@ -53,27 +53,27 @@ namespace cb {
     const_iterator end() const { return mNodeList.end(); }
 
     CXmlNode& last() { return *(end() - 1); }
-    const CXmlNode& last() const { return *(end() - 1); }
+    CXmlNode const & last() const { return *(end() - 1); }
 
     iterator erase(const_iterator it);
     iterator erase(const_iterator beg, const_iterator end);
 
-    void Remove(const string& name);
+    void Remove(string const& name);
 
-    iterator find(const string& name);
-    const_iterator find(const string& name) const;
+    iterator find(string const& name);
+    const_iterator find(string const& name) const;
 
-    XmlNodePtrListT Search(const string& name);
-    XmlNodeConstPtrListT Search(const string& name) const;
+    XmlNodePtrListT Search(string const& name);
+    XmlNodeConstPtrListT Search(string const& name) const;
 
-    size_t Parse(const string& text, const size_t offset = 0);
+    size_t Parse(string const& text, size_t const offset = 0);
 
-    string ToString(const CXmlStringFormat& fmt = CXmlStringFormat()) const;
+    string ToString(CXmlStringFormat const & fmt = CXmlStringFormat()) const;
 
-    const CXmlNode& operator[](const string& name) const;
-    CXmlNode& operator[](const string& name);
+    const CXmlNode& operator[](string const& name) const;
+    CXmlNode& operator[](string const& name);
 
-    void operator=(const CXmlNodeList& other);
+    void operator=(CXmlNodeList const & other);
     void operator=(CXmlNodeList&& other);
   };
 }

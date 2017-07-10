@@ -7,12 +7,12 @@
 #include <iostream>
 
 namespace cb {
-  typedef std::wstring string;
-  typedef std::vector<string> strvector;
-  typedef std::map<string, string> strmap;
+  using string = std::wstring;
+  using strvector = std::vector<string>;
+  using strmap = std::map<string, string>;
 
-  typedef std::wistream istream;
-  typedef std::wostream ostream;
+  using istream = std::wistream;
+  using ostream = std::wostream;
 }
 
 #endif // !__CB_XML_DEFINES_H__

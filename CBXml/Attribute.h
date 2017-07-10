@@ -11,23 +11,23 @@ namespace cb {
 
   public:
     CXmlAttribute();
-    CXmlAttribute(const CXmlAttribute& other);
+    CXmlAttribute(CXmlAttribute const& other);
     CXmlAttribute(CXmlAttribute&& other);
-    explicit CXmlAttribute(const string name, const string value = string());
+    explicit CXmlAttribute(string const name, string const value = string());
     ~CXmlAttribute();
 
     const string& GetName() const { return mName; }
     const string& GetValue() const { return mValue; }
 
-    void SetValue(const string val) { mValue = val; }
+    void SetValue(string const val) { mValue = val; }
 
     string ToString() const;
 
-    size_t Parse(const string& text, const size_t offset = 0);
+    size_t Parse(string const & text, size_t const offset = 0);
 
-    void operator=(const CXmlAttribute& other);
+    void operator=(CXmlAttribute const& other);
     void operator=(CXmlAttribute&& other);
-    void operator=(const string& value) { mValue = value; }
+    void operator=(string const& value) { mValue = value; }
 
     operator const string&() const { return mValue; }
     operator string&() { return mValue; }

@@ -9,7 +9,7 @@
 namespace cb {
   CXmlAttributeList::CXmlAttributeList() {}
 
-  CXmlAttributeList::CXmlAttributeList(const CXmlAttributeList & other)
+  CXmlAttributeList::CXmlAttributeList(CXmlAttributeList const & other)
     : mAttrList(other.mAttrList) {}
 
   CXmlAttributeList::CXmlAttributeList(CXmlAttributeList && other)
@@ -17,7 +17,7 @@ namespace cb {
 
   CXmlAttributeList::~CXmlAttributeList() {}
 
-  void CXmlAttributeList::SetValue(const string & name, const string & value) {
+  void CXmlAttributeList::SetValue(string const & name, string const & value) {
     auto it = find(name);
     if(it == end()) {
       if(!value.empty()) {
@@ -32,7 +32,7 @@ namespace cb {
     it->SetValue(value);
   }
 
-  string CXmlAttributeList::GetValue(const string & name, const string & defValue) const {
+  string CXmlAttributeList::GetValue(string const & name, string const & defValue) const {
     auto it = find(name);
     if(it == end()) {
       return defValue;
@@ -42,13 +42,13 @@ namespace cb {
 
   inline void CXmlAttributeList::clear() { mAttrList.clear(); }
 
-  CXmlAttributeList::iterator CXmlAttributeList::find(const string & name) {
+  CXmlAttributeList::iterator CXmlAttributeList::find(string const & name) {
     auto pred =
       [name](const CXmlAttribute& item) -> auto {return item.GetName() == name; };
     return std::find_if(begin(), end(), pred);
   }
 
-  CXmlAttributeList::const_iterator CXmlAttributeList::find(const string & name) const {
+  CXmlAttributeList::const_iterator CXmlAttributeList::find(string const & name) const {
     auto pred =
       [name](const CXmlAttribute& item) -> auto {return item.GetName() == name; };
     return std::find_if(begin(), end(), pred);
@@ -56,7 +56,7 @@ namespace cb {
 
   inline CXmlAttributeList::iterator CXmlAttributeList::erase(iterator it) { return mAttrList.erase(it); }
 
-  size_t CXmlAttributeList::Parse(const string & text, const size_t offset) {
+  size_t CXmlAttributeList::Parse(string const & text, size_t const offset) {
     clear();
     auto pos = findNonWS(text, offset, XML_TAG_END_LIST);
 
@@ -85,7 +85,7 @@ namespace cb {
     return join(list, XML_SPACE);
   }
 
-  void CXmlAttributeList::operator=(const CXmlAttributeList & other) {
+  void CXmlAttributeList::operator=(CXmlAttributeList const& other) {
     mAttrList = other.mAttrList;
   }
 

@@ -17,18 +17,18 @@ namespace cb {
 
   public:
     CXmlAttributeList();
-    CXmlAttributeList(const CXmlAttributeList& other);
+    CXmlAttributeList(CXmlAttributeList const& other);
     CXmlAttributeList(CXmlAttributeList&& other);
     ~CXmlAttributeList();
 
-    void SetValue(const string& name, const string& value = string());
-    string GetValue(const string& name, const string& defValue = string()) const;
+    void SetValue(string const& name, string const& value = string());
+    string GetValue(string const& name, string const& defValue = string()) const;
 
     size_t size() const { return mAttrList.size(); }
     bool empty() const { return mAttrList.empty(); }
 
-    CXmlAttribute& Get(const size_t index) { return mAttrList[index]; }
-    const CXmlAttribute& Get(const size_t index) const { return mAttrList[index]; }
+    CXmlAttribute& Get(size_t const index) { return mAttrList[index]; }
+    const CXmlAttribute& Get(size_t const index) const { return mAttrList[index]; }
 
     void clear();
 
@@ -38,19 +38,19 @@ namespace cb {
     iterator end() { return mAttrList.end(); }
     const_iterator end() const { return mAttrList.end(); }
 
-    iterator find(const string& name);
-    const_iterator find(const string& name) const;
+    iterator find(string const& name);
+    const_iterator find(string const& name) const;
 
     iterator erase(iterator it);
 
-    size_t Parse(const string& text, const size_t offset = 0);
+    size_t Parse(string const& text, size_t const offset = 0);
     string ToString() const;
 
-    void operator=(const CXmlAttributeList& other);
+    void operator=(CXmlAttributeList const& other);
     void operator=(CXmlAttributeList&& other);
 
-    const CXmlAttribute& operator[](const string& name) const { return *find(name); }
-    CXmlAttribute& operator[](const string& name) { return *find(name); }
+    const CXmlAttribute& operator[](string const& name) const { return *find(name); }
+    CXmlAttribute& operator[](string const& name) { return *find(name); }
   };
 }
 

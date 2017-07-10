@@ -12,7 +12,7 @@ namespace cb {
 
   CXmlAttribute::CXmlAttribute() {}
 
-  CXmlAttribute::CXmlAttribute(const CXmlAttribute & other)
+  CXmlAttribute::CXmlAttribute(CXmlAttribute const& other)
     : mName(other.mName)
     , mValue(other.mValue) {}
 
@@ -21,7 +21,7 @@ namespace cb {
     , mValue(std::move(other.mValue))
   {}
 
-  CXmlAttribute::CXmlAttribute(const string name, const string value)
+  CXmlAttribute::CXmlAttribute(string const name, string const value)
     : mName(name)
     , mValue(value)
   {}
@@ -32,7 +32,7 @@ namespace cb {
     return mName + XML_EQUAL + inQuotes(mValue);
   }
 
-  size_t CXmlAttribute::Parse(const string & text, const size_t offset) {
+  size_t CXmlAttribute::Parse(string const& text, size_t const offset) {
     auto pos = findNonWS(text, offset, XML_TAG_END_LIST);
     if(subcmp(text, XML_TAG_END_LIST, pos)) {
       return pos;
@@ -64,7 +64,7 @@ namespace cb {
     return endpos;
   }
 
-  void CXmlAttribute::operator=(const CXmlAttribute & other) {
+  void CXmlAttribute::operator=(CXmlAttribute const& other) {
     mName = other.mName;
     mValue = other.mValue;
   }

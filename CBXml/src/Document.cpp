@@ -7,30 +7,29 @@ namespace cb {
     , StringFormat(true, true)
   {}
 
-  CXmlDocument::CXmlDocument(const string & text) 
+  CXmlDocument::CXmlDocument(string const & text)
     : mValid(false)
     , StringFormat(true, true)
   {
     Parse(text);
   }
 
-  void CXmlDocument::Clear() {
-    RootNode.Attributes.clear();
-    RootNode.Nodes.clear();
+  void CXmlDocument::clear() {
+    RootNode.clear();
     mValid = false;
   }
 
-  const bool CXmlDocument::IsValid() const {
+  bool CXmlDocument::IsValid() const {
     return mValid;
   }
 
-  const bool CXmlDocument::Parse(const string & text) {
-    Clear();
+  bool CXmlDocument::Parse(string const& text) {
+    clear();
     mValid = RootNode.Parse(text) != string::npos;
     return mValid;
   }
 
-  const string CXmlDocument::ToString() const {
+  string CXmlDocument::ToString() const {
     return RootNode.ToString(StringFormat);
   }
 }

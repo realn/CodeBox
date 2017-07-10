@@ -2,10 +2,13 @@
 #include "../StringFormat.h"
 
 namespace cb {
-  const string CXmlStringFormat::DefaultNestingStr = L"  ";
-  const string CXmlStringFormat::DefaultNewLineStr = L"\n";
+  string const CXmlStringFormat::DefaultNestingStr = L"  ";
+  string const CXmlStringFormat::DefaultNewLineStr = L"\n";
 
-  CXmlStringFormat::CXmlStringFormat(const bool newLines, const bool nesting, const string nestingStr, const string newLineStr) 
+  CXmlStringFormat::CXmlStringFormat(bool const newLines,
+                                     bool nesting, 
+                                     string const nestingStr,
+                                     string const newLineStr)
     : mNewLines(newLines)
     , mNesting(nesting)
     , mNewLineStr(newLineStr)
@@ -13,7 +16,7 @@ namespace cb {
     , mNestingStr(nestingStr)
   {}
 
-  CXmlStringFormat::CXmlStringFormat(const CXmlStringFormat & other)
+  CXmlStringFormat::CXmlStringFormat(CXmlStringFormat const & other)
     : mNewLines(other.mNewLines)
     , mNesting(other.mNesting)
     , mNewLineStr(other.mNewLineStr)

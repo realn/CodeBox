@@ -7,18 +7,18 @@
 #include <CBStr/StringEx.h>
 
 namespace cb {
-  CXmlNode::CXmlNode(const string name)
+  CXmlNode::CXmlNode(string const& name)
     : mType(XmlNodeType::Normal)
     , mName(name)
   {
   }
 
-  CXmlNode::CXmlNode(const XmlNodeType type, const string value)
+  CXmlNode::CXmlNode(XmlNodeType const type, string const& value)
     : mType(type)
     , mName(value)
   {}
 
-  CXmlNode::CXmlNode(const CXmlNode & other) 
+  CXmlNode::CXmlNode(CXmlNode const & other)
     : Attributes(other.Attributes)
     , Nodes(other.Nodes)
     , mType(other.mType)
@@ -34,7 +34,7 @@ namespace cb {
 
   CXmlNode::~CXmlNode() {}
 
-  void CXmlNode::SetValue(const string & value, const bool cdata) {
+  void CXmlNode::SetValue(string const & value, bool const cdata) {
     if(Nodes.size() != 1) {
       Nodes.clear();
       Nodes.AddNode(XmlNodeType::Text);
@@ -54,7 +54,12 @@ namespace cb {
     return node.GetName();
   }
 
-  size_t CXmlNode::Parse(const string & text, const size_t offset) {
+  void CXmlNode::clear() {
+    Nodes.clear();
+    Attributes.clear();
+  }
+
+  size_t CXmlNode::Parse(string const & text, size_t const offset) {
     auto pos = findNonWS(text, offset);
 
     // check for starting tag
@@ -145,7 +150,7 @@ namespace cb {
     return pos + XML_TAG_END.length();
   }
 
-  string CXmlNode::ToString(const CXmlStringFormat& fmt) const {
+  string CXmlNode::ToString(CXmlStringFormat const & fmt) const {
     auto padding = genPadding(fmt);
     auto ending = genEnding(fmt);
 
@@ -175,7 +180,7 @@ namespace cb {
     return result;
   }
 
-  void CXmlNode::operator=(const CXmlNode & other) {
+  void CXmlNode::operator=(CXmlNode const & other) {
     mType = other.mType;
     mName = other.mName;
     Attributes = other.Attributes;

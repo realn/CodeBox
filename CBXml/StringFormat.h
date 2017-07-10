@@ -6,8 +6,8 @@
 namespace cb {
   class CXmlStringFormat {
   public:
-    static const string DefaultNestingStr;
-    static const string DefaultNewLineStr;
+    static string const DefaultNestingStr;
+    static string const DefaultNewLineStr;
 
     bool mNewLines;
     bool mNesting;
@@ -15,8 +15,11 @@ namespace cb {
     size_t mNestingLevel;
     string mNestingStr;
 
-    CXmlStringFormat(const bool newLines = false, const bool nesting = false, const string nestingStr = DefaultNestingStr, const string newLineStr = DefaultNewLineStr);
-    CXmlStringFormat(const CXmlStringFormat& other);
+    CXmlStringFormat(bool const newLines = false,
+                     bool const nesting = false,
+                     string const nestingStr = DefaultNestingStr,
+                     string const newLineStr = DefaultNewLineStr);
+    CXmlStringFormat(CXmlStringFormat const & other);
   };
 }
 

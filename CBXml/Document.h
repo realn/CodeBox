@@ -14,15 +14,15 @@ namespace cb {
     CXmlStringFormat StringFormat;
 
     CXmlDocument();
-    CXmlDocument(const string& text);
+    CXmlDocument(string const & text);
 
-    void Clear();
+    void clear();
 
-    const bool IsValid() const;
+    bool IsValid() const;
 
-    const bool Parse(const string& text);
+    bool Parse(string const& text);
 
-    const string ToString() const;
+    string ToString() const;
   };
 }
 

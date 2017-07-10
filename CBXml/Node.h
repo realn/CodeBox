@@ -22,30 +22,32 @@ namespace cb {
     XmlNodeType mType;
 
   public:
-    CXmlNode(const string name = string());
-    CXmlNode(const XmlNodeType type, const string value = string());
-    CXmlNode(const CXmlNode& other);
+    CXmlNode(string const& name = string());
+    CXmlNode(XmlNodeType const type, string const& value = string());
+    CXmlNode(CXmlNode const& other);
     CXmlNode(CXmlNode&& other);
     ~CXmlNode();
 
-    void SetType(const XmlNodeType type) { mType = type; }
+    void SetType(XmlNodeType const type) { mType = type; }
     XmlNodeType GetType() const { return mType; }
 
-    void SetName(const string& name) { mName = name; }
+    void SetName(string const& name) { mName = name; }
     string GetName() const { return mName; }
 
-    void SetValue(const string& value, const bool cdata = false);
+    void SetValue(string const& value, bool const cdata = false);
     string GetValue() const;
 
-    size_t Parse(const string& text, const size_t offset = 0);
+    void clear();
 
-    string ToString(const CXmlStringFormat& fmt = CXmlStringFormat()) const;
+    size_t Parse(string const& text, size_t const offset = 0);
 
-    void operator=(const CXmlNode& other);
+    string ToString(CXmlStringFormat const & fmt = CXmlStringFormat()) const;
+
+    void operator=(CXmlNode const & other);
     void operator=(CXmlNode&& other);
 
-    CXmlNode& operator[](const cb::string& name) { return Nodes[name]; };
-    const CXmlNode& operator[](const cb::string& name) const { return Nodes[name]; }
+    CXmlNode& operator[](string const & name) { return Nodes[name]; };
+    const CXmlNode& operator[](string const & name) const { return Nodes[name]; }
   };
 }
 
