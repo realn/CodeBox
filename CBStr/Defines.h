@@ -47,6 +47,20 @@ namespace cb {
     }
     return false;
   }
+
+  template<typename _LambdaT>
+  class OnScopeExit {
+  private:
+    _LambdaT mLambda;
+  public:
+    OnScopeExit(_LambdaT onScope) : mLambda(onScope) {}
+    ~OnScopeExit() { mLambda(); }
+  };
+
+  template<typename _LambdaT>
+  OnScopeExit<_LambdaT> finalize(_LambdaT onScopeExit) {
+    return OnScopeExit<_LambdaT>(onScopeExit);
+  }
 }
 
 #endif // !__CB_STRING_DEFINES_H__
