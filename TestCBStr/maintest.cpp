@@ -77,7 +77,7 @@ namespace TestCBStr {
       Test(cb::fromStr<unsigned>, true, L"fromStr<unsigned> failed."s, LINE_INFO(), L"5"s, unsigned());
       Test(cb::fromStr<cb::string>, true, L"fromStr<string> failed."s, LINE_INFO(), L"test"s, cb::string());
 
-      Test(cb::toUtf8, cb::charvector({'a'}), L"toUtf8 failed.", LINE_INFO(), L"a"s);
+      Test(cb::toUtf8, cb::charvector({'a'}), L"toUtf8 failed.", LINE_INFO(), L"a"s, false);
       Test(cb::fromUtf8, L"a"s, L"toUtf8 failed.", LINE_INFO(), cb::charvector({'a'}));
     }
 

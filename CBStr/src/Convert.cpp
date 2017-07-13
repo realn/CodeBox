@@ -39,15 +39,21 @@ namespace cb {
   }
 
 
-  charvector toUtf8(string const & text) {
+  charvector toUtf8(string const & text, bool const addZero) {
     auto result = charvector();
     utf8::utf16to8(text.begin(), text.end(), std::back_inserter(result));
+    if(addZero) {
+      result.push_back(0);
+    }
     return result;
   }
 
   string fromUtf8(charvector const & text) {
     auto result = string();
     utf8::utf8to16(text.begin(), text.end(), std::back_inserter(result));
+    if(!result.empty() && *result.rbegin() == 0) {
+      result.pop_back();
+    }
     return result;
   }
 

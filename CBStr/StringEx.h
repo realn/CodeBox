@@ -69,7 +69,7 @@ namespace cb {
     return fromStr(text, outVal);
   }
 
-  extern charvector toUtf8(string const& text);
+  extern charvector toUtf8(string const& text, bool const addZero = false);
 
   extern string fromUtf8(charvector const& text);
 

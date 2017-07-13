@@ -18,10 +18,19 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Functions.cpp">
+    <ClCompile Include="src\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Convert.cpp">
+    <ClCompile Include="src\System.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Events.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GLContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,22 +38,28 @@
     <ClInclude Include="src\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\utf8.h">
+    <ClInclude Include="DisplayMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\utf8\checked.h">
+    <ClInclude Include="Surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\utf8\core.h">
+    <ClInclude Include="System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\utf8\unchecked.h">
+    <ClInclude Include="Consts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StringEx.h">
+    <ClInclude Include="Events.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

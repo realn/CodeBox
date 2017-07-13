@@ -18,24 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Funcs.h" />
-    <ClInclude Include="Rect.h" />
-    <ClInclude Include="src\stdafx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Funcs.cpp" />
-    <ClCompile Include="src\Rect.cpp" />
-    <ClCompile Include="src\stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{AB2D9AF3-63CE-47CC-8E2F-41D1ED4220A1}</ProjectGuid>
+    <ProjectGuid>{6191B53E-E40C-4410-8329-255D37E88D3E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>CBMath</RootNamespace>
+    <RootNamespace>CBSDL</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -86,14 +73,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)lib\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
-    <TargetName>cbmath</TargetName>
-    <IncludePath>$(SolutionDir);$(SDKDIR)\glm-0.9.8.3;$(IncludePath)</IncludePath>
+    <TargetName>cbsdl</TargetName>
+    <IncludePath>$(SolutionDir);$(SDKDIR)SDL2-2.0.5\include;$(SDKDIR)glm-0.9.8.3;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDKDIR)\SDL2-2.0.5\lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)lib\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
-    <TargetName>cbmath</TargetName>
-    <IncludePath>$(SolutionDir);$(SDKDIR)\glm-0.9.8.3;$(IncludePath)</IncludePath>
+    <TargetName>cbsdl</TargetName>
+    <IncludePath>$(SolutionDir);$(SDKDIR)SDL2-2.0.5\include;$(SDKDIR)glm-0.9.8.3;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDKDIR)\SDL2-2.0.5\lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -105,6 +94,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sdl2.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -116,6 +108,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sdl2.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -147,6 +142,35 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Consts.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="DisplayMode.h" />
+    <ClInclude Include="Events.h" />
+    <ClInclude Include="GLContext.h" />
+    <ClInclude Include="System.h" />
+    <ClInclude Include="src\stdafx.h" />
+    <ClInclude Include="Surface.h" />
+    <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\DisplayMode.cpp" />
+    <ClCompile Include="src\Events.cpp" />
+    <ClCompile Include="src\GLContext.cpp" />
+    <ClCompile Include="src\System.cpp" />
+    <ClCompile Include="src\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CBStr\CBStr.vcxproj">
+      <Project>{9d9df584-c892-4cb6-b531-c085e803dade}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
