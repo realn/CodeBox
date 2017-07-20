@@ -16,26 +16,27 @@ namespace TestCBSDL {
   TEST_CLASS(SdlUnitTest) {
   public:
     TEST_METHOD(SubSystemsInit) {
-      auto vidsys = cb::sdl::CSubSystem(cb::sdl::SubSystemFlag::Video);
-      auto win = cb::sdl::CWindow(L"Test window.", cb::sdl::CWindow::PosCentered,
+      using namespace cb::sdl;
+      auto vidsys = CSubSystem(SubSystemFlag::Video);
+      auto win = CWindow(L"Test window.", CWindow::PosCentered,
                                   glm::uvec2(640, 480),
-                                  {cb::sdl::WindowFlag::OpenGL});
+                                  WindowFlag::OPENGL | WindowFlag::RESIZABLE);
 
-      auto attribs = cb::sdl::GLAttributeMapT{
+      auto attribs = GLAttributeMapT{
         {SDL_GL_BUFFER_SIZE, 32},
         {SDL_GL_DEPTH_SIZE, 24},
         {SDL_GL_STENCIL_SIZE, 8}
       };
-      auto ctx = cb::sdl::CGLContext(win, attribs);
+      auto ctx = CGLContext(win, attribs);
 
       win.Show();
 
-      auto event = cb::sdl::CEvent();
+      auto event = CEvent();
       bool run = true;
       while(run) {
-        if(cb::sdl::CEvent::Poll(event)) {
-          if((event.GetType() == cb::sdl::EventType::Window && event.Get().window.type == SDL_WINDOWEVENT_CLOSE) ||
-             event.GetType() == cb::sdl::EventType::Quit) {
+        if(CEvent::Poll(event)) {
+          if((event.GetType() == EventType::WINDOWEVENT && CWindowEvent(event).GetType() == WindowEventType::CLOSE) ||
+             event.GetType() == EventType::QUIT) {
             run = false;
           }
         }

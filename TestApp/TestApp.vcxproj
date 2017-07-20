@@ -29,7 +29,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -42,7 +42,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -73,11 +73,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir);$(SDKDIR)SDL2-2.0.5\include;$(SDKDIR)glm-0.9.8.3;$(SDKDIR)glew-1.12.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDKDIR)SDL2-2.0.5\lib\$(PlatformTarget)\;$(SDKDIR)glew-1.12.0\lib\$(Configuration)\$(PlatformName);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir);$(SDKDIR)SDL2-2.0.5\include;$(SDKDIR)glm-0.9.8.3;$(SDKDIR)glew-1.12.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDKDIR)SDL2-2.0.5\lib\$(PlatformTarget)\;$(SDKDIR)glew-1.12.0\lib\$(Configuration)\$(PlatformName);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -101,6 +105,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32sd.lib;SDL2.lib;SDL2main.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,6 +120,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32sd.lib;SDL2.lib;SDL2main.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -154,11 +160,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CBGL\CBGL.vcxproj">
+      <Project>{cf032a6f-36e4-4cf8-bc01-b63d021b2ca9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\CBIO\CBIO.vcxproj">
       <Project>{31a3c5fd-deb8-465e-8f93-956e554c2604}</Project>
     </ProjectReference>
     <ProjectReference Include="..\CBLog\CBLog.vcxproj">
       <Project>{9936a2ee-0c27-421e-93e1-5d72851e4706}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\CBSDL\CBSDL.vcxproj">
+      <Project>{6191b53e-e40c-4410-8329-255d37e88d3e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\CBStr\CBStr.vcxproj">
       <Project>{9d9df584-c892-4cb6-b531-c085e803dade}</Project>
