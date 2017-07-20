@@ -4,17 +4,6 @@
 
 namespace cb {
   namespace sdl {
-    CEvent::CEvent()
-      : mEvent({0}) {}
-
-    CEvent::CEvent(CEvent const & other)
-      : mEvent(other.mEvent) {}
-
-    CEvent::CEvent(SDL_Event const & event) 
-      : mEvent(event) {}
-
-    CEvent::~CEvent() {}
-
     EventType CEvent::GetType() const {
       return static_cast<EventType>(mEvent.type);
     }
@@ -34,5 +23,14 @@ namespace cb {
       SDL_WaitEventTimeout(&event, static_cast<int>(timeout.count()));
       return CEvent(event);
     }
+
+    cb::string CTextInputEvent::GetText() const {
+      return cb::fromUtf8(cb::utf8vec(mEvent.text));
+    }
+
+    cb::string CTextEditingEvent::GetText() const {
+      return cb::fromUtf8(cb::utf8vec(mEvent.text));
+    }
+
   }
 }

@@ -8,7 +8,8 @@ namespace cb {
   namespace sdl {
     CGLContext::CGLContext(CWindow& window, GLAttributeMapT const & attributes) {
       for(auto& attrib : attributes) {
-        if(SDL_GL_SetAttribute(attrib.first, attrib.second) != 0) {
+        if(SDL_GL_SetAttribute(static_cast<SDL_GLattr>(attrib.first), 
+                               attrib.second) != 0) {
           throw std::exception(SDL_GetError());
         }
       }

@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Defines.h"
+#include "Consts.h"
 
 #include <vector>
 #include <SDL_video.h>
 
 namespace cb {
   namespace sdl {
-    enum class WindowFlag;
-    enum class PixelFormat;
     class CDisplayMode;
     class CSurface;
 
@@ -20,7 +19,7 @@ namespace cb {
       CWindow(const string& title,
               const glm::ivec2& pos = PosUndefined,
               const glm::uvec2& size = glm::uvec2(100),
-              const std::initializer_list<WindowFlag>& flags = {});
+              const WindowFlag& flags = WindowFlag::None);
       CWindow(CWindow const&) = delete;
       CWindow(CWindow&& other);
       explicit CWindow(SDL_Window* window);
@@ -42,8 +41,8 @@ namespace cb {
       int GetDisplayIndex() const;
       CDisplayMode GetDisplayMode() const;
       PixelFormat GetPixelFormat() const;
-      Uint32 GetId() const;
-      std::vector<WindowFlag> GetFlags() const;
+      WindowID GetId() const;
+      WindowFlag GetFlags() const;
       string GetTitle() const;
       glm::ivec2 GetPosition() const;
       glm::uvec2 GetSize() const;

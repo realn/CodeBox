@@ -15,14 +15,12 @@ namespace cb {
     CWindow::CWindow(cb::string const & name,
                      glm::ivec2 const & pos,
                      glm::uvec2 const & size,
-                     std::initializer_list<WindowFlag> const & flags) {
-      auto winFlags = cb::genflags(flags);
+                     WindowFlag const & flags) {
       auto title = cb::toUtf8(name, true);
-
       mWindow = SDL_CreateWindow(title.data(),
                                  pos.x, pos.y,
                                  static_cast<int>(size.x), static_cast<int>(size.y),
-                                 winFlags);
+                                 static_cast<Uint32>(flags));
       if(!mWindow) {
         throw std::exception("Failed to create SDL window.");
       }
@@ -105,33 +103,12 @@ namespace cb {
       return static_cast<PixelFormat>(SDL_GetWindowPixelFormat(mWindow));
     }
 
-    Uint32 CWindow::GetId() const {
+    WindowID CWindow::GetId() const {
       return SDL_GetWindowID(mWindow);
     }
 
-    std::vector<WindowFlag> CWindow::GetFlags() const {
-      auto flags = SDL_GetWindowFlags(mWindow);
-      return cb::fromflags(flags,
-                           WindowFlag::Fullscreen,
-                           WindowFlag::FullscreenDesktop,
-                           WindowFlag::Shown,
-                           WindowFlag::Hidden,
-                           WindowFlag::Resizeable,
-                           WindowFlag::Minimized,
-                           WindowFlag::AllowHighDPI,
-                           WindowFlag::OpenGL,
-                           WindowFlag::Borderless,
-                           WindowFlag::Maximized,
-                           WindowFlag::InputGrabbed,
-                           WindowFlag::InputFocus,
-                           WindowFlag::MouseFocus,
-                           WindowFlag::Foreign,
-                           WindowFlag::MouseCapture,
-                           WindowFlag::AlwaysOnTop,
-                           WindowFlag::SkipTaskbar,
-                           WindowFlag::Utility,
-                           WindowFlag::Tooltip,
-                           WindowFlag::PopupMenu);
+    WindowFlag CWindow::GetFlags() const {
+      return static_cast<WindowFlag>(SDL_GetWindowFlags(mWindow));
     }
 
     string CWindow::GetTitle() const {

@@ -5,12 +5,13 @@
 #include <SDL_video.h>
 
 #include "Defines.h"
+#include "Consts.h"
 
 namespace cb {
   namespace sdl {
     class CWindow;
 
-    using GLAttributeMapT = std::map<SDL_GLattr, int>;
+    using GLAttributeMapT = std::map<GLAttribute, Sint32>;
 
     class CGLContext {
     private:
