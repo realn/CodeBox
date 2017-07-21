@@ -14,3 +14,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+extern void checkGLErrors();
+
+#ifdef _DEBUG
+#define CB_GL_CHECKERRORS() checkGLErrors()
+#else
+#define CB_GL_CHECKERRORS()
+#endif

@@ -5,6 +5,25 @@
 
 namespace cb {
   using string = std::wstring;
+
+  namespace gl {
+    using OGLObjId = unsigned;
+
+    template<typename _Type>
+    class CBindGuard {
+    private:
+      _Type const* mObj;
+
+    public:
+      CBindGuard(_Type const& obj) : mObj(&obj) { mObj->Bind(); }
+      CBindGuard(CBindGuard<_Type> const&) = delete;
+      CBindGuard(CBindGuard<_Type>&& other) : mObj(nullptr) { mObj = other.mObj; other.mObj = nullptr; }
+      ~CBindGuard() { mObj->UnBind(); }
+    };
+
+    template<typename _Type>
+    CBindGuard<_Type> bind(_Type const& obj) { return CBindGuard<_Type>(obj); }
+  }
 }
 
 #ifndef ENUM_FLAG

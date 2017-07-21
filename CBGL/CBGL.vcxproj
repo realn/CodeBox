@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="COpenGL.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Rendering.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="System.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Buffer.cpp" />
     <ClCompile Include="src\Rendering.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
