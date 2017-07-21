@@ -147,6 +147,7 @@
     <ClInclude Include="COpenGL.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Rendering.h" />
+    <ClInclude Include="Consts.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>

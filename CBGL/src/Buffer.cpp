@@ -71,5 +71,21 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
+    void drawArrays(PrimitiveType const & type, size_t const & count, int first) {
+      glDrawArrays(static_cast<GLenum>(type), first, count);
+      CB_GL_CHECKERRORS();
+    }
+
+    void setVertexSource(size_t const & num, DataType const & type, size_t const & stride, size_t const & offset) {
+      glVertexPointer(num, static_cast<GLenum>(type), stride, reinterpret_cast<const void*>(offset));
+      CB_GL_CHECKERRORS();
+    }
+
+    void loadMatrix(glm::mat4 const & value) {
+      glLoadMatrixf(glm::value_ptr(value));
+      CB_GL_CHECKERRORS();
+    }
+
+
   }
 }

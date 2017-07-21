@@ -3,6 +3,7 @@
 #define SDL_MAIN_HANDLED
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <CBSDL/Consts.h>
 #include <CBSDL/System.h>
 #include <CBSDL/Window.h>
@@ -11,6 +12,8 @@
 #include <CBGL/System.h>
 #include <CBGL/Rendering.h>
 #include <CBGL/Buffer.h>
+
+#include <CBGL\COpenGL.h>
 
 int main(char* argv[], int argc) {
   auto sdlVideo = cb::sdl::CSubSystem(cb::sdl::SubSystemFlag::Video);
@@ -30,11 +33,11 @@ int main(char* argv[], int argc) {
 
   auto buffer = cb::gl::CBuffer();
   {
-    auto bindg = cb::gl::bind(buffer);
+    auto vbuf = cb::gl::bind(buffer);
     auto verts = {
-      glm::vec3(0.0f, -0.3f, 0.0f),
-      glm::vec3(-0.4f, 0.5f, 0.0f),
-      glm::vec3(0.4f, 0.5f, 0.0f),
+      glm::vec3(0.0f, 0.5f, -.5f),
+      glm::vec3(-0.4f, -0.3f, -.5f),
+      glm::vec3(0.4f, -0.3f, -.5f),
     };
 
     buffer.SetData(verts);
@@ -52,8 +55,13 @@ int main(char* argv[], int argc) {
     cb::gl::clearColor(glm::vec4(0.2f, 0.2f, 0.5f, 1.0f));
     cb::gl::clear(cb::gl::ClearBuffer::COLOR);
 
+    glEnableClientState(GL_VERTEX_ARRAY);
     {
       auto vbuf = cb::gl::bind(buffer);
+
+      cb::gl::loadMatrix(glm::transpose(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f)));
+      cb::gl::setVertexSource(3, cb::gl::DataType::FLOAT, 0);
+      cb::gl::drawArrays(cb::gl::PrimitiveType::TRIANGLES, 3);
     }
 
     glctx.SwapWindow(window);

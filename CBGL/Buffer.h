@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Defines.h"
+#include "Consts.h"
 
 #include <vector>
 #include <array>
@@ -23,6 +24,12 @@ namespace cb {
       DYNAMIC_DRAW = 0x88E8,
       DYNAMIC_READ = 0x88E9,
       DYNAMIC_COPY = 0x88EA,
+    };
+
+    enum class PrimitiveType {
+      POINTS = 0x0000,
+      LINES = 0x0001,
+      TRIANGLES = 0x0004,
     };
 
     class CBuffer {
@@ -58,10 +65,15 @@ namespace cb {
         SetData(datavec, usage);
       }
 
-
     private:
       void SetDataPriv(void const* pData, std::size_t const& size, BufferUsage const& usage);
       void SetSubDataPriv(std::size_t const& offset, void const* pData, std::size_t const& size);
     };
+
+    extern void drawArrays(PrimitiveType const& type, size_t const& count, int first = 0);
+
+    extern void setVertexSource(size_t const& num, DataType const& type, size_t const& stride, size_t const& offset = 0);
+
+    extern void loadMatrix(glm::mat4 const& value);
   }
 }

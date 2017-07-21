@@ -3,20 +3,29 @@
 #include <map>
 #include <exception>
 
-#define DEF_ERRCODE(A) {A, #A}
 
-static const auto glErrorMap = std::map<GLenum, std::string>{
-  DEF_ERRCODE(GL_NO_ERROR),
-  DEF_ERRCODE(GL_INVALID_ENUM),
-  DEF_ERRCODE(GL_INVALID_VALUE),
-  DEF_ERRCODE(GL_INVALID_OPERATION),
-  DEF_ERRCODE(GL_INVALID_FRAMEBUFFER_OPERATION),
-  DEF_ERRCODE(GL_OUT_OF_MEMORY),
+enum class GLERRCODE {
+  NO_ERROR = GL_NO_ERROR,
+  INVALID_ENUM = GL_INVALID_ENUM,
+  INVALID_VALUE = GL_INVALID_VALUE,
+  INVALID_OPERATION = GL_INVALID_OPERATION,
+  INVALID_FRAMEBUFFER_OPERATION = GL_INVALID_FRAMEBUFFER_OPERATION,
+  OUT_OF_MEMORY = GL_OUT_OF_MEMORY,
+};
+
+#define DEF_ERRCODE(A) {GLERRCODE::A, #A}
+static const auto glErrorMap = std::map<GLERRCODE, std::string>{
+  DEF_ERRCODE(NO_ERROR),
+  DEF_ERRCODE(INVALID_ENUM),
+  DEF_ERRCODE(INVALID_VALUE),
+  DEF_ERRCODE(INVALID_OPERATION),
+  DEF_ERRCODE(INVALID_FRAMEBUFFER_OPERATION),
+  DEF_ERRCODE(OUT_OF_MEMORY),
 };
 
 void checkGLErrors() {
-  auto const error = glGetError();
-  if(error == GL_NO_ERROR) {
+  auto const error = static_cast<GLERRCODE>(glGetError());
+  if(error == GLERRCODE::NO_ERROR) {
     return;
   }
 
