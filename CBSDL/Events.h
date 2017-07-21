@@ -8,23 +8,7 @@
 
 namespace cb {
   namespace sdl {
-    class CEvent {
-    private:
-      SDL_Event mEvent = {0};
-
-    public:
-      CEvent() = default;
-      explicit CEvent(SDL_Event const& event) : mEvent(event) {}
-
-      EventType GetType() const;
-
-      SDL_Event& Get() { return mEvent; }
-      const SDL_Event& Get() const { return mEvent; }
-
-      static bool Poll(CEvent& outEvent);
-      static CEvent WaitFor();
-      static CEvent WaitFor(std::chrono::milliseconds const& timeout);
-    };
+    class CEvent;
 
     class CWindowEvent {
     private:
@@ -32,7 +16,7 @@ namespace cb {
 
     public:
       CWindowEvent() = default;
-      explicit CWindowEvent(CEvent const& event) : mEvent(event.Get().window) {}
+      explicit CWindowEvent(SDL_WindowEvent const& event) : mEvent(event) {}
 
       WindowEventType GetType() const { return static_cast<WindowEventType>(mEvent.event); }
       WindowID GetWindowId() const { return mEvent.windowID; }
@@ -46,7 +30,7 @@ namespace cb {
 
     public:
       CKeyboardEvent() = default;
-      explicit CKeyboardEvent(CEvent const& other) : mEvent(other.Get().key) {}
+      explicit CKeyboardEvent(SDL_KeyboardEvent const& other) : mEvent(other) {}
 
       KeyState GetType() const { return static_cast<KeyState>(mEvent.state); }
       WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
@@ -64,7 +48,7 @@ namespace cb {
 
     public:
       CMouseButtonEvent() = default;
-      explicit  CMouseButtonEvent(CEvent const& other) : mEvent(other.Get().button) {}
+      explicit  CMouseButtonEvent(SDL_MouseButtonEvent const& other) : mEvent(other) {}
 
       KeyState GetType() const { return static_cast<KeyState>(mEvent.state); }
       Button GetButton() const { return static_cast<Button>(mEvent.button); }
@@ -79,7 +63,7 @@ namespace cb {
 
     public:
       CMouseMotionEvent() = default;
-      explicit CMouseMotionEvent(CEvent const& other) : mEvent(other.Get().motion) {}
+      explicit CMouseMotionEvent(SDL_MouseMotionEvent const& other) : mEvent(other) {}
 
       glm::ivec2 GetPosition() const { return glm::ivec2(mEvent.x, mEvent.y); }
       glm::ivec2 GetRelative() const { return glm::ivec2(mEvent.xrel, mEvent.yrel); }
@@ -93,7 +77,7 @@ namespace cb {
 
     public:
       CMouseWheelEvent() = default;
-      explicit CMouseWheelEvent(CEvent const& other) : mEvent(other.Get().wheel) {}
+      explicit CMouseWheelEvent(SDL_MouseWheelEvent const& other) : mEvent(other) {}
 
       glm::ivec2 GetScroll() const { return glm::ivec2(mEvent.x, mEvent.y); }
       bool IsFlipped() const { return mEvent.direction == SDL_MOUSEWHEEL_FLIPPED; }
@@ -107,7 +91,7 @@ namespace cb {
 
     public:
       CTextInputEvent() = default;
-      explicit CTextInputEvent(CEvent const& other) : mEvent(other.Get().text) {}
+      explicit CTextInputEvent(SDL_TextInputEvent const& other) : mEvent(other) {}
       
       WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
       cb::string GetText() const;
@@ -119,12 +103,39 @@ namespace cb {
 
     public:
       CTextEditingEvent() = default;
-      explicit CTextEditingEvent(CEvent const& other) : mEvent(other.Get().edit) {}
+      explicit CTextEditingEvent(SDL_TextEditingEvent const& other) : mEvent(other) {}
 
       WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
       Uint32 GetEditPos() const { return static_cast<Uint32>(mEvent.start); }
       Uint32 GetEditLen() const { return static_cast<Uint32>(mEvent.length); }
       cb::string GetText() const;
+    };
+
+    class CEvent {
+
+    private:
+      SDL_Event mEvent = {0};
+
+    public:
+      CEvent() = default;
+      explicit CEvent(SDL_Event const& event) : mEvent(event) {}
+
+      EventType GetType() const;
+
+      SDL_Event& Get() { return mEvent; }
+      const SDL_Event& Get() const { return mEvent; }
+
+      CWindowEvent Window() const { return CWindowEvent(mEvent.window); }
+      CKeyboardEvent Key() const { return CKeyboardEvent(mEvent.key); }
+      CMouseButtonEvent Button() const { return CMouseButtonEvent(mEvent.button); }
+      CMouseMotionEvent Motion() const { return CMouseMotionEvent(mEvent.motion); }
+      CMouseWheelEvent Wheel() const { return CMouseWheelEvent(mEvent.wheel); }
+      CTextEditingEvent Edit() const { return CTextEditingEvent(mEvent.edit); }
+      CTextInputEvent Text() const { return CTextInputEvent(mEvent.text); }
+
+      static bool Poll(CEvent& outEvent);
+      static CEvent WaitFor();
+      static CEvent WaitFor(std::chrono::milliseconds const& timeout);
     };
   }
 }

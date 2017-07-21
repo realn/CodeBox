@@ -74,8 +74,8 @@
     <OutDir>$(SolutionDir)lib\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>cbgl</TargetName>
-    <IncludePath>$(SolutionDir);$(SDKDIR)glew-1.12.0\include;$(SDKDIR)glm-0.9.8.3;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SDKDIR)glew-1.12.0\lib\$(Configuration)\$(PlatformName);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)3rd\glew\include;$(SolutionDir)3rd\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3rd\glew\lib\$(Configuration)\$(PlatformName);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)lib\$(Configuration)\$(Platform)\</OutDir>
@@ -143,11 +143,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="COpenGL.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="Rendering.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Rendering.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

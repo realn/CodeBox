@@ -9,6 +9,7 @@
 #include <CBSDL/Events.h>
 #include <CBSDL/GLContext.h>
 #include <CBGL/System.h>
+#include <CBGL/Rendering.h>
 
 int main(char* argv[], int argc) {
   auto sdlVideo = cb::sdl::CSubSystem(cb::sdl::SubSystemFlag::Video);
@@ -29,16 +30,16 @@ int main(char* argv[], int argc) {
   auto event = cb::sdl::CEvent();
   auto run = true;
   while(run) {
-    if(cb::sdl::CEvent::Poll(event)) {
-      if(event.GetType() == cb::sdl::EventType::WINDOWEVENT) {
-        auto winEvt = cb::sdl::CWindowEvent(event);
-        if(winEvt.GetType() == cb::sdl::WindowEventType::CLOSE) {
-          run = false;
-        }
+    while(cb::sdl::CEvent::Poll(event)) {
+      if(event.GetType() == cb::sdl::EventType::WINDOWEVENT &&
+         event.Window().GetType() == cb::sdl::WindowEventType::CLOSE) {
+        run = false;
       }
     }
-    glClearColor(0.2f, 0.2f, 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    cb::gl::clearColor(glm::vec4(0.2f, 0.2f, 0.5f, 1.0f));
+    cb::gl::clear(cb::gl::ClearBuffer::COLOR);
+
+
 
     glctx.SwapWindow(window);
   }

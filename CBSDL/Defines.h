@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <SDL_types.h>
 #include <glm/fwd.hpp>
@@ -16,6 +17,7 @@ namespace cb {
   }
 }
 
+#ifndef ENUM_FLAG
 #define ENUM_FLAG_OPERATOR(Type,Op) \
 static Type const operator Op(Type const& arg1, Type const& arg2) { \
   return static_cast<Type const>(static_cast<unsigned const>(arg1) Op static_cast<unsigned const>(arg2)); \
@@ -30,3 +32,4 @@ static Type const operator ~(Type const& arg) { \
 }; \
 enum class Type \
 
+#endif
