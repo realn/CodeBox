@@ -24,16 +24,15 @@ int main(char* argv[], int argc) {
                                  glm::uvec2(640, 480),
                                  cb::sdl::WindowFlag::OPENGL);
   window.Show();
-  auto glattrs = cb::sdl::GLAttributeMapT{
+  auto glctx = cb::sdl::CGLContext(window, {
     {cb::sdl::GLAttribute::BUFFER_SIZE, 32},
     {cb::sdl::GLAttribute::DEPTH_SIZE, 24},
     {cb::sdl::GLAttribute::STENCIL_SIZE, 8},
     {cb::sdl::GLAttribute::DOUBLEBUFFER, 1},
-  };
-  auto glctx = cb::sdl::CGLContext(window, glattrs);
+  });
   cb::gl::initextensions();
 
-  auto buffer = cb::gl::CBuffer();
+  auto buffer = cb::gl::CBuffer( );
   auto indices = cb::gl::CBuffer(cb::gl::BufferTarget::ELEMENT_ARRAY);
   {
     auto vbuf = cb::gl::bind(buffer);
@@ -42,10 +41,14 @@ int main(char* argv[], int argc) {
       glm::vec3(0.5f, 0.5f, -.5f),
       glm::vec3(-0.5f, 0.5f, -.5f),
       glm::vec3(-0.5f, -0.5f, -.5f),
-      glm::vec3(0.5f, 0.5f, -.5f)
+      glm::vec3(0.5f, -0.5f, -.5f)
     });
   }
-
+  {
+    auto gind = cb::gl::bind(indices);
+    auto data = std::vector<unsigned short>{0, 1, 2, 0, 2, 3};
+    indices.SetData(data);
+  }
 
   auto program = cb::gl::CProgram();
   {
@@ -88,9 +91,10 @@ int main(char* argv[], int argc) {
       auto gprog = cb::gl::bind(program);
       auto gvbuf = cb::gl::bind(buffer);
       auto gvdef = cb::gl::bind(vdef);
+      auto gind = cb::gl::bind(indices);
 
       program.SetUniform(L"mTransform", glm::transpose(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f)));
-      cb::gl::drawArrays(cb::gl::PrimitiveType::TRIANGLES, 3);
+      cb::gl::drawElements(cb::gl::PrimitiveType::TRIANGLES, 6);
     }
 
     glctx.SwapWindow(window);
