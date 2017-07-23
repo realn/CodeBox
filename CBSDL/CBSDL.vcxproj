@@ -81,8 +81,8 @@
     <OutDir>$(SolutionDir)lib\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>cbsdl</TargetName>
-    <IncludePath>$(SolutionDir);$(SDKDIR)SDL2-2.0.5\include;$(SDKDIR)glm-0.9.8.3;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SDKDIR)\SDL2-2.0.5\lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)3rd\SDL\include;$(SolutionDir)3rd\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3rd\SDL\VisualC\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

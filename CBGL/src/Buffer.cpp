@@ -27,27 +27,18 @@ namespace cb {
     }
 
     void CBuffer::operator=(CBuffer && other) {
-      if(mId) {
-        glDeleteBuffers(1, static_cast<GLuint*>(&mId));
-        CB_GL_CHECKERRORS();
-        mId = 0;
-      }
       std::swap(mId, other.mId);
       std::swap(mTarget, other.mTarget);
     }
 
     void CBuffer::Bind() const {
-      if(mId) {
-        glBindBuffer(static_cast<GLenum>(mTarget), mId);
-        CB_GL_CHECKERRORS();
-      }
+      glBindBuffer(static_cast<GLenum>(mTarget), mId);
+      CB_GL_CHECKERRORS();
     }
 
     void CBuffer::UnBind() const {
-      if(mId) {
-        glBindBuffer(static_cast<GLenum>(mTarget), 0);
-        CB_GL_CHECKERRORS();
-      }
+      glBindBuffer(static_cast<GLenum>(mTarget), 0);
+      CB_GL_CHECKERRORS();
     }
 
     void CBuffer::UnBind(BufferTarget const & target) {
@@ -71,21 +62,9 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void drawArrays(PrimitiveType const & type, size_t const & count, int first) {
+    void drawArrays(PrimitiveType const type, size_t const & count, int first) {
       glDrawArrays(static_cast<GLenum>(type), first, count);
       CB_GL_CHECKERRORS();
     }
-
-    void setVertexSource(size_t const & num, DataType const & type, size_t const & stride, size_t const & offset) {
-      glVertexPointer(num, static_cast<GLenum>(type), stride, reinterpret_cast<const void*>(offset));
-      CB_GL_CHECKERRORS();
-    }
-
-    void loadMatrix(glm::mat4 const & value) {
-      glLoadMatrixf(glm::value_ptr(value));
-      CB_GL_CHECKERRORS();
-    }
-
-
   }
 }

@@ -8,6 +8,8 @@ namespace cb {
 
   namespace gl {
     using OGLObjId = unsigned;
+    using AttributeId = unsigned;
+    using UniformId = unsigned;
 
     template<typename _Type>
     class CBindGuard {

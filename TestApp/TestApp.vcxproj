@@ -80,8 +80,8 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir);$(SDKDIR)SDL2-2.0.5\include;$(SDKDIR)glm-0.9.8.3;$(SDKDIR)glew-1.12.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SDKDIR)SDL2-2.0.5\lib\$(PlatformTarget)\;$(SDKDIR)glew-1.12.0\lib\$(Configuration)\$(PlatformName);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)3rd\SDL\include;$(SolutionDir)3rd\glm;$(SolutionDir)3rd\glew\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3rd\SDL\VisualC\$(Platform)\$(Configuration);$(SolutionDir)3rd\glew\lib\$(Configuration)\$(PlatformName);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -181,6 +181,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader_f.glsl" />
+    <None Include="shader_v.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

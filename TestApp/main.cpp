@@ -12,8 +12,10 @@
 #include <CBGL/System.h>
 #include <CBGL/Rendering.h>
 #include <CBGL/Buffer.h>
-
-#include <CBGL\COpenGL.h>
+#include <CBGL/VertexDefinition.h>
+#include <CBGL/Shader.h>
+#include <CBGL/Program.h>
+#include <CBIO/File.h>
 
 int main(char* argv[], int argc) {
   auto sdlVideo = cb::sdl::CSubSystem(cb::sdl::SubSystemFlag::Video);
@@ -43,6 +45,31 @@ int main(char* argv[], int argc) {
     buffer.SetData(verts);
   }
 
+  auto program = cb::gl::CProgram();
+  {
+    auto vshader = cb::gl::CShader(cb::gl::ShaderType::VERTEX);
+    if(!vshader.Compile(cb::readtextfileutf8(L"shader_v.glsl"))) {
+      std::wcout << vshader.GetCompileLog() << std::endl;
+      throw std::exception("Shader compile failed.");
+    }
+    auto fshader = cb::gl::CShader(cb::gl::ShaderType::FRAGMENT);
+    if(!fshader.Compile(cb::readtextfileutf8(L"shader_f.glsl"))) {
+      std::wcout << fshader.GetCompileLog() << std::endl;
+      throw std::exception("Shader compile failed.");
+    }
+    program.Attach(vshader);
+    program.Attach(fshader);
+  }
+  program.SetInLocation(0, L"vInVertex");
+  if(!program.Link()) {
+    std::wcout << program.GetLinkLog() << std::endl;
+    throw std::exception("Shader program link failed.");
+  }
+
+  auto vdef = cb::gl::CVertexDefinition{
+    {0, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3)}
+  };
+
   auto event = cb::sdl::CEvent();
   auto run = true;
   while(run) {
@@ -55,12 +82,12 @@ int main(char* argv[], int argc) {
     cb::gl::clearColor(glm::vec4(0.2f, 0.2f, 0.5f, 1.0f));
     cb::gl::clear(cb::gl::ClearBuffer::COLOR);
 
-    glEnableClientState(GL_VERTEX_ARRAY);
     {
-      auto vbuf = cb::gl::bind(buffer);
+      auto gprog = cb::gl::bind(program);
+      auto gvbuf = cb::gl::bind(buffer);
+      auto gvdef = cb::gl::bind(vdef);
 
-      cb::gl::loadMatrix(glm::transpose(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f)));
-      cb::gl::setVertexSource(3, cb::gl::DataType::FLOAT, 0);
+      program.SetUniform(L"mTransform", glm::transpose(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f)));
       cb::gl::drawArrays(cb::gl::PrimitiveType::TRIANGLES, 3);
     }
 
