@@ -62,8 +62,33 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void drawArrays(PrimitiveType const type, size_t const & count, int first) {
-      glDrawArrays(static_cast<GLenum>(type), first, count);
+    void drawArrays(PrimitiveType const primType, unsigned const indNum, int const indFirst) {
+      glDrawArrays(static_cast<GLenum>(primType), indFirst, indNum);
+      CB_GL_CHECKERRORS();
+    }
+
+    void drawArraysInstanced(PrimitiveType const primType, unsigned const indNum, unsigned const primNum, int const indFirst) {
+      glDrawArraysInstanced(static_cast<GLenum>(primType), indFirst, indNum, primNum);
+      CB_GL_CHECKERRORS();
+    }
+
+    void drawElementsVec(PrimitiveType const primType, unsigned const indNum, DataType const indType, const void * pIndData) {
+      glDrawElements(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), pIndData);
+      CB_GL_CHECKERRORS();
+    }
+
+    void drawElementsVecInstanced(PrimitiveType const primType, unsigned const indNum, unsigned const primNum, DataType const indType, const void * pIndData) {
+      glDrawElementsInstanced(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), pIndData, primNum);
+      CB_GL_CHECKERRORS();
+    }
+
+    void drawElements(PrimitiveType const primType, unsigned const indNum, DataType const indType, unsigned const indOffset) {
+      glDrawElements(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), reinterpret_cast<const void*>(indOffset));
+      CB_GL_CHECKERRORS();
+    }
+
+    void drawElementsInstanced(PrimitiveType const primType, unsigned const indNum, unsigned const primNum, DataType const indType, unsigned const indOffset) {
+      glDrawElementsInstanced(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), reinterpret_cast<const void*>(indOffset), primNum);
       CB_GL_CHECKERRORS();
     }
   }

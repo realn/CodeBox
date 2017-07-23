@@ -74,12 +74,39 @@ namespace cb {
       void SetSubDataPriv(std::size_t const& offset, void const* pData, std::size_t const& size);
     };
 
-    extern void drawArrays(PrimitiveType const primType, 
-                           unsigned const indNum, 
+    extern void drawArrays(PrimitiveType const primType,
+                           unsigned const indNum,
                            int const indFirst = 0);
-    extern void drawArraysInstanced(PrimitiveType const primType, 
-                                    unsigned const indNum, 
+    extern void drawArraysInstanced(PrimitiveType const primType,
+                                    unsigned const indNum,
                                     unsigned const primNum,
-                                    int const indFirst = 0)
+                                    int const indFirst = 0);
+    extern void drawElements(PrimitiveType const primType,
+                             unsigned const indNum,
+                             DataType const indType = DataType::UNSIGNED_SHORT,
+                             unsigned const indOffset = 0);
+    extern void drawElementsInstanced(PrimitiveType const primType,
+                                      unsigned const indNum,
+                                      unsigned const primNum,
+                                      DataType const indType = DataType::UNSIGNED_SHORT,
+                                      unsigned const indOffset = 0);
+    extern void drawElementsVec(PrimitiveType const primType,
+                                unsigned const indNum,
+                                DataType const indType,
+                                const void* pIndData);
+    extern void drawElementsVecInstanced(PrimitiveType const primType,
+                                         unsigned const indNum,
+                                         unsigned const primNum,
+                                         DataType const indType,
+                                         const void* pIndData);
+
+    template<typename _Type>
+    void drawElements(PrimitiveType const primType, std::vector<_Type> const& indices, unsigned const indIndex = 0) {
+      drawElementsVec(primType, indices.size() - indIndex, getDataType<_Type>(), reinterpret_cast<const void*>(indices.data() + indIndex));
+    }
+    template<typename _Type>
+    void drawElementsInstanced(PrimitiveType const primType, unsigned const primNum, std::vector<_Type> const& indices, unsigned const indIndex = 0) {
+      drawElementsVecInstanced(primType, indices.size() - indIndex, primNum, getDataType<_Type>(), reinterpret_cast<const void*>(indices.data() + indIndex));
+    }
   }
 }

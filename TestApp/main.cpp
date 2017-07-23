@@ -34,16 +34,18 @@ int main(char* argv[], int argc) {
   cb::gl::initextensions();
 
   auto buffer = cb::gl::CBuffer();
+  auto indices = cb::gl::CBuffer(cb::gl::BufferTarget::ELEMENT_ARRAY);
   {
     auto vbuf = cb::gl::bind(buffer);
-    auto verts = {
-      glm::vec3(0.0f, 0.5f, -.5f),
-      glm::vec3(-0.4f, -0.3f, -.5f),
-      glm::vec3(0.4f, -0.3f, -.5f),
-    };
 
-    buffer.SetData(verts);
+    buffer.SetData({
+      glm::vec3(0.5f, 0.5f, -.5f),
+      glm::vec3(-0.5f, 0.5f, -.5f),
+      glm::vec3(-0.5f, -0.5f, -.5f),
+      glm::vec3(0.5f, 0.5f, -.5f)
+    });
   }
+
 
   auto program = cb::gl::CProgram();
   {
