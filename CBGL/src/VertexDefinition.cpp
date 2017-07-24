@@ -20,6 +20,7 @@ namespace cb {
                               source.GetStride(),
                               reinterpret_cast<const void*>(source.GetOffset()));
         glEnableVertexAttribArray(source.GetIndex());
+        glVertexAttribDivisor(source.GetIndex(), source.GetDivisor());
       }
     }
 

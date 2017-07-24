@@ -13,6 +13,17 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
+    CProgram::CProgram(std::initializer_list<CShader> const & shaders, 
+                       std::map<unsigned, cb::string> const & inLocations, 
+                       std::map<unsigned, cb::string> const & outLocations) 
+      : CProgram()
+    {
+      Attach(shaders);
+      SetInLocation(inLocations);
+      SetOutLocation(outLocations);
+      Link();
+    }
+
     CProgram::CProgram(CProgram && other) 
       : mId(0)
     {
@@ -33,6 +44,12 @@ namespace cb {
     void CProgram::Attach(CShader const & shader) {
       glAttachShader(mId, shader.GetId());
       CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::Attach(std::initializer_list<CShader> const & shaders) {
+      for(auto& shader : shaders) {
+        Attach(shader);
+      }
     }
 
     bool CProgram::Link() {
@@ -70,10 +87,22 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
+    void CProgram::SetInLocation(std::map<unsigned, cb::string> const & locations) {
+      for(auto& item : locations) {
+        SetInLocation(item.first, item.second);
+      }
+    }
+
     void CProgram::SetOutLocation(unsigned const index, cb::string const & name) {
       auto vecName = cb::toUtf8(name, true);
       glBindFragDataLocation(mId, index, vecName.data());
       CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::SetOutLocation(std::map<unsigned, cb::string> const & locations) {
+      for(auto& item : locations) {
+        SetOutLocation(item.first, item.second);
+      }
     }
 
     UniformId CProgram::GetUniformId(cb::string const & name) const {

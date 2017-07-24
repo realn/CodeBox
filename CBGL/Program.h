@@ -15,6 +15,9 @@ namespace cb {
 
     public:
       CProgram();
+      CProgram(std::initializer_list<CShader> const& shaders,
+               std::map<unsigned, cb::string> const& inLocations = {},
+               std::map<unsigned, cb::string> const& outLocations = {});
       CProgram(CProgram const&) = delete;
       CProgram(CProgram && other);
       ~CProgram();
@@ -23,13 +26,16 @@ namespace cb {
       void operator=(CProgram && other);
 
       void Attach(CShader const& shader);
+      void Attach(std::initializer_list<CShader> const& shaders);
       bool Link();
       bool IsLinked() const;
 
       cb::string GetLinkLog() const;
 
       void SetInLocation(unsigned const index, cb::string const& name);
+      void SetInLocation(std::map<unsigned, cb::string> const& locations);
       void SetOutLocation(unsigned const index, cb::string const& name);
+      void SetOutLocation(std::map<unsigned, cb::string> const& locations);
 
       UniformId GetUniformId(cb::string const& name) const;
       void SetUniform(UniformId const id, glm::mat4 const& matrix);

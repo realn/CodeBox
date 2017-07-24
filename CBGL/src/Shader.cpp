@@ -16,9 +16,7 @@ namespace cb {
     CShader::CShader(ShaderType const type, cb::string const & source)
       : CShader(type)
     {
-      if(!Compile(source)) {
-        throw std::exception("Shader compilation failed.");
-      }
+      Compile(source);
     }
 
     CShader::CShader(CShader && other)

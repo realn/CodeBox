@@ -32,11 +32,11 @@ int main(char* argv[], int argc) {
   });
   cb::gl::initextensions();
 
-  auto buffer = cb::gl::CBuffer( );
+  auto buffer = cb::gl::CBuffer();
   auto indices = cb::gl::CBuffer(cb::gl::BufferTarget::ELEMENT_ARRAY);
+  auto instpos = cb::gl::CBuffer();
   {
     auto vbuf = cb::gl::bind(buffer);
-
     buffer.SetData({
       glm::vec3(0.5f, 0.5f, -.5f),
       glm::vec3(-0.5f, 0.5f, -.5f),
@@ -49,30 +49,36 @@ int main(char* argv[], int argc) {
     auto data = std::vector<unsigned short>{0, 1, 2, 0, 2, 3};
     indices.SetData(data);
   }
-
-  auto program = cb::gl::CProgram();
   {
-    auto vshader = cb::gl::CShader(cb::gl::ShaderType::VERTEX);
-    if(!vshader.Compile(cb::readtextfileutf8(L"shader_v.glsl"))) {
-      std::wcout << vshader.GetCompileLog() << std::endl;
-      throw std::exception("Shader compile failed.");
-    }
-    auto fshader = cb::gl::CShader(cb::gl::ShaderType::FRAGMENT);
-    if(!fshader.Compile(cb::readtextfileutf8(L"shader_f.glsl"))) {
-      std::wcout << fshader.GetCompileLog() << std::endl;
-      throw std::exception("Shader compile failed.");
-    }
-    program.Attach(vshader);
-    program.Attach(fshader);
+    auto gins = cb::gl::bind(instpos);
+    instpos.SetData({
+      glm::vec3(-1.0f, 0.0f, 0.0f),
+      glm::vec3(0.0f, 1.0f, 0.0f),
+      glm::vec3(0.5f, -0.5f, 0.0),
+    });
   }
-  program.SetInLocation(0, L"vInVertex");
-  if(!program.Link()) {
+
+  auto program = cb::gl::CProgram{
+    {
+      {cb::gl::ShaderType::VERTEX, cb::readtextfileutf8(L"shader_v.glsl")},
+      {cb::gl::ShaderType::FRAGMENT, cb::readtextfileutf8(L"shader_f.glsl")},
+    },
+    {
+      {0, L"vInVertex"},
+      {1, L"vInInstPos"},
+    },
+  };
+  if(!program.IsLinked()) {
     std::wcout << program.GetLinkLog() << std::endl;
     throw std::exception("Shader program link failed.");
   }
 
   auto vdef = cb::gl::CVertexDefinition{
-    {0, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3)}
+    {0, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3)},
+  };
+
+  auto idef = cb::gl::CVertexDefinition{
+    {1, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3), 0, 1},
   };
 
   auto event = cb::sdl::CEvent();
@@ -89,12 +95,17 @@ int main(char* argv[], int argc) {
 
     {
       auto gprog = cb::gl::bind(program);
+
       auto gvbuf = cb::gl::bind(buffer);
       auto gvdef = cb::gl::bind(vdef);
+
+      auto gibuf = cb::gl::bind(instpos);
+      auto gidef = cb::gl::bind(idef);
+
       auto gind = cb::gl::bind(indices);
 
       program.SetUniform(L"mTransform", glm::transpose(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f)));
-      cb::gl::drawElements(cb::gl::PrimitiveType::TRIANGLES, 6);
+      cb::gl::drawElementsInstanced(cb::gl::PrimitiveType::TRIANGLES, 6, 3);
     }
 
     glctx.SwapWindow(window);

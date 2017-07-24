@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <exception>
+#include <algorithm>
 
 #include <GL/glew.h>
 
