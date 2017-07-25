@@ -29,7 +29,7 @@ public:
 };
 
 int main(char* argv[], int argc) {
-  auto sdlVideo = cb::sdl::CSubSystem(cb::sdl::SubSystemFlag::Video);
+  auto sdlVideo = cb::sdl::CSystem(cb::sdl::System::Video);
   auto window = cb::sdl::CWindow(L"OpenGL Test",
                                  cb::sdl::CWindow::PosCentered,
                                  glm::uvec2(640, 480),

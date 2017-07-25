@@ -5,7 +5,7 @@
 
 namespace cb {
   namespace sdl {
-    enum class SubSystemFlag {
+    ENUM_FLAG(System) {
       Audio = SDL_INIT_AUDIO,
       Events = SDL_INIT_EVENTS,
       GameController = SDL_INIT_GAMECONTROLLER,
@@ -15,19 +15,12 @@ namespace cb {
       Video = SDL_INIT_VIDEO
     };
 
-    class CLibrary {
-    public:
-      CLibrary(std::initializer_list<SubSystemFlag> const& subsystems = {});
-      ~CLibrary();
-    };
-
-    class CSubSystem {
+    class CSystem {
     private:
-      Uint32 mFlags = 0;
+       System mFlags;
     public:
-      CSubSystem(SubSystemFlag const subsystem);
-      CSubSystem(std::initializer_list<SubSystemFlag> const& subsystems);
-      ~CSubSystem();
+      CSystem(System const system);
+      ~CSystem();
     };
   }
 }
