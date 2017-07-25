@@ -29,6 +29,7 @@ namespace cb {
       void Attach(std::initializer_list<CShader> const& shaders);
       bool Link();
       bool IsLinked() const;
+      bool IsValid() const;
 
       cb::string GetLinkLog() const;
 
@@ -38,7 +39,13 @@ namespace cb {
       void SetOutLocation(std::map<unsigned, cb::string> const& locations);
 
       UniformId GetUniformId(cb::string const& name) const;
-      void SetUniform(UniformId const id, glm::mat4 const& matrix);
+      void SetUniform(UniformId const id, int const& value);
+      void SetUniform(UniformId const id, unsigned const& value);
+      void SetUniform(UniformId const id, float const& value);
+      void SetUniform(UniformId const id, glm::vec2 const& value);
+      void SetUniform(UniformId const id, glm::vec3 const& value);
+      void SetUniform(UniformId const id, glm::vec4 const& value);
+      void SetUniform(UniformId const id, glm::mat4 const& value);
 
       template<typename _Type>
       void SetUniform(cb::string const& name, _Type const& value) {

@@ -56,6 +56,19 @@ namespace cb {
       BGRA = 0x80E1,
     };
 
+    enum class TextureFilter {
+      NEAREST = 0x2600,
+      LINEAR = 0x2601,
+    };
+
+    enum class TextureWrap {
+      CLAMP = 0x2900,
+      REPEAT = 0x2901,
+      CLAMP_TO_EDGE = 0x812F,
+      CLAMP_TO_BORDER = 0x812D,
+      MIRRORED_REPEAT = 0x8370,
+    };
+
     class CTexture {
     private:
       OGLObjId mId;
@@ -84,11 +97,18 @@ namespace cb {
         SetData(inputFormat, vecdata);
       }
 
-      void Bind() const;
-      static void UnBind();
+      void SetFilter(TextureFilter const minFilter,
+                     TextureFilter const magFilter,
+                     TextureFilter const mipmapFilter);
+      void SetWrap(TextureWrap const wrapS, TextureWrap wrapT);
+
+      void Bind(unsigned const unit = 0) const;
+      void UnBind(unsigned const unit = 0) const;
 
     private:
       void SetDataPriv(InputFormat const inputFormat, DataType const inputType, void const* pData);
+      void SetParamPriv(unsigned param, unsigned value);
+      static unsigned GetMinFilter(TextureFilter const minFilter, TextureFilter const mipFilter);
     };
   }
 }

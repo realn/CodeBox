@@ -1,7 +1,11 @@
 #version 330
 
+in vec2 vFragTCoord;
+
 out vec4 vOutColor;
 
+uniform sampler2D texBase;
+
 void main() {
-	vOutColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	vOutColor = texture(texBase, vFragTCoord);
 }

@@ -32,15 +32,10 @@ namespace cb {
       TRIANGLES = 0x0004,
     };
 
-    enum class IndexType {
-
-    };
-
     class CBuffer {
     private:
       OGLObjId mId;
       BufferTarget mTarget;
-      size_t mSize;
 
     public:
       CBuffer(BufferTarget const& target = BufferTarget::ARRAY);
@@ -53,7 +48,6 @@ namespace cb {
 
       void Bind() const;
       void UnBind() const;
-      static void UnBind(BufferTarget const& target);
 
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void SetData(std::vector<_Type, _TypeAlloc> const& data, BufferUsage const& usage = BufferUsage::STATIC_DRAW) {

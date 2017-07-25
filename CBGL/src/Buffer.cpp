@@ -41,11 +41,6 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void CBuffer::UnBind(BufferTarget const & target) {
-      glBindBuffer(static_cast<GLenum>(target), 0);
-      CB_GL_CHECKERRORS();
-    }
-
     void CBuffer::SetDataPriv(void const * pData, std::size_t const & size, BufferUsage const & usage) {
       glBufferData(static_cast<GLenum>(mTarget),
                    static_cast<GLsizeiptr>(size),

@@ -15,7 +15,17 @@
 #include <CBGL/VertexDefinition.h>
 #include <CBGL/Shader.h>
 #include <CBGL/Program.h>
+#include <CBGL/Texture.h>
 #include <CBIO/File.h>
+
+class CVertex {
+public:
+  glm::vec3 mPos;
+  glm::vec2 mTex;
+
+  CVertex(glm::vec3 const& pos, glm::vec2 const& tex) : mPos(pos), mTex(tex) {}
+  CVertex(float x, float y, float z, float s, float t) : mPos(x, y, z), mTex(s, t) {}
+};
 
 int main(char* argv[], int argc) {
   auto sdlVideo = cb::sdl::CSubSystem(cb::sdl::SubSystemFlag::Video);
@@ -37,11 +47,11 @@ int main(char* argv[], int argc) {
   auto instpos = cb::gl::CBuffer();
   {
     auto vbuf = cb::gl::bind(buffer);
-    buffer.SetData({
-      glm::vec3(0.5f, 0.5f, -.5f),
-      glm::vec3(-0.5f, 0.5f, -.5f),
-      glm::vec3(-0.5f, -0.5f, -.5f),
-      glm::vec3(0.5f, -0.5f, -.5f)
+    buffer.SetData(std::vector<CVertex>{
+      {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f},
+      {0.5f, -0.5f, -0.5f, 1.0f, 0.0f},
+      {0.5f, 0.5f, -0.5f, 1.0f, 1.0f},
+      {-0.5f, 0.5f, -0.5f, 0.0f, 1.0f},
     });
   }
   {
@@ -51,10 +61,10 @@ int main(char* argv[], int argc) {
   }
   {
     auto gins = cb::gl::bind(instpos);
-    instpos.SetData({
-      glm::vec3(-1.0f, 0.0f, 0.0f),
-      glm::vec3(0.0f, 1.0f, 0.0f),
-      glm::vec3(0.5f, -0.5f, 0.0),
+    instpos.SetData(std::vector<glm::vec3>{
+      {-1.0f, 0.0f, 0.0f},
+      {0.0f, 1.0f, 0.0f},
+      {0.5f, -0.5f, 0.0},
     });
   }
 
@@ -65,7 +75,8 @@ int main(char* argv[], int argc) {
     },
     {
       {0, L"vInVertex"},
-      {1, L"vInInstPos"},
+      {1, L"vInTCoord"},
+      {2, L"vInInstPos"},
     },
   };
   if(!program.IsLinked()) {
@@ -74,12 +85,24 @@ int main(char* argv[], int argc) {
   }
 
   auto vdef = cb::gl::CVertexDefinition{
-    {0, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3)},
+    {0, cb::gl::DataType::FLOAT, 3, sizeof(CVertex)},
+    {1, cb::gl::DataType::FLOAT, 2, sizeof(CVertex), sizeof(glm::vec3)},
   };
 
   auto idef = cb::gl::CVertexDefinition{
-    {1, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3), 0, 1},
+    {2, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3), 0, 1},
   };
+
+  auto texture = cb::gl::CTexture({2,2}, cb::gl::TextureFormat::RGBA8);
+  {
+    auto gtex = cb::gl::bind(texture);
+    texture.SetData(cb::gl::InputFormat::RGBA, std::vector<cb::byte>{
+      255, 0, 0, 255,
+        0, 255, 0, 255,
+        0, 0, 255, 255,
+        127, 127, 127, 255,
+    });
+  }
 
   auto event = cb::sdl::CEvent();
   auto run = true;
@@ -104,7 +127,16 @@ int main(char* argv[], int argc) {
 
       auto gind = cb::gl::bind(indices);
 
+      auto gtex = cb::gl::bind(texture, 0);
+
       program.SetUniform(L"mTransform", glm::transpose(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f)));
+      program.SetUniform(L"texBase", 0);
+
+      if(!program.IsValid()) {
+        auto info = program.GetLinkLog();
+        std::wcout << info << std::endl;
+      }
+
       cb::gl::drawElementsInstanced(cb::gl::PrimitiveType::TRIANGLES, 6, 3);
     }
 

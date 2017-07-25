@@ -65,6 +65,13 @@ namespace cb {
       return status == GL_TRUE;
     }
 
+    bool CProgram::IsValid() const {
+      auto status = 0;
+      glGetProgramiv(mId, GL_VALIDATE_STATUS, &status);
+      CB_GL_CHECKERRORS();
+      return status == GL_TRUE;
+    }
+
     cb::string CProgram::GetLinkLog() const {
       auto len = 0;
       glGetProgramiv(mId, GL_INFO_LOG_LENGTH, &len);
@@ -115,8 +122,38 @@ namespace cb {
       return static_cast<UniformId>(id);
     }
 
-    void CProgram::SetUniform(UniformId const id, glm::mat4 const & matrix) {
-      glUniformMatrix4fv(id, 1, GL_FALSE, glm::value_ptr(matrix));
+    void CProgram::SetUniform(UniformId const id, int const & value) {
+      glUniform1i(id, value);
+      CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::SetUniform(UniformId const id, unsigned const & value) {
+      glUniform1ui(id, value);
+      CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::SetUniform(UniformId const id, float const & value) {
+      glUniform1fv(id, 1, &value);
+      CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::SetUniform(UniformId const id, glm::vec2 const & value) {
+      glUniform2fv(id, 1, glm::value_ptr(value));
+      CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::SetUniform(UniformId const id, glm::vec3 const & value) {
+      glUniform3fv(id, 1, glm::value_ptr(value));
+      CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::SetUniform(UniformId const id, glm::vec4 const & value) {
+      glUniform4fv(id, 1, glm::value_ptr(value));
+      CB_GL_CHECKERRORS();
+    }
+
+    void CProgram::SetUniform(UniformId const id, glm::mat4 const & value) {
+      glUniformMatrix4fv(id, 1, GL_FALSE, glm::value_ptr(value));
       CB_GL_CHECKERRORS();
     }
 

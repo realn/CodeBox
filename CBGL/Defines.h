@@ -2,6 +2,7 @@
 
 #include <glm/fwd.hpp>
 #include <string>
+#include <tuple>
 
 namespace cb {
   using string = std::wstring;
@@ -11,20 +12,34 @@ namespace cb {
     using AttributeId = unsigned;
     using UniformId = unsigned;
 
-    template<typename _Type>
+    template<typename _Type, typename _BindFunc, typename _UnBindFunc>
     class CBindGuard {
     private:
       _Type const* mObj;
+      _BindFunc mBind;
+      _UnBindFunc mUnBind;
 
     public:
-      CBindGuard(_Type const& obj) : mObj(&obj) { mObj->Bind(); }
-      CBindGuard(CBindGuard<_Type> const&) = delete;
-      CBindGuard(CBindGuard<_Type>&& other) : mObj(nullptr) { mObj = other.mObj; other.mObj = nullptr; }
-      ~CBindGuard() { mObj->UnBind(); }
+      CBindGuard(_Type const& obj, _BindFunc bindFunc, _UnBindFunc unBindFunc)
+        : mObj(&obj), mBind(bindFunc), mUnBind(unBindFunc) {
+        mBind(mObj);
+      }
+      CBindGuard(CBindGuard<_Type, _BindFunc, _UnBindFunc> const&) = delete;
+      CBindGuard(CBindGuard<_Type, _BindFunc, _UnBindFunc>&& other)
+        : mObj(other.mObj), mBind(other.mBind), mUnBind(other.mUnBind) {
+        other.mObj = nullptr;
+      }
+      ~CBindGuard() {
+        if(mObj) mUnBind(mObj);
+      }
     };
 
-    template<typename _Type>
-    CBindGuard<_Type> bind(_Type const& obj) { return CBindGuard<_Type>(obj); }
+    template<typename _Type, typename ... _Args>
+    auto bind(_Type const& obj, _Args ... args) {
+      auto bindFunc = [args...](_Type const* obj)->void{ obj->Bind(args...); };
+      auto unBindFunc = [args...](_Type const* obj)->void{ obj->UnBind(args...); };
+      return CBindGuard<_Type, decltype(bindFunc), decltype(unBindFunc)>(obj, bindFunc, unBindFunc);
+    }
   }
 }
 
