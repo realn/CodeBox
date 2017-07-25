@@ -9,6 +9,7 @@
 #include <CBSDL/Window.h>
 #include <CBSDL/Events.h>
 #include <CBSDL/GLContext.h>
+#include <CBSDL/Surface.h>
 #include <CBGL/System.h>
 #include <CBGL/Rendering.h>
 #include <CBGL/Buffer.h>
@@ -93,15 +94,13 @@ int main(char* argv[], int argc) {
     {2, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3), 0, 1},
   };
 
-  auto texture = cb::gl::CTexture({2,2}, cb::gl::TextureFormat::RGBA8);
+  auto surface = cb::sdl::loadBMP(L"test.bmp");
+  surface = surface.Convert(cb::sdl::PixelFormat::RGB24);
+
+  auto texture = cb::gl::CTexture(surface.GetSize(), cb::gl::TextureFormat::RGBA8);
   {
     auto gtex = cb::gl::bind(texture);
-    texture.SetData(cb::gl::InputFormat::RGBA, std::vector<cb::byte>{
-      255, 0, 0, 255,
-        0, 255, 0, 255,
-        0, 0, 255, 255,
-        127, 127, 127, 255,
-    });
+    texture.SetData(cb::gl::InputFormat::RGB, surface.GetPixels());
   }
 
   auto event = cb::sdl::CEvent();

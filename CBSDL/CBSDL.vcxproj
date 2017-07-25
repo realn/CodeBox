@@ -157,6 +157,7 @@
     <ClCompile Include="src\DisplayMode.cpp" />
     <ClCompile Include="src\Events.cpp" />
     <ClCompile Include="src\GLContext.cpp" />
+    <ClCompile Include="src\Surface.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -9,6 +9,9 @@
 namespace cb {
   using string = std::wstring;
 
+  using byte = unsigned char;
+  using bytevector = std::vector<byte>;
+
   namespace sdl {
     using RefreshRate = Uint32;
     using WindowID = Uint32;

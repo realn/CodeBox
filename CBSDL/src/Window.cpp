@@ -141,6 +141,10 @@ namespace cb {
     }
 
     CSurface CWindow::GetSurface() {
+      auto surface = SDL_GetWindowSurface(mWindow);
+      if(surface == nullptr) {
+        throw std::exception("Failed to get surface from window.");
+      }
       return CSurface();
     }
 
