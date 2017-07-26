@@ -148,12 +148,14 @@
     <ClInclude Include="DisplayMode.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="GLContext.h" />
+    <ClInclude Include="RWObj.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\RWObj.cpp" />
     <ClCompile Include="src\DisplayMode.cpp" />
     <ClCompile Include="src\Events.cpp" />
     <ClCompile Include="src\GLContext.cpp" />
