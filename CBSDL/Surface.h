@@ -5,6 +5,11 @@
 
 namespace cb {
   namespace sdl {
+    enum class FlipDir {
+      Horizontal,
+      Vertical,
+    };
+
     class CSurface {
       SDL_Surface* mSurface;
 
@@ -25,7 +30,30 @@ namespace cb {
       PixelFormat GetFormat() const;
       cb::bytevector GetPixels() const;
 
+      SDL_Surface* Get() const { return mSurface; }
+
+      CSurface Copy() const;
       CSurface Convert(PixelFormat const format) const;
+
+      void Paste(glm::uvec2 const& dstPos, 
+                 CSurface const& source);
+      void Paste(glm::uvec2 const& dstPos, 
+                 CSurface const& source, 
+                 glm::uvec2 const& srcPos,
+                 glm::uvec2 const& srcSize);
+      void PasteScaled(glm::uvec2 const& dstPos, 
+                       glm::uvec2 const& dstSize, 
+                       CSurface const& source);
+      void PasteScaled(glm::uvec2 const& dstPos,
+                       glm::uvec2 const& dstSize,
+                       CSurface const& source,
+                       glm::uvec2 const& srcPos,
+                       glm::uvec2 const& srcSize);
+      void Flip(FlipDir const dir);
+
+    private:
+      void FlipHorizontal();
+      void FlipVertical();
     };
 
     extern CSurface loadBMP(cb::string const& filepath);
