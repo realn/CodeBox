@@ -96,6 +96,7 @@ int main(char* argv[], int argc) {
 
   auto surface = cb::sdl::loadBMP(L"test.bmp");
   surface = surface.Convert(cb::sdl::PixelFormat::RGB24);
+  surface.Flip(cb::sdl::FlipDir::Vertical);
 
   auto texture = cb::gl::CTexture(surface.GetSize(), cb::gl::TextureFormat::RGBA8);
   {

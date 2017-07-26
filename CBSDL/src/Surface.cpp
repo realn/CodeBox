@@ -137,9 +137,13 @@ namespace cb {
       auto pitch = unsigned(mSurface->pitch);
       auto bytes = unsigned(mSurface->format->BytesPerPixel);
       for(auto y = 0u; y < size.y; y++) {
-        for(auto x = 0u; x < hwidth; x++) {
-          auto idx1 = y * pitch + x * bytes;
-          auto idx2 = (y + 1) * pitch + (size.x - x - 1) * bytes;
+        auto linebeg = y * pitch;
+        auto lineend = (y + 1) * pitch - bytes;
+
+        for(auto x = 0u; x < pitch/2; x += bytes) {
+          auto idx1 = linebeg + x;
+          auto idx2 = lineend - x;
+
           for(auto i = 0u; i < bytes; i++) {
             std::swap(pData[idx1 + i], pData[idx2 + i]);
           }
@@ -151,11 +155,15 @@ namespace cb {
     void CSurface::FlipVertical() {
       SDL_LockSurface(mSurface);
       auto pData = reinterpret_cast<cb::byte*>(mSurface->pixels);
-      auto pitch = mSurface->pitch;
-      auto height = mSurface->h;
-      auto hheight = height / 2;
-      for(auto y = 0; y < hheight; y++) {
-
+      auto size = GetSize();
+      auto pitch = unsigned(mSurface->pitch);
+      auto bytes = unsigned(mSurface->format->BytesPerPixel);
+      for(auto y = 0; y < size.y/2; y++) {
+        auto lineidx1 = y * pitch;
+        auto lineidx2 = (size.y - 1 - y) * pitch;
+        for(auto x = 0u; x < pitch; x ++) {
+          std::swap(pData[lineidx1 + x], pData[lineidx2 + x]);
+        }
       }
       SDL_UnlockSurface(mSurface);
     }
