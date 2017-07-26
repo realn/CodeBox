@@ -52,47 +52,39 @@ namespace cb {
 
     DisplayModeVecT CDisplayMode::GetAll(DisplayID const & id) {
       auto num = SDL_GetNumDisplayModes(id);
-      if(num < 0) {
-        throw std::exception(SDL_GetError());
-      }
+      CB_SDL_CHECKERRORS();
       auto result = DisplayModeVecT(size_t(num));
       for(auto i = 0u; result.size(); i++) {
-        if(SDL_GetDisplayMode(int(id), int(i), &result[i].Get()) != 0) {
-          throw std::exception(SDL_GetError());
-        }
+        SDL_GetDisplayMode(int(id), int(i), &result[i].Get());
+        CB_SDL_CHECKERRORS();
       }
       return result;
     }
 
     CDisplayMode CDisplayMode::GetCurrent(DisplayID const & id) {
       auto result = SDL_DisplayMode();
-      if(SDL_GetCurrentDisplayMode(static_cast<int>(id), &result) != 0) {
-        throw std::exception(SDL_GetError());
-      }
+      SDL_GetCurrentDisplayMode(static_cast<int>(id), &result);
+      CB_SDL_CHECKERRORS();
       return CDisplayMode(result);
     }
 
     CDisplayMode CDisplayMode::GetClosest(CDisplayMode const & mode, DisplayID const & id) {
       auto result = SDL_DisplayMode();
-      if(SDL_GetClosestDisplayMode(static_cast<int>(id), &mode.Get(), &result) != 0) {
-        throw std::exception(SDL_GetError());
-      }
+      SDL_GetClosestDisplayMode(static_cast<int>(id), &mode.Get(), &result);
+      CB_SDL_CHECKERRORS();
       return CDisplayMode(result);
     }
 
     CDisplayMode CDisplayMode::GetFromDesktop(DisplayID const & id) {
       auto result = SDL_DisplayMode();
-      if(SDL_GetDesktopDisplayMode(static_cast<int>(id), &result) != 0) {
-        throw std::exception(SDL_GetError());
-      }
+      SDL_GetDesktopDisplayMode(static_cast<int>(id), &result);
+      CB_SDL_CHECKERRORS();
       return CDisplayMode(result);
     }
 
     DisplayIDVecT GetAllDisplays() {
       auto num = SDL_GetNumVideoDisplays();
-      if(num < 0) {
-        throw std::exception(SDL_GetError());
-      }
+      CB_SDL_CHECKERRORS();
       auto result = DisplayIDVecT(size_t(num));
       std::iota(result.begin(), result.end(), DisplayIDDefault);
       return result;

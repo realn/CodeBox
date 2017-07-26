@@ -15,12 +15,14 @@ namespace cb {
     CEvent CEvent::WaitFor() {
       SDL_Event event = {0};
       SDL_WaitEvent(&event);
+      CB_SDL_CHECKERRORS();
       return CEvent(event);
     }
 
     CEvent CEvent::WaitFor(std::chrono::milliseconds const & timeout) {
       SDL_Event event = {0};
       SDL_WaitEventTimeout(&event, static_cast<int>(timeout.count()));
+      CB_SDL_CHECKERRORS();
       return CEvent(event);
     }
 
@@ -31,6 +33,5 @@ namespace cb {
     cb::string CTextEditingEvent::GetText() const {
       return cb::fromUtf8(cb::utf8vec(mEvent.text));
     }
-
   }
 }

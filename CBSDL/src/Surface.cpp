@@ -9,9 +9,7 @@ namespace cb {
       : mSurface(nullptr) {
       mSurface = SDL_CreateRGBSurfaceWithFormat(0, size.x, size.y, depth,
                                                 static_cast<unsigned>(format));
-      if(mSurface == nullptr) {
-        throw std::exception("Failed to create surface.");
-      }
+      CB_SDL_CHECKERRORS();
     }
 
     CSurface::CSurface(CSurface && other) : mSurface(nullptr) {
@@ -64,19 +62,16 @@ namespace cb {
 
     CSurface CSurface::Convert(PixelFormat const format) const {
       auto surface = SDL_ConvertSurfaceFormat(mSurface, static_cast<Uint32>(format), 0);
-      if(surface == nullptr) {
-        throw std::exception("Failed to convert sdl surface.");
-      }
+      CB_SDL_CHECKERRORS();
       return CSurface(surface);
     }
 
     CSurface loadBMP(cb::string const & filepath) {
       auto szFilepath = cb::toUtf8(filepath, true);
       auto file = SDL_RWFromFile(szFilepath.data(), "rb");
+      CB_SDL_CHECKERRORS();
       auto surface = SDL_LoadBMP_RW(file, 1);
-      if(surface == nullptr) {
-        throw std::exception("Failed to load bmp image to sdl surface.");
-      }
+      CB_SDL_CHECKERRORS();
       return CSurface(surface);
     }
   }
