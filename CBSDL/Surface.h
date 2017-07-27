@@ -55,6 +55,15 @@ namespace cb {
 
       static CSurface LoadBMP(cb::string const& filepath);
       static CSurface LoadBMP(CRWObj& rwObj);
+      static CSurface LoadPNG(cb::string const& filepath);
+      static CSurface LoadPNG(CRWObj& rwObj);
+      static CSurface LoadTGA(cb::string const& filepath);
+      static CSurface LoadTGA(CRWObj& rwObj);
+      static CSurface LoadJPG(cb::string const& filepath);
+      static CSurface LoadJPG(CRWObj& rwObj);
+
+      static CSurface Load(cb::string const& filepath);
+      static CSurface Load(CRWObj& rwObj);
 
     private:
       void FlipHorizontal();

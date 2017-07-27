@@ -13,3 +13,4 @@
 #include <CBStr/StringEx.h>
 
 extern void CB_SDL_CHECKERRORS();
+extern void CB_IMG_CHECKERRORS();

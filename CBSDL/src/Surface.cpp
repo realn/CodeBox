@@ -3,6 +3,7 @@
 #include "../RWObj.h"
 
 #include <SDL_surface.h>
+#include <SDL_image.h>
 
 namespace cb {
   namespace sdl {
@@ -170,13 +171,57 @@ namespace cb {
     }
 
     CSurface CSurface::LoadBMP(cb::string const & filepath) {
-      auto file = fromFile(filepath, FileMode::Read);
+      auto file = CRWObj::FromFile(filepath, FileMode::Read);
       return LoadBMP(file);
     }
 
     CSurface CSurface::LoadBMP(CRWObj & rwObj) {
       auto surface = SDL_LoadBMP_RW(rwObj.Get(), 0);
       CB_SDL_CHECKERRORS();
+      return CSurface(surface);
+    }
+
+    CSurface CSurface::LoadPNG(cb::string const & filepath) {
+      auto file = CRWObj::FromFile(filepath, FileMode::Read);
+      return LoadPNG(file);
+    }
+
+    CSurface CSurface::LoadPNG(CRWObj & rwObj) {
+      auto surface = IMG_LoadPNG_RW(rwObj.Get());
+      CB_IMG_CHECKERRORS();
+      return CSurface(surface);
+    }
+
+    CSurface CSurface::LoadTGA(cb::string const & filepath) {
+      auto file = CRWObj::FromFile(filepath, FileMode::Read);
+      return LoadTGA(file);
+    }
+
+    CSurface CSurface::LoadTGA(CRWObj & rwObj) {
+      auto surface = IMG_LoadTGA_RW(rwObj.Get());
+      CB_IMG_CHECKERRORS();
+      return CSurface(surface);
+    }
+
+    CSurface CSurface::LoadJPG(cb::string const & filepath) {
+      auto file = CRWObj::FromFile(filepath, FileMode::Read);
+      return LoadJPG(file);
+    }
+
+    CSurface CSurface::LoadJPG(CRWObj & rwObj) {
+      auto surface = IMG_LoadJPG_RW(rwObj.Get());
+      CB_IMG_CHECKERRORS();
+      return CSurface(surface);
+    }
+
+    CSurface CSurface::Load(cb::string const & filepath) {
+      auto file = CRWObj::FromFile(filepath, FileMode::Read);
+      return Load(file);
+    }
+
+    CSurface CSurface::Load(CRWObj & rwObj) {
+      auto surface = IMG_Load_RW(rwObj.Get(), 0);
+      CB_IMG_CHECKERRORS();
       return CSurface(surface);
     }
   }

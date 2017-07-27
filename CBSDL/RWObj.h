@@ -64,13 +64,13 @@ namespace cb {
 
       void Close();
 
+      static CRWObj FromFile(cb::string const& filepath, FileMode const mode);
+      static CRWObj FromMemory(std::vector<cb::byte>& data);
+      static CRWObj FromConstMemory(std::vector<cb::byte> const& data);
+
     private:
       void ReadPriv(cb::byte* pData, size_t const size);
       void WritePriv(const cb::byte* pData, size_t const size);
     };
-
-    CRWObj fromFile(cb::string const& filepath, FileMode const mode);
-    CRWObj fromMemory(std::vector<cb::byte>& data);
-    CRWObj fromConstMemory(std::vector<cb::byte> const& data);
   }
 }

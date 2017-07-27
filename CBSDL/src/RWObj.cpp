@@ -46,7 +46,7 @@ namespace cb {
       CB_SDL_CHECKERRORS();
     }
 
-    CRWObj fromFile(cb::string const & filepath, FileMode const mode) {
+    CRWObj CRWObj::FromFile(cb::string const & filepath, FileMode const mode) {
       auto szFilePath = toUtf8(filepath, true);
       auto szMode = "";
       switch(mode) {
@@ -63,13 +63,13 @@ namespace cb {
       return CRWObj(obj);
     }
 
-    CRWObj fromMemory(std::vector<cb::byte>& data) {
+    CRWObj CRWObj::FromMemory(std::vector<cb::byte>& data) {
       auto obj = SDL_RWFromMem(data.data(), static_cast<int>(data.size()));
       CB_SDL_CHECKERRORS();
       return CRWObj(obj);
     }
 
-    CRWObj fromConstMemory(std::vector<cb::byte> const & data) {
+    CRWObj CRWObj::FromConstMemory(std::vector<cb::byte> const & data) {
       auto obj = SDL_RWFromConstMem(data.data(), static_cast<int>(data.size()));
       CB_SDL_CHECKERRORS();
       return CRWObj(obj);
