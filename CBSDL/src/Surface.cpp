@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "../Surface.h"
+#include "../RWObj.h"
 
 #include <SDL_surface.h>
 
@@ -158,7 +159,7 @@ namespace cb {
       auto size = GetSize();
       auto pitch = unsigned(mSurface->pitch);
       auto bytes = unsigned(mSurface->format->BytesPerPixel);
-      for(auto y = 0; y < size.y/2; y++) {
+      for(auto y = 0u; y < size.y/2; y++) {
         auto lineidx1 = y * pitch;
         auto lineidx2 = (size.y - 1 - y) * pitch;
         for(auto x = 0u; x < pitch; x ++) {
@@ -168,11 +169,13 @@ namespace cb {
       SDL_UnlockSurface(mSurface);
     }
 
-    CSurface loadBMP(cb::string const & filepath) {
-      auto szFilepath = cb::toUtf8(filepath, true);
-      auto file = SDL_RWFromFile(szFilepath.data(), "rb");
-      CB_SDL_CHECKERRORS();
-      auto surface = SDL_LoadBMP_RW(file, 1);
+    CSurface CSurface::LoadBMP(cb::string const & filepath) {
+      auto file = fromFile(filepath, FileMode::Read);
+      return LoadBMP(file);
+    }
+
+    CSurface CSurface::LoadBMP(CRWObj & rwObj) {
+      auto surface = SDL_LoadBMP_RW(rwObj.Get(), 0);
       CB_SDL_CHECKERRORS();
       return CSurface(surface);
     }

@@ -94,7 +94,7 @@ int main(char* argv[], int argc) {
     {2, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3), 0, 1},
   };
 
-  auto surface = cb::sdl::loadBMP(L"test.bmp");
+  auto surface = cb::sdl::CSurface::LoadBMP(L"test.bmp");
   surface = surface.Convert(cb::sdl::PixelFormat::RGB24);
   surface.Flip(cb::sdl::FlipDir::Vertical);
 

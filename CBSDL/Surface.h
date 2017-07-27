@@ -10,6 +10,8 @@ namespace cb {
       Vertical,
     };
 
+    class CRWObj;
+
     class CSurface {
       SDL_Surface* mSurface;
 
@@ -51,11 +53,13 @@ namespace cb {
                        glm::uvec2 const& srcSize);
       void Flip(FlipDir const dir);
 
+      static CSurface LoadBMP(cb::string const& filepath);
+      static CSurface LoadBMP(CRWObj& rwObj);
+
     private:
       void FlipHorizontal();
       void FlipVertical();
     };
 
-    extern CSurface loadBMP(cb::string const& filepath);
   }
 }
