@@ -8,3 +8,6 @@
 [submodule "3rd/SDL"]
 	path = 3rd/SDL
 	url = https://github.com/SDL-mirror/SDL
+[submodule "3rd/SDL_image"]
+	path = 3rd/SDL_image
+	url = https://github.com/SDL-mirror/SDL_image
