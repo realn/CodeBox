@@ -14,3 +14,4 @@
 
 extern void CB_SDL_CHECKERRORS();
 extern void CB_IMG_CHECKERRORS();
+extern void CB_TTF_CHECKERRORS();

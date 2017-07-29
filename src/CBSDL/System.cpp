@@ -2,6 +2,7 @@
 #include <CBSDL/System.h>
 
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 namespace cb {
   namespace sdl {
@@ -10,11 +11,14 @@ namespace cb {
       CB_SDL_CHECKERRORS();
       IMG_Init(0);
       CB_IMG_CHECKERRORS();
+      TTF_Init();
+      CB_TTF_CHECKERRORS();
     }
 
     CSystem::~CSystem() {
-      SDL_QuitSubSystem(static_cast<Uint32>(mFlags));
+      TTF_Quit();
       IMG_Quit();
+      SDL_QuitSubSystem(static_cast<Uint32>(mFlags));
     }
   }
 }

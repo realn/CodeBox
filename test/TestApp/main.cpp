@@ -10,6 +10,7 @@
 #include <CBSDL/Events.h>
 #include <CBSDL/GLContext.h>
 #include <CBSDL/Surface.h>
+#include <CBSDL/Font.h>
 #include <CBGL/System.h>
 #include <CBGL/Rendering.h>
 #include <CBGL/Buffer.h>
@@ -45,7 +46,6 @@ int main(char* argv[], int argc) {
 
   auto buffer = cb::gl::CBuffer();
   auto indices = cb::gl::CBuffer(cb::gl::BufferTarget::ELEMENT_ARRAY);
-  auto instpos = cb::gl::CBuffer();
   {
     auto vbuf = cb::gl::bind(buffer);
     buffer.SetData(std::vector<CVertex>{
@@ -60,14 +60,6 @@ int main(char* argv[], int argc) {
     auto data = std::vector<unsigned short>{0, 1, 2, 0, 2, 3};
     indices.SetData(data);
   }
-  {
-    auto gins = cb::gl::bind(instpos);
-    instpos.SetData(std::vector<glm::vec3>{
-      {-1.0f, 0.0f, 0.0f},
-      {0.0f, 1.0f, 0.0f},
-      {0.5f, -0.5f, 0.0},
-    });
-  }
 
   auto program = cb::gl::CProgram{
     {
@@ -77,7 +69,6 @@ int main(char* argv[], int argc) {
     {
       {0, L"vInVertex"},
       {1, L"vInTCoord"},
-      {2, L"vInInstPos"},
     },
   };
   if(!program.IsLinked()) {
@@ -90,18 +81,18 @@ int main(char* argv[], int argc) {
     {1, cb::gl::DataType::FLOAT, 2, sizeof(CVertex), sizeof(glm::vec3)},
   };
 
-  auto idef = cb::gl::CVertexDefinition{
-    {2, cb::gl::DataType::FLOAT, 3, sizeof(glm::vec3), 0, 1},
-  };
-
-  auto surface = cb::sdl::CSurface::Load(L"test.png");
-  surface = surface.Convert(cb::sdl::PixelFormat::RGB24);
-  surface.Flip(cb::sdl::FlipDir::Vertical);
-
-  auto texture = cb::gl::CTexture(surface.GetSize(), cb::gl::TextureFormat::RGBA8);
+  auto texture = cb::gl::CTexture({128,128}, cb::gl::TextureFormat::RGBA8);
   {
+    auto font = cb::sdl::CFont(L"Instruction.otf", 96);
+
+    auto fontSurf = font.RenderBlended(L"T", {1.0f, 1.0f, 1.0f, 1.0f});
+    fontSurf = fontSurf.Convert(cb::sdl::PixelFormat::RGBA32);
+    auto texSurf = cb::sdl::CSurface({128, 128}, 32, cb::sdl::PixelFormat::RGBA32);
+    texSurf.Paste({0, 0}, fontSurf);
+    texSurf.Flip(cb::sdl::FlipDir::Vertical);
+
     auto gtex = cb::gl::bind(texture);
-    texture.SetData(cb::gl::InputFormat::RGB, surface.GetPixels());
+    texture.SetData(cb::gl::InputFormat::RGBA, texSurf.GetPixels());
   }
 
   auto event = cb::sdl::CEvent();
@@ -122,14 +113,12 @@ int main(char* argv[], int argc) {
       auto gvbuf = cb::gl::bind(buffer);
       auto gvdef = cb::gl::bind(vdef);
 
-      auto gibuf = cb::gl::bind(instpos);
-      auto gidef = cb::gl::bind(idef);
-
       auto gind = cb::gl::bind(indices);
 
       auto gtex = cb::gl::bind(texture, 0);
 
-      program.SetUniform(L"mTransform", glm::transpose(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f)));
+      auto s = (glm::vec2(2.0f, 2.0f) * glm::vec2(4.0f/3.0f, 1.0f)) / 2.0f;
+      program.SetUniform(L"mTransform", glm::transpose(glm::ortho(-s.x, s.x, -s.y, s.y)));
       program.SetUniform(L"texBase", 0);
 
       if(!program.IsValid()) {
@@ -137,7 +126,7 @@ int main(char* argv[], int argc) {
         std::wcout << info << std::endl;
       }
 
-      cb::gl::drawElementsInstanced(cb::gl::PrimitiveType::TRIANGLES, 6, 3);
+      cb::gl::drawElements(cb::gl::PrimitiveType::TRIANGLES, 6);
     }
 
     glctx.SwapWindow(window);

@@ -76,22 +76,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>cbsdl</TargetName>
-    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(SolutionDir)..\3rd\SDL_ttf;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\3rd\SDL\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_image\VisualC\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>cbsdl</TargetName>
-    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(SolutionDir)..\3rd\SDL_ttf;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\3rd\SDL\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_image\VisualC\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>cbsdl</TargetName>
-    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(SolutionDir)..\3rd\SDL_ttf;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\3rd\SDL\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_image\VisualC\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>cbsdl</TargetName>
-    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(SolutionDir)..\3rd\SDL_ttf;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\3rd\SDL\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_image\VisualC\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -170,6 +170,7 @@
   <ItemGroup>
     <ClCompile Include="DisplayMode.cpp" />
     <ClCompile Include="Events.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="GLContext.cpp" />
     <ClCompile Include="RWObj.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -187,6 +188,7 @@
     <ClInclude Include="..\..\include\CBSDL\Defines.h" />
     <ClInclude Include="..\..\include\CBSDL\DisplayMode.h" />
     <ClInclude Include="..\..\include\CBSDL\Events.h" />
+    <ClInclude Include="..\..\include\CBSDL\Font.h" />
     <ClInclude Include="..\..\include\CBSDL\GLContext.h" />
     <ClInclude Include="..\..\include\CBSDL\RWObj.h" />
     <ClInclude Include="..\..\include\CBSDL\Surface.h" />
