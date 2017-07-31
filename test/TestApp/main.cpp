@@ -11,6 +11,7 @@
 #include <CBSDL/GLContext.h>
 #include <CBSDL/Surface.h>
 #include <CBSDL/Font.h>
+#include <CBSDL/Timer.h>
 #include <CBGL/System.h>
 #include <CBGL/Rendering.h>
 #include <CBGL/Buffer.h>
@@ -95,15 +96,19 @@ int main(char* argv[], int argc) {
     texture.SetData(cb::gl::InputFormat::RGBA, texSurf.GetPixels());
   }
 
+  auto timer = cb::sdl::CPerfTimer();
   auto event = cb::sdl::CEvent();
   auto run = true;
   while(run) {
+    timer.Update();
+
     while(cb::sdl::CEvent::Poll(event)) {
       if(event.GetType() == cb::sdl::EventType::WINDOWEVENT &&
          event.Window().GetType() == cb::sdl::WindowEventType::CLOSE) {
         run = false;
       }
     }
+
     cb::gl::clearColor(glm::vec4(0.2f, 0.2f, 0.5f, 1.0f));
     cb::gl::clear(cb::gl::ClearBuffer::COLOR);
 
