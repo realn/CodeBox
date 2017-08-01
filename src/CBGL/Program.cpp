@@ -80,8 +80,8 @@ namespace cb {
         return cb::string();
       }
 
-      auto log = cb::charvector(static_cast<size_t>(len));
-      auto szLog = static_cast<GLchar*>(log.data());
+      auto log = cb::utf8string(static_cast<size_t>(len), 0);
+      auto szLog = static_cast<GLchar*>(&log[0]);
       glGetProgramInfoLog(mId, len, nullptr, szLog);
       CB_GL_CHECKERRORS();
 
@@ -89,7 +89,7 @@ namespace cb {
     }
 
     void CProgram::SetInLocation(unsigned const index, cb::string const & name) {
-      auto vecName = cb::toUtf8(name, true);
+      auto vecName = cb::toUtf8(name);
       glBindAttribLocation(mId, index, vecName.data());
       CB_GL_CHECKERRORS();
     }
@@ -101,7 +101,7 @@ namespace cb {
     }
 
     void CProgram::SetOutLocation(unsigned const index, cb::string const & name) {
-      auto vecName = cb::toUtf8(name, true);
+      auto vecName = cb::toUtf8(name);
       glBindFragDataLocation(mId, index, vecName.data());
       CB_GL_CHECKERRORS();
     }
@@ -113,7 +113,7 @@ namespace cb {
     }
 
     UniformId CProgram::GetUniformId(cb::string const & name) const {
-      auto vecName = cb::toUtf8(name, true);
+      auto vecName = cb::toUtf8(name);
       auto id = glGetUniformLocation(mId, vecName.data());
       CB_GL_CHECKERRORS();
       if(id < 0) {

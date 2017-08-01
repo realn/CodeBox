@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <CBStr/StringEx.h>
+#include <CBStr/Functions.h>
 
 namespace cb {
   // string checking
@@ -57,7 +57,7 @@ namespace cb {
       return text;
     }
     auto result = string();
-    auto pos = 0u;
+    auto pos = size_t(0u);
     while(pos != string::npos) {
       auto next_pos = text.find(what, pos);
       result += substrpos(text, pos, next_pos);
@@ -108,7 +108,7 @@ namespace cb {
       return result;
     }
 
-    auto pos = 0u;
+    auto pos = size_t(0u);
     while(pos != string::npos) {
       auto next_pos = text.find(knife, pos);
       auto item = substrpos(text, pos, next_pos);

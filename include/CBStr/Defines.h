@@ -11,7 +11,7 @@ namespace cb {
   using strvector = std::vector<string>;
   using stringstream = std::wstringstream;
   using strmap = std::map<string, string>;
-  using charvector = std::vector<char>;
+  using utf8string = std::string;
 
   template<typename _Type>
   string toStr(const _Type& value) {

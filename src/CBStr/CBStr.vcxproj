@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\CBStr\Convert.h" />
     <ClInclude Include="..\..\include\CBStr\Defines.h" />
+    <ClInclude Include="..\..\include\CBStr\Functions.h" />
     <ClInclude Include="..\..\include\CBStr\StringEx.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="utf8.h" />

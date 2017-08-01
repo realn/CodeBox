@@ -40,7 +40,7 @@ namespace cb {
     }
 
     void CShader::LoadSource(cb::string const & source) {
-      auto sourceVec = cb::toUtf8(source, true);
+      auto sourceVec = cb::toUtf8(source);
       auto szSource = reinterpret_cast<GLchar const*>(sourceVec.data());
 
       glShaderSource(mId, 1, &szSource, nullptr);
@@ -73,8 +73,8 @@ namespace cb {
         return cb::string();
       }
 
-      auto log = cb::charvector(static_cast<size_t>(len));
-      auto szLog = static_cast<GLchar*>(log.data());
+      auto log = cb::utf8string(static_cast<size_t>(len), 0);
+      auto szLog = static_cast<GLchar*>(&log[0]);
       glGetShaderInfoLog(mId, len, nullptr, szLog);
       CB_GL_CHECKERRORS();
 

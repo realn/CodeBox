@@ -27,11 +27,11 @@ namespace cb {
     }
 
     cb::string CTextInputEvent::GetText() const {
-      return cb::fromUtf8(cb::utf8vec(mEvent.text));
+      return cb::fromUtf8(cb::utf8string(mEvent.text));
     }
 
     cb::string CTextEditingEvent::GetText() const {
-      return cb::fromUtf8(cb::utf8vec(mEvent.text));
+      return cb::fromUtf8(cb::utf8string(mEvent.text));
     }
   }
 }

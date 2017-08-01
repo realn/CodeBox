@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <CBStr/StringEx.h>
+#include <CBStr/Convert.h>
 #include "utf8.h"
 
 #include <sstream>
@@ -39,16 +39,13 @@ namespace cb {
   }
 
 
-  charvector toUtf8(string const & text, bool const addZero) {
-    auto result = charvector();
+  utf8string toUtf8(string const & text) {
+    auto result = utf8string();
     utf8::utf16to8(text.begin(), text.end(), std::back_inserter(result));
-    if(addZero) {
-      result.push_back(0);
-    }
     return result;
   }
 
-  string fromUtf8(charvector const & text) {
+  string fromUtf8(utf8string const & text) {
     auto result = string();
     utf8::utf8to16(text.begin(), text.end(), std::back_inserter(result));
     if(!result.empty() && *result.rbegin() == 0) {
@@ -57,19 +54,7 @@ namespace cb {
     return result;
   }
 
-  size_t utf8len(charvector const & text) {
+  size_t utf8len(utf8string const & text) {
     return utf8::distance(text.begin(), text.end());
-  }
-
-  const char * utf8ptr(charvector const & text) {
-    if(text.empty()) {
-      return nullptr;
-    }
-    return text.data();
-  }
-
-  charvector utf8vec(const char * szText) {
-    auto len = std::strlen(szText);
-    return charvector(szText, szText + len);
   }
 }

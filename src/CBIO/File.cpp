@@ -70,8 +70,8 @@ namespace cb {
     if(size == 0)
       return string();
 
-    auto data = charvector(charvector::size_type(size));
-    file.read(data.data(), size);
+    auto data = utf8string(static_cast<size_t>(size), 0);
+    file.read(&data[0], size);
 
     return fromUtf8(data);
   }

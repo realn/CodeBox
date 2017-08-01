@@ -190,6 +190,7 @@
     <ClInclude Include="..\..\include\CBSDL\DisplayMode.h" />
     <ClInclude Include="..\..\include\CBSDL\Events.h" />
     <ClInclude Include="..\..\include\CBSDL\Font.h" />
+    <ClInclude Include="..\..\include\CBSDL\Fwd.h" />
     <ClInclude Include="..\..\include\CBSDL\GLContext.h" />
     <ClInclude Include="..\..\include\CBSDL\RWObj.h" />
     <ClInclude Include="..\..\include\CBSDL\Surface.h" />

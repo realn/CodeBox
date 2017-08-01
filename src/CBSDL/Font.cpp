@@ -28,7 +28,7 @@ namespace cb {
     CFont::CFont(cb::string const & filepath, unsigned const ptSize, unsigned const fontIndex) 
       : mFont(nullptr)
     {
-      auto szFilepath = toUtf8(filepath, true);
+      auto szFilepath = toUtf8(filepath);
       mFont = TTF_OpenFontIndex(szFilepath.data(), static_cast<int>(ptSize), static_cast<long>(fontIndex));
       CB_TTF_CHECKERRORS();
     }
@@ -118,14 +118,14 @@ namespace cb {
     cb::string CFont::GetName() const {
       auto fontName = TTF_FontFaceFamilyName(getFont(mFont));
       CB_TTF_CHECKERRORS();
-      auto szFontName = utf8vec(fontName);
+      auto szFontName = utf8string(fontName);
       return fromUtf8(szFontName);
     }
 
     cb::string CFont::GetStyleName() const {
       auto styleName = TTF_FontFaceStyleName(getFont(mFont));
       CB_TTF_CHECKERRORS();
-      auto szStyleName = utf8vec(styleName);
+      auto szStyleName = utf8string(styleName);
       return fromUtf8(szStyleName);
     }
 

@@ -8,10 +8,10 @@
 
 namespace cb {
   using string = std::wstring;
+  using utf8string = std::string;
 
   using byte = unsigned char;
   using bytevector = std::vector<byte>;
-  using charvector = std::vector<char>;
 
   using ostream = std::wostream;
   using istream = std::wistream;

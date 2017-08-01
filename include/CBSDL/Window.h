@@ -3,6 +3,7 @@
 #include "Defines.h"
 #include "Consts.h"
 
+#include <glm/vec2.hpp>
 #include <vector>
 #include <SDL_video.h>
 

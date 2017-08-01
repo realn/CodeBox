@@ -16,7 +16,7 @@ namespace cb {
                      glm::ivec2 const & pos,
                      glm::uvec2 const & size,
                      WindowFlag const & flags) {
-      auto title = cb::toUtf8(name, true);
+      auto title = cb::toUtf8(name);
       mWindow = SDL_CreateWindow(title.data(),
                                  pos.x, pos.y,
                                  static_cast<int>(size.x), static_cast<int>(size.y),
@@ -137,7 +137,7 @@ namespace cb {
     string CWindow::GetTitle() const {
       auto szTitle = SDL_GetWindowTitle(mWindow);
       CB_SDL_CHECKERRORS();
-      return fromUtf8(cb::utf8vec(szTitle));
+      return fromUtf8(cb::utf8string(szTitle));
     }
 
     glm::ivec2 CWindow::GetPosition() const {

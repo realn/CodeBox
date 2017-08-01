@@ -47,7 +47,7 @@ namespace cb {
     }
 
     CRWObj CRWObj::FromFile(cb::string const & filepath, FileMode const mode) {
-      auto szFilePath = toUtf8(filepath, true);
+      auto szFilePath = toUtf8(filepath);
       auto szMode = "";
       switch(mode) {
       case FileMode::Read:  szMode = "rb";  break;
