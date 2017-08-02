@@ -48,9 +48,6 @@ namespace cb {
   string fromUtf8(utf8string const & text) {
     auto result = string();
     utf8::utf8to16(text.begin(), text.end(), std::back_inserter(result));
-    if(!result.empty() && *result.rbegin() == 0) {
-      result.pop_back();
-    }
     return result;
   }
 
