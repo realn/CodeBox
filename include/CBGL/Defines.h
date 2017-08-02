@@ -2,7 +2,6 @@
 
 #include <glm/fwd.hpp>
 #include <string>
-#include <tuple>
 
 namespace cb {
   using string = std::wstring;
