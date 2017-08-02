@@ -6,7 +6,7 @@
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\lib\$(Configuration)\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
