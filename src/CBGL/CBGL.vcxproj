@@ -23,6 +23,7 @@
     <ClInclude Include="..\..\include\CBGL\Consts.h" />
     <ClInclude Include="..\..\include\CBGL\COpenGL.h" />
     <ClInclude Include="..\..\include\CBGL\Defines.h" />
+    <ClInclude Include="..\..\include\CBGL\Fwd.h" />
     <ClInclude Include="..\..\include\CBGL\Program.h" />
     <ClInclude Include="..\..\include\CBGL\Rendering.h" />
     <ClInclude Include="..\..\include\CBGL\Shader.h" />

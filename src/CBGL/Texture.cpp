@@ -38,11 +38,13 @@ namespace cb {
     void CTexture::SetFilter(TextureFilter const minFilter, 
                              TextureFilter const magFilter, 
                              TextureFilter const mipmapFilter) {
+      auto gtex = bind(*this);
       SetParamPriv(GL_TEXTURE_MIN_FILTER, GetMinFilter(minFilter, mipmapFilter));
       SetParamPriv(GL_TEXTURE_MAG_FILTER, static_cast<unsigned>(magFilter));
     }
 
     void CTexture::SetWrap(TextureWrap const wrapS, TextureWrap wrapT) {
+      auto gtex = bind(*this);
       SetParamPriv(GL_TEXTURE_WRAP_S, static_cast<unsigned>(wrapS));
       SetParamPriv(GL_TEXTURE_WRAP_T, static_cast<unsigned>(wrapT));
     }
@@ -67,6 +69,7 @@ namespace cb {
     }
 
     void CTexture::SetDataPriv(InputFormat const inputFormat, DataType const inputType, void const * pData) {
+      auto gtex = bind(*this);
       glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mSize.x, mSize.y, static_cast<GLenum>(inputFormat), static_cast<GLenum>(inputType), pData);
       CB_GL_CHECKERRORS();
       glGenerateMipmap(GL_TEXTURE_2D);

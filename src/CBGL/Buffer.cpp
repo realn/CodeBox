@@ -42,6 +42,7 @@ namespace cb {
     }
 
     void CBuffer::SetDataPriv(void const * pData, std::size_t const & size, BufferUsage const & usage) {
+      auto gbuf = bind(*this);
       glBufferData(static_cast<GLenum>(mTarget),
                    static_cast<GLsizeiptr>(size),
                    pData,
@@ -50,6 +51,7 @@ namespace cb {
     }
 
     void CBuffer::SetSubDataPriv(std::size_t const & offset, void const * pData, std::size_t const & size) {
+      auto gbuf = bind(*this);
       glBufferSubData(static_cast<GLenum>(mTarget),
                       static_cast<GLintptr>(offset),
                       static_cast<GLsizeiptr>(size),
