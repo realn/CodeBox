@@ -13,9 +13,11 @@ namespace cb {
     }
 
     void CPerfTimer::Update() {
-      auto diff = SDL_GetPerformanceCounter() - mLastCount;
+      auto thisCount = SDL_GetPerformanceCounter();
+      auto diff = thisCount - mLastCount;
       auto delta = static_cast<double>(diff) / static_cast<double>(mFrequency);
       mDelta = static_cast<float>(delta);
+      mLastCount = thisCount;
     }
 
     float CPerfTimer::GetTimeDelta() const {

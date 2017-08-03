@@ -96,11 +96,18 @@ namespace cb {
 
     template<typename _Type>
     void drawElements(PrimitiveType const primType, std::vector<_Type> const& indices, unsigned const indIndex = 0) {
-      drawElementsVec(primType, indices.size() - indIndex, getDataType<_Type>(), reinterpret_cast<const void*>(indices.data() + indIndex));
+      drawElementsVec(primType, 
+                      static_cast<unsigned>(indices.size()) - indIndex, 
+                      getDataType<_Type>(), 
+                      reinterpret_cast<const void*>(indices.data() + static_cast<size_t>(indIndex)));
     }
     template<typename _Type>
     void drawElementsInstanced(PrimitiveType const primType, unsigned const primNum, std::vector<_Type> const& indices, unsigned const indIndex = 0) {
-      drawElementsVecInstanced(primType, indices.size() - indIndex, primNum, getDataType<_Type>(), reinterpret_cast<const void*>(indices.data() + indIndex));
+      drawElementsVecInstanced(primType, 
+                               static_cast<unsigned>(indices.size()) - indIndex, 
+                               primNum, 
+                               getDataType<_Type>(), 
+                               reinterpret_cast<const void*>(indices.data() + static_cast<size_t>(indIndex)));
     }
   }
 }

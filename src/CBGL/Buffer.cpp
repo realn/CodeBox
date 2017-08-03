@@ -70,22 +70,36 @@ namespace cb {
     }
 
     void drawElementsVec(PrimitiveType const primType, unsigned const indNum, DataType const indType, const void * pIndData) {
-      glDrawElements(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), pIndData);
+      glDrawElements(static_cast<GLenum>(primType), 
+                     indNum, 
+                     static_cast<GLenum>(indType), 
+                     pIndData);
       CB_GL_CHECKERRORS();
     }
 
     void drawElementsVecInstanced(PrimitiveType const primType, unsigned const indNum, unsigned const primNum, DataType const indType, const void * pIndData) {
-      glDrawElementsInstanced(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), pIndData, primNum);
+      glDrawElementsInstanced(static_cast<GLenum>(primType), 
+                              indNum, 
+                              static_cast<GLenum>(indType), 
+                              pIndData, 
+                              primNum);
       CB_GL_CHECKERRORS();
     }
 
     void drawElements(PrimitiveType const primType, unsigned const indNum, DataType const indType, unsigned const indOffset) {
-      glDrawElements(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), reinterpret_cast<const void*>(indOffset));
+      glDrawElements(static_cast<GLenum>(primType), 
+                     indNum, 
+                     static_cast<GLenum>(indType), 
+                     reinterpret_cast<const void*>(static_cast<size_t>(indOffset)));
       CB_GL_CHECKERRORS();
     }
 
     void drawElementsInstanced(PrimitiveType const primType, unsigned const indNum, unsigned const primNum, DataType const indType, unsigned const indOffset) {
-      glDrawElementsInstanced(static_cast<GLenum>(primType), indNum, static_cast<GLenum>(indType), reinterpret_cast<const void*>(indOffset), primNum);
+      glDrawElementsInstanced(static_cast<GLenum>(primType), 
+                              indNum, 
+                              static_cast<GLenum>(indType), 
+                              reinterpret_cast<const void*>(static_cast<size_t>(indOffset)), 
+                              primNum);
       CB_GL_CHECKERRORS();
     }
   }

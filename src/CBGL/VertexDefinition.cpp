@@ -18,7 +18,7 @@ namespace cb {
                               static_cast<GLenum>(source.GetType()),
                               GL_FALSE,
                               source.GetStride(),
-                              reinterpret_cast<const void*>(source.GetOffset()));
+                              reinterpret_cast<const void*>(static_cast<size_t>(source.GetOffset())));
         glEnableVertexAttribArray(source.GetIndex());
         glVertexAttribDivisor(source.GetIndex(), source.GetDivisor());
       }
