@@ -3,8 +3,6 @@
 #include "Defines.h"
 #include "Consts.h"
 
-#include <SDL_video.h>
-
 namespace cb {
   namespace sdl {
     class CDisplayMode;
@@ -16,28 +14,23 @@ namespace cb {
 
     class CDisplayMode {
     private:
-      SDL_DisplayMode mMode;
+      PixelFormat mFormat;              /**< pixel format */
+      glm::uvec2 mSize;
+      RefreshRate mRefreshRate;
+      void * mDriverData;           /**< driver-specific data, initialize to 0 */
     public:
       CDisplayMode(glm::uvec2 const& size = glm::uvec2(),
                    PixelFormat const format = PixelFormat::UNKNOWN,
                    RefreshRate const refreshRate = 0);
-      CDisplayMode(CDisplayMode const &) = delete;
-      CDisplayMode(CDisplayMode && other);
-      explicit CDisplayMode(SDL_DisplayMode const& mode);
       ~CDisplayMode();
 
-      void SetSize(glm::uvec2 const & size);
-      void SetPixelFormat(PixelFormat const value);
-      void SetRefreshRate(RefreshRate const value);
+      void SetSize(glm::uvec2 const & size) { mSize = size; }
+      void SetPixelFormat(PixelFormat const value) { mFormat = value; }
+      void SetRefreshRate(RefreshRate const value) { mRefreshRate = value; }
 
-      glm::uvec2 GetSize() const;
-      PixelFormat GetPixelFormat() const;
-      RefreshRate GetRefreshRate() const;
-
-      SDL_DisplayMode& Get() { return mMode; }
-      const SDL_DisplayMode& Get() const { return mMode; }
-
-      void operator=(CDisplayMode const & other) = delete;
+      glm::uvec2 GetSize() const { return mSize; }
+      PixelFormat GetPixelFormat() const { return mFormat; }
+      RefreshRate GetRefreshRate() const { return mRefreshRate; }
 
       static DisplayModeVecT GetAll(DisplayID const& id = DisplayIDDefault);
       static CDisplayMode GetCurrent(DisplayID const& id = DisplayIDDefault);

@@ -4,6 +4,7 @@
 #include <CBSDL/Surface.h>
 #include <CBSDL/Consts.h>
 
+#include "SDLConvert.h"
 #include <algorithm>
 #include <exception>
 
@@ -39,7 +40,8 @@ namespace cb {
     }
 
     bool CWindow::SetDisplayMode(CDisplayMode const & mode) {
-      auto res = SDL_SetWindowDisplayMode(mWindow, &mode.Get());
+      auto sdlmode = convert(mode);
+      auto res = SDL_SetWindowDisplayMode(mWindow, &sdlmode);
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
@@ -113,7 +115,7 @@ namespace cb {
       auto mode = SDL_DisplayMode();
       SDL_GetWindowDisplayMode(mWindow, &mode);
       CB_SDL_CHECKERRORS();
-      return CDisplayMode(mode);
+      return convert(mode);
     }
 
     PixelFormat CWindow::GetPixelFormat() const {
@@ -230,7 +232,7 @@ namespace cb {
     }
 
     bool CWindow::UpdateSurfaceRects(const std::vector<SDL_Rect>& rects) {
-      auto res = SDL_UpdateWindowSurfaceRects(mWindow, rects.data(), rects.size());
+      auto res = SDL_UpdateWindowSurfaceRects(mWindow, rects.data(), static_cast<int>(rects.size()));
       CB_SDL_CHECKERRORS();
       return res == 0;
     }

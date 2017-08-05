@@ -183,6 +183,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GLContext.cpp" />
     <ClCompile Include="RWObj.cpp" />
+    <ClCompile Include="SDLConvert.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -207,6 +208,7 @@
     <ClInclude Include="..\..\include\CBSDL\System.h" />
     <ClInclude Include="..\..\include\CBSDL\Timer.h" />
     <ClInclude Include="..\..\include\CBSDL\Window.h" />
+    <ClInclude Include="SDLConvert.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

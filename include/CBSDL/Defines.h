@@ -3,20 +3,29 @@
 #include <string>
 #include <vector>
 
-#include <SDL_types.h>
 #include <glm/fwd.hpp>
 
 namespace cb {
+  using s8 = signed char;
+  using s16 = signed short;
+  using s32 = signed int;
+  using s64 = signed __int64;
+
+  using u8 = unsigned char;
+  using u16 = unsigned short;
+  using u32 = unsigned int;
+  using u64 = unsigned __int64;
+
   using string = std::wstring;
 
   using byte = unsigned char;
   using bytevector = std::vector<byte>;
 
   namespace sdl {
-    using RefreshRate = Uint32;
-    using WindowID = Uint32;
-    using DisplayID = Uint32;
-    using MouseID = Uint32;
+    using RefreshRate = u32;
+    using WindowID = u32;
+    using DisplayID = u32;
+    using MouseID = u32;
   }
 }
 
