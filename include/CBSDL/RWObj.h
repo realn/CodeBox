@@ -2,8 +2,6 @@
 
 #include "Defines.h"
 
-#include <SDL_rwops.h>
-
 namespace cb {
   namespace sdl {
     enum class SeekPos {
@@ -22,15 +20,14 @@ namespace cb {
 
     class CRWObj {
     private:
-      SDL_RWops* mObj;
+      void* mObj = nullptr;
 
     public:
-      CRWObj(SDL_RWops* obj = nullptr) : mObj(obj) {}
       CRWObj(CRWObj const&) = delete;
       CRWObj(CRWObj&& other);
       ~CRWObj();
 
-      SDL_RWops* Get() const { return mObj; }
+      void* Get() const { return mObj; }
 
       template<typename _Type>
       void Read(_Type& obj) {
@@ -58,9 +55,9 @@ namespace cb {
         WritePriv(reinterpret_cast<const cb::byte*>(data.data()), sizeof(_Type) * data.size());
       }
 
-      void SetPos(Sint64 const pos, SeekPos const whence = SeekPos::SET);
-      Sint64 GetPos() const;
-      Sint64 GetSize() const;
+      void SetPos(s64 const pos, SeekPos const whence = SeekPos::SET);
+      s64 GetPos() const;
+      s64 GetSize() const;
 
       void Close();
 
@@ -69,6 +66,8 @@ namespace cb {
       static CRWObj FromConstMemory(std::vector<cb::byte> const& data);
 
     private:
+      explicit CRWObj(void* obj) : mObj(obj) {}
+
       void ReadPriv(cb::byte* pData, size_t const size);
       void WritePriv(const cb::byte* pData, size_t const size);
     };

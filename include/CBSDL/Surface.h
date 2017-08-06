@@ -13,11 +13,11 @@ namespace cb {
     class CRWObj;
 
     class CSurface {
-      SDL_Surface* mSurface;
+      void* mSurface;
 
     public:
       CSurface(glm::uvec2 const size, unsigned const depth, PixelFormat const format);
-      explicit CSurface(SDL_Surface* surface) : mSurface(surface) {}
+      explicit CSurface(void* surface) : mSurface(surface) {}
       CSurface(CSurface const&) = delete;
       CSurface(CSurface && other);
       ~CSurface();
@@ -32,7 +32,7 @@ namespace cb {
       PixelFormat GetFormat() const;
       cb::bytevector GetPixels() const;
 
-      SDL_Surface* Get() const { return mSurface; }
+      void* Get() const { return mSurface; }
 
       CSurface Copy() const;
       CSurface Convert(PixelFormat const format) const;

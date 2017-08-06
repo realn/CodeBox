@@ -5,6 +5,22 @@
 #include <SDL_surface.h>
 #include <SDL_image.h>
 
+inline SDL_RWops* Get(cb::sdl::CRWObj& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.Get());
+}
+
+inline SDL_RWops* Get(cb::sdl::CRWObj const& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.Get());
+}
+
+inline SDL_Surface* Get(cb::sdl::CSurface& surface) {
+  return reinterpret_cast<SDL_Surface*>(surface.Get());
+}
+
+inline SDL_Surface* Get(cb::sdl::CSurface const& surface) {
+  return reinterpret_cast<SDL_Surface*>(surface.Get());
+}
+
 namespace cb {
   namespace sdl {
     namespace {
@@ -29,7 +45,7 @@ namespace cb {
 
     CSurface::~CSurface() {
       if(mSurface) {
-        SDL_FreeSurface(mSurface);
+        SDL_FreeSurface(::Get(*this));
         mSurface = nullptr;
       }
     }
@@ -39,62 +55,62 @@ namespace cb {
     }
 
     void CSurface::SetPixels(std::vector<cb::byte> const & data) {
-      if(data.size() != mSurface->w * mSurface->h * mSurface->format->BytesPerPixel) {
+      if(data.size() != ::Get(*this)->w * ::Get(*this)->h * ::Get(*this)->format->BytesPerPixel) {
         throw std::exception("Invalid data size to set to sdl surface.");
       }
 
-      SDL_LockSurface(mSurface);
-      auto pData = reinterpret_cast<cb::byte*>(mSurface->pixels);
-      std::memcpy(mSurface->pixels, data.data(), data.size());
-      SDL_UnlockSurface(mSurface);
+      SDL_LockSurface(::Get(*this));
+      auto pData = reinterpret_cast<cb::byte*>(::Get(*this)->pixels);
+      std::memcpy(::Get(*this)->pixels, data.data(), data.size());
+      SDL_UnlockSurface(::Get(*this));
     }
 
     glm::uvec2 CSurface::GetSize() const {
-      return glm::uvec2(static_cast<unsigned>(mSurface->w),
-                        static_cast<unsigned>(mSurface->h));
+      return glm::uvec2(static_cast<unsigned>(::Get(*this)->w),
+                        static_cast<unsigned>(::Get(*this)->h));
     }
 
     unsigned CSurface::GetDepth() const {
-      return mSurface->format->BitsPerPixel;
+      return ::Get(*this)->format->BitsPerPixel;
     }
 
     PixelFormat CSurface::GetFormat() const {
-      return static_cast<PixelFormat>(mSurface->format->format);
+      return static_cast<PixelFormat>(::Get(*this)->format->format);
     }
 
     cb::bytevector CSurface::GetPixels() const {
-      auto len = mSurface->w * mSurface->h * mSurface->format->BytesPerPixel;
+      auto len = ::Get(*this)->w * ::Get(*this)->h * ::Get(*this)->format->BytesPerPixel;
       auto result = cb::bytevector(len);
-      SDL_LockSurface(mSurface);
-      std::memcpy(result.data(), mSurface->pixels, len);
-      SDL_UnlockSurface(mSurface);
+      SDL_LockSurface(::Get(*this));
+      std::memcpy(result.data(), ::Get(*this)->pixels, len);
+      SDL_UnlockSurface(::Get(*this));
       return result;
     }
 
     CSurface CSurface::Copy() const {
-      SDL_LockSurface(mSurface);
+      SDL_LockSurface(::Get(*this));
       CB_SDL_CHECKERRORS();
       auto surface =
-        SDL_CreateRGBSurfaceWithFormatFrom(mSurface->pixels,
-                                           mSurface->w,
-                                           mSurface->h,
-                                           mSurface->format->BitsPerPixel,
-                                           mSurface->pitch,
-                                           mSurface->format->format);
-      SDL_UnlockSurface(mSurface);
+        SDL_CreateRGBSurfaceWithFormatFrom(::Get(*this)->pixels,
+                                           ::Get(*this)->w,
+                                           ::Get(*this)->h,
+                                           ::Get(*this)->format->BitsPerPixel,
+                                           ::Get(*this)->pitch,
+                                           ::Get(*this)->format->format);
+      SDL_UnlockSurface(::Get(*this));
       CB_SDL_CHECKERRORS();
       return CSurface(surface);
     }
 
     CSurface CSurface::Convert(PixelFormat const format) const {
-      auto surface = SDL_ConvertSurfaceFormat(mSurface, static_cast<Uint32>(format), 0);
+      auto surface = SDL_ConvertSurfaceFormat(::Get(*this), static_cast<Uint32>(format), 0);
       CB_SDL_CHECKERRORS();
       return CSurface(surface);
     }
 
     void CSurface::Paste(glm::uvec2 const & dstPos, CSurface const & source) {
       auto dstRect = toSdlRect(dstPos, glm::uvec2());
-      SDL_BlitSurface(source.Get(), nullptr, mSurface, &dstRect);
+      SDL_BlitSurface(source.Get(), nullptr, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
@@ -102,14 +118,14 @@ namespace cb {
                          glm::uvec2 const & srcPos, glm::uvec2 const & srcSize) {
       auto dstRect = toSdlRect(dstPos, glm::uvec2());
       auto srcRect = toSdlRect(srcPos, srcSize);
-      SDL_BlitSurface(source.Get(), &srcRect, mSurface, &dstRect);
+      SDL_BlitSurface(source.Get(), &srcRect, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
     void CSurface::PasteScaled(glm::uvec2 const & dstPos, glm::uvec2 const & dstSize, 
                                CSurface const & source) {
       auto dstRect = toSdlRect(dstPos, dstSize);
-      SDL_BlitScaled(source.Get(), nullptr, mSurface, &dstRect);
+      SDL_BlitScaled(source.Get(), nullptr, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
@@ -118,7 +134,7 @@ namespace cb {
                                glm::uvec2 const & srcPos, glm::uvec2 const & srcSize) {
       auto dstRect = toSdlRect(dstPos, dstSize);
       auto srcRect = toSdlRect(srcPos, srcSize);
-      SDL_BlitScaled(source.Get(), &srcRect, mSurface, &dstRect);
+      SDL_BlitScaled(source.Get(), &srcRect, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
@@ -176,7 +192,7 @@ namespace cb {
     }
 
     CSurface CSurface::LoadBMP(CRWObj & rwObj) {
-      auto surface = SDL_LoadBMP_RW(rwObj.Get(), 0);
+      auto surface = SDL_LoadBMP_RW(::Get(rwObj), 0);
       CB_SDL_CHECKERRORS();
       return CSurface(surface);
     }
@@ -187,7 +203,7 @@ namespace cb {
     }
 
     CSurface CSurface::LoadPNG(CRWObj & rwObj) {
-      auto surface = IMG_LoadPNG_RW(rwObj.Get());
+      auto surface = IMG_LoadPNG_RW(::Get(rwObj));
       CB_IMG_CHECKERRORS();
       return CSurface(surface);
     }
@@ -198,7 +214,7 @@ namespace cb {
     }
 
     CSurface CSurface::LoadTGA(CRWObj & rwObj) {
-      auto surface = IMG_LoadTGA_RW(rwObj.Get());
+      auto surface = IMG_LoadTGA_RW(::Get(rwObj));
       CB_IMG_CHECKERRORS();
       return CSurface(surface);
     }
@@ -209,7 +225,7 @@ namespace cb {
     }
 
     CSurface CSurface::LoadJPG(CRWObj & rwObj) {
-      auto surface = IMG_LoadJPG_RW(rwObj.Get());
+      auto surface = IMG_LoadJPG_RW(::Get(rwObj));
       CB_IMG_CHECKERRORS();
       return CSurface(surface);
     }
@@ -220,7 +236,7 @@ namespace cb {
     }
 
     CSurface CSurface::Load(CRWObj & rwObj) {
-      auto surface = IMG_Load_RW(rwObj.Get(), 0);
+      auto surface = IMG_Load_RW(::Get(rwObj), 0);
       CB_IMG_CHECKERRORS();
       return CSurface(surface);
     }

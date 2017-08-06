@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #include <CBSDL/RWObj.h>
 
+inline SDL_RWops* Get(cb::sdl::CRWObj& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.Get());
+}
+
+inline SDL_RWops* Get(cb::sdl::CRWObj const& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.Get());
+}
+
 namespace cb {
   namespace sdl {
     CRWObj::CRWObj(CRWObj && other)
@@ -13,36 +21,36 @@ namespace cb {
     }
 
     void CRWObj::SetPos(Sint64 const pos, SeekPos const whence) {
-      SDL_RWseek(mObj, pos, static_cast<int>(whence));
+      SDL_RWseek(::Get(*this), pos, static_cast<int>(whence));
       CB_SDL_CHECKERRORS();
     }
 
     Sint64 CRWObj::GetPos() const {
-      auto res = SDL_RWtell(mObj);
+      auto res = SDL_RWtell(::Get(*this));
       CB_SDL_CHECKERRORS();
       return res;
     }
 
     Sint64 CRWObj::GetSize() const {
-      auto res = SDL_RWsize(mObj);
+      auto res = SDL_RWsize(::Get(*this));
       CB_SDL_CHECKERRORS();
       return res;
     }
 
     void CRWObj::Close() {
       if(mObj) {
-        SDL_RWclose(mObj);
+        SDL_RWclose(::Get(*this));
         mObj = nullptr;
       }
     }
 
     void CRWObj::ReadPriv(cb::byte * pData, size_t const size) {
-      SDL_RWread(mObj, pData, size, 1);
+      SDL_RWread(::Get(*this), pData, size, 1);
       CB_SDL_CHECKERRORS();
     }
 
     void CRWObj::WritePriv(const cb::byte * pData, size_t const size) {
-      SDL_RWwrite(mObj, pData, size, 1);
+      SDL_RWwrite(::Get(*this), pData, size, 1);
       CB_SDL_CHECKERRORS();
     }
 

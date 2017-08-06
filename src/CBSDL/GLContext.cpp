@@ -17,13 +17,13 @@ namespace cb {
 
     CGLContext::~CGLContext() {
       if(mContext) {
-        SDL_GL_DeleteContext(mContext);
+        SDL_GL_DeleteContext(reinterpret_cast<SDL_GLContext>(mContext));
         mContext = nullptr;
       }
     }
 
     void CGLContext::MakeCurrent(CWindow & window) {
-      SDL_GL_MakeCurrent(window.Get(), mContext);
+      SDL_GL_MakeCurrent(window.Get(), reinterpret_cast<SDL_GLContext>(mContext));
       CB_SDL_CHECKERRORS();
     }
 

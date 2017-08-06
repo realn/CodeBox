@@ -6,6 +6,15 @@
 
 #include <SDL_ttf.h>
 
+inline SDL_RWops* Get(cb::sdl::CRWObj& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.Get());
+}
+
+inline SDL_RWops* Get(cb::sdl::CRWObj const& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.Get());
+}
+
+
 namespace cb {
   namespace sdl {
     namespace {
@@ -36,7 +45,7 @@ namespace cb {
     CFont::CFont(CRWObj & obj, unsigned const ptSize, unsigned const fontIndex)
       : mFont(nullptr)
     {
-      mFont = TTF_OpenFontIndexRW(obj.Get(), 0, static_cast<int>(ptSize), static_cast<long>(fontIndex));
+      mFont = TTF_OpenFontIndexRW(::Get(obj), 0, static_cast<int>(ptSize), static_cast<long>(fontIndex));
       CB_TTF_CHECKERRORS();
     }
 
