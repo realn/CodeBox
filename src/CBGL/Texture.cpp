@@ -8,12 +8,14 @@ namespace cb {
       , mSize(size)
     {
       glGenTextures(1, &mId);
+
       glBindTexture(GL_TEXTURE_2D, mId);
-      SetFilter(TextureFilter::LINEAR, TextureFilter::LINEAR, TextureFilter::LINEAR);
-      SetWrap(TextureWrap::CLAMP_TO_EDGE, TextureWrap::CLAMP_TO_EDGE);
       glTexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(format), mSize.x, mSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
       CB_GL_CHECKERRORS();
       glBindTexture(GL_TEXTURE_2D, 0);
+
+      SetFilter(TextureFilter::LINEAR, TextureFilter::LINEAR, TextureFilter::LINEAR);
+      SetWrap(TextureWrap::CLAMP_TO_EDGE, TextureWrap::CLAMP_TO_EDGE);
     }
 
     CTexture::CTexture(CTexture && other) 

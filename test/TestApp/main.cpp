@@ -92,7 +92,6 @@ int main(char* argv[], int argc) {
     texSurf.Paste({0, 0}, fontSurf);
     texSurf.Flip(cb::sdl::FlipDir::Vertical);
 
-    auto gtex = cb::gl::bind(texture);
     texture.SetData(cb::gl::InputFormat::RGBA, texSurf.GetPixels());
   }
 
