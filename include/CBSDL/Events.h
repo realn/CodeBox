@@ -1,7 +1,6 @@
 #pragma once
 
 #include <chrono>
-#include <SDL_events.h>
 
 #include "Defines.h"
 #include "Consts.h"
@@ -12,126 +11,144 @@ namespace cb {
 
     class CWindowEvent {
     private:
-      SDL_WindowEvent mEvent = {0};
+      WindowEventType mType;
+      WindowID mWindowId;
+      s32 mData1;
+      s32 mData2;
 
     public:
-      CWindowEvent() = default;
-      explicit CWindowEvent(SDL_WindowEvent const& event) : mEvent(event) {}
+      CWindowEvent() : mType(WindowEventType::NONE), mWindowId(0), mData1(0), mData2(0) {}
+      explicit CWindowEvent(CEvent const& event);
 
-      WindowEventType GetType() const { return static_cast<WindowEventType>(mEvent.event); }
-      WindowID GetWindowId() const { return mEvent.windowID; }
-      Sint32 GetData1() const { return mEvent.data1; }
-      Sint32 GetData2() const { return mEvent.data2; }
+      WindowEventType GetType() const { return mType; }
+      WindowID GetWindowId() const { return mWindowId; }
+      s32 GetData1() const { return mData1; }
+      s32 GetData2() const { return mData2; }
     };
 
     class CKeyboardEvent {
     private:
-      SDL_KeyboardEvent mEvent = {0};
+      KeyState mType;
+      WindowID mWindowId;
+      ScanCode mScanCode;
+      KeyMod mKeyMod;
+      cb::string::value_type mKeySymbol;
+      u32 mKeyRepeat;
 
     public:
-      CKeyboardEvent() = default;
-      explicit CKeyboardEvent(SDL_KeyboardEvent const& other) : mEvent(other) {}
+      CKeyboardEvent() : mType(KeyState::PRESSED), mWindowId(0), mScanCode(ScanCode::UNKNOWN), mKeyMod(KeyMod::NONE), mKeySymbol(0), mKeyRepeat(0) {}
+      explicit CKeyboardEvent(CEvent const& other);
 
-      KeyState GetType() const { return static_cast<KeyState>(mEvent.state); }
-      WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
-      ScanCode GetScanCode() const { return static_cast<ScanCode>(mEvent.keysym.scancode); }
-      KeyMod GetKeyMod() const { return static_cast<KeyMod>(mEvent.keysym.mod); }
-      cb::string::value_type GetKeySymbol() const {
-        return static_cast<cb::string::value_type>(mEvent.keysym.sym);
-      }
-      Uint32 GetKeyRepeat() const { return static_cast<Uint32>(mEvent.repeat); }
+      KeyState GetType() const { return mType; }
+      WindowID GetWindowId() const { return mWindowId; }
+      ScanCode GetScanCode() const { return mScanCode; }
+      KeyMod GetKeyMod() const { return mKeyMod; }
+      cb::string::value_type GetKeySymbol() const { return mKeySymbol; }
+      u32 GetKeyRepeat() const { return mKeyRepeat; }
     };
 
     class CMouseButtonEvent {
     private:
-      SDL_MouseButtonEvent mEvent = {0};
+      KeyState mType;
+      Button mButton;
+      u32 mClicks;
+      MouseID mMouseId;
+      WindowID mWindowId;
 
     public:
-      CMouseButtonEvent() = default;
-      explicit  CMouseButtonEvent(SDL_MouseButtonEvent const& other) : mEvent(other) {}
+      CMouseButtonEvent() : mType(KeyState::PRESSED), mButton(Button::LEFT), mClicks(0), mMouseId(0), mWindowId(0) {}
+      explicit CMouseButtonEvent(CEvent const& other);
 
-      KeyState GetType() const { return static_cast<KeyState>(mEvent.state); }
-      Button GetButton() const { return static_cast<Button>(mEvent.button); }
-      Uint32 GetClicks() const { return static_cast<Uint32>(mEvent.clicks); }
-      MouseID GetMouseId() const { return static_cast<MouseID>(mEvent.which); }
-      WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
+      KeyState GetType() const { return mType; }
+      Button GetButton() const { return mButton; }
+      u32 GetClicks() const { return mClicks; }
+      MouseID GetMouseId() const { return mMouseId; }
+      WindowID GetWindowId() const { return mWindowId; }
     };
 
     class CMouseMotionEvent {
     private:
-      SDL_MouseMotionEvent mEvent = {0};
+      glm::ivec2 mPosition;
+      glm::ivec2 mRelative;
+      MouseID mMouseId;
+      WindowID mWindowId;
 
     public:
-      CMouseMotionEvent() = default;
-      explicit CMouseMotionEvent(SDL_MouseMotionEvent const& other) : mEvent(other) {}
+      CMouseMotionEvent() : mMouseId(0), mWindowId(0) {}
+      explicit CMouseMotionEvent(CEvent const& other);
 
-      glm::ivec2 GetPosition() const { return glm::ivec2(mEvent.x, mEvent.y); }
-      glm::ivec2 GetRelative() const { return glm::ivec2(mEvent.xrel, mEvent.yrel); }
-      MouseID GetMouseId() const { return static_cast<MouseID>(mEvent.which); }
-      WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
+      glm::ivec2 GetPosition() const { return mPosition; }
+      glm::ivec2 GetRelative() const { return mRelative; }
+      MouseID GetMouseId() const { return mMouseId; }
+      WindowID GetWindowId() const { return mWindowId; }
     };
 
     class CMouseWheelEvent {
     private:
-      SDL_MouseWheelEvent mEvent = {0};
+      glm::ivec2 mScroll;
+      bool mFlipped;
+      MouseID mMouseId;
+      WindowID mWindowId;
 
     public:
-      CMouseWheelEvent() = default;
-      explicit CMouseWheelEvent(SDL_MouseWheelEvent const& other) : mEvent(other) {}
+      CMouseWheelEvent() : mFlipped(false), mMouseId(0), mWindowId() {}
+      explicit CMouseWheelEvent(CEvent const& other);
 
-      glm::ivec2 GetScroll() const { return glm::ivec2(mEvent.x, mEvent.y); }
-      bool IsFlipped() const { return mEvent.direction == SDL_MOUSEWHEEL_FLIPPED; }
-      MouseID GetMouseId() const { return static_cast<MouseID>(mEvent.which); }
-      WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
+      glm::ivec2 GetScroll() const { return mScroll; }
+      bool IsFlipped() const { return mFlipped; }
+      MouseID GetMouseId() const { return mMouseId; }
+      WindowID GetWindowId() const { return mWindowId; }
     };
 
     class CTextInputEvent {
     private:
+      WindowID mWindowId;
+      cb::string mText;
       SDL_TextInputEvent mEvent = {0};
 
     public:
-      CTextInputEvent() = default;
-      explicit CTextInputEvent(SDL_TextInputEvent const& other) : mEvent(other) {}
+      CTextInputEvent() : mWindowId(0) {}
+      explicit CTextInputEvent(CEvent const& other);
       
-      WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
-      cb::string GetText() const;
+      WindowID GetWindowId() const { return mWindowId; }
+      cb::string GetText() const { return mText; }
     };
 
     class CTextEditingEvent {
     private:
-      SDL_TextEditingEvent mEvent = {0};
+      WindowID mWindowId;
+      u32 mEditPos;
+      u32 mEditLen;
+      cb::string mText;
 
     public:
-      CTextEditingEvent() = default;
-      explicit CTextEditingEvent(SDL_TextEditingEvent const& other) : mEvent(other) {}
+      CTextEditingEvent() : mWindowId(0), mEditPos(0), mEditLen(0) {}
+      explicit CTextEditingEvent(CEvent const& other);
 
-      WindowID GetWindowId() const { return static_cast<WindowID>(mEvent.windowID); }
-      Uint32 GetEditPos() const { return static_cast<Uint32>(mEvent.start); }
-      Uint32 GetEditLen() const { return static_cast<Uint32>(mEvent.length); }
-      cb::string GetText() const;
+      WindowID GetWindowId() const { return mWindowId; }
+      u32 GetEditPos() const { return mEditPos; }
+      u32 GetEditLen() const { return mEditLen; }
+      cb::string GetText() const { return mText; }
     };
 
     class CEvent {
-
     private:
-      SDL_Event mEvent = {0};
+      static constexpr size_t DATA_SIZE = 56; // SDL_Event universal size
+      byte mData[DATA_SIZE] = {0};
 
     public:
-      CEvent() = default;
-      explicit CEvent(SDL_Event const& event) : mEvent(event) {}
-
       EventType GetType() const;
 
-      SDL_Event& Get() { return mEvent; }
-      const SDL_Event& Get() const { return mEvent; }
+      byte* Get() { return mData; }
+      byte const* Get() const { return mData; }
 
-      CWindowEvent Window() const { return CWindowEvent(mEvent.window); }
-      CKeyboardEvent Key() const { return CKeyboardEvent(mEvent.key); }
-      CMouseButtonEvent Button() const { return CMouseButtonEvent(mEvent.button); }
-      CMouseMotionEvent Motion() const { return CMouseMotionEvent(mEvent.motion); }
-      CMouseWheelEvent Wheel() const { return CMouseWheelEvent(mEvent.wheel); }
-      CTextEditingEvent Edit() const { return CTextEditingEvent(mEvent.edit); }
-      CTextInputEvent Text() const { return CTextInputEvent(mEvent.text); }
+      CWindowEvent Window() const { return CWindowEvent(*this); }
+      CKeyboardEvent Key() const { return CKeyboardEvent(*this); }
+      CMouseButtonEvent Button() const { return CMouseButtonEvent(*this); }
+      CMouseMotionEvent Motion() const { return CMouseMotionEvent(*this); }
+      CMouseWheelEvent Wheel() const { return CMouseWheelEvent(*this); }
+      CTextEditingEvent Edit() const { return CTextEditingEvent(*this); }
+      CTextInputEvent Text() const { return CTextInputEvent(*this); }
 
       static bool Poll(CEvent& outEvent);
       static CEvent WaitFor();
