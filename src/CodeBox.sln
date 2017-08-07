@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CBGL", "CBGL\CBGL.vcxproj", "{CF032A6F-36E4-4CF8-BC01-B63D021B2CA9}"
 EndProject
@@ -45,7 +45,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CF032A6F-36E4-4CF8-BC01-B63D021B2CA9}.Debug|x64.ActiveCfg = Debug|x64
 		{CF032A6F-36E4-4CF8-BC01-B63D021B2CA9}.Debug|x64.Build.0 = Debug|x64
-		{CF032A6F-36E4-4CF8-BC01-B63D021B2CA9}.Debug|x64.Deploy.0 = Debug|x64
 		{CF032A6F-36E4-4CF8-BC01-B63D021B2CA9}.Debug|x86.ActiveCfg = Debug|Win32
 		{CF032A6F-36E4-4CF8-BC01-B63D021B2CA9}.Debug|x86.Build.0 = Debug|Win32
 		{CF032A6F-36E4-4CF8-BC01-B63D021B2CA9}.Debug|x86.Deploy.0 = Debug|Win32
