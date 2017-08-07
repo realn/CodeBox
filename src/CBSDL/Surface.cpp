@@ -110,7 +110,7 @@ namespace cb {
 
     void CSurface::Paste(glm::uvec2 const & dstPos, CSurface const & source) {
       auto dstRect = toSdlRect(dstPos, glm::uvec2());
-      SDL_BlitSurface(source.Get(), nullptr, ::Get(*this), &dstRect);
+      SDL_BlitSurface(::Get(source), nullptr, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
@@ -118,14 +118,14 @@ namespace cb {
                          glm::uvec2 const & srcPos, glm::uvec2 const & srcSize) {
       auto dstRect = toSdlRect(dstPos, glm::uvec2());
       auto srcRect = toSdlRect(srcPos, srcSize);
-      SDL_BlitSurface(source.Get(), &srcRect, ::Get(*this), &dstRect);
+      SDL_BlitSurface(::Get(source), &srcRect, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
     void CSurface::PasteScaled(glm::uvec2 const & dstPos, glm::uvec2 const & dstSize, 
                                CSurface const & source) {
       auto dstRect = toSdlRect(dstPos, dstSize);
-      SDL_BlitScaled(source.Get(), nullptr, ::Get(*this), &dstRect);
+      SDL_BlitScaled(::Get(source), nullptr, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
@@ -134,7 +134,7 @@ namespace cb {
                                glm::uvec2 const & srcPos, glm::uvec2 const & srcSize) {
       auto dstRect = toSdlRect(dstPos, dstSize);
       auto srcRect = toSdlRect(srcPos, srcSize);
-      SDL_BlitScaled(source.Get(), &srcRect, ::Get(*this), &dstRect);
+      SDL_BlitScaled(::Get(source), &srcRect, ::Get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
@@ -148,12 +148,12 @@ namespace cb {
     }
 
     void CSurface::FlipHorizontal() {
-      SDL_LockSurface(mSurface);
-      auto pData = reinterpret_cast<cb::byte*>(mSurface->pixels);
+      SDL_LockSurface(::Get(*this));
+      auto pData = reinterpret_cast<cb::byte*>(::Get(*this)->pixels);
       auto size = GetSize();
       auto hwidth = size.x / 2;
-      auto pitch = unsigned(mSurface->pitch);
-      auto bytes = unsigned(mSurface->format->BytesPerPixel);
+      auto pitch = unsigned(::Get(*this)->pitch);
+      auto bytes = unsigned(::Get(*this)->format->BytesPerPixel);
       for(auto y = 0u; y < size.y; y++) {
         auto linebeg = y * pitch;
         auto lineend = (y + 1) * pitch - bytes;
@@ -167,15 +167,15 @@ namespace cb {
           }
         }
       }
-      SDL_UnlockSurface(mSurface);
+      SDL_UnlockSurface(::Get(*this));
     }
 
     void CSurface::FlipVertical() {
-      SDL_LockSurface(mSurface);
-      auto pData = reinterpret_cast<cb::byte*>(mSurface->pixels);
+      SDL_LockSurface(::Get(*this));
+      auto pData = reinterpret_cast<cb::byte*>(::Get(*this)->pixels);
       auto size = GetSize();
-      auto pitch = unsigned(mSurface->pitch);
-      auto bytes = unsigned(mSurface->format->BytesPerPixel);
+      auto pitch = unsigned(::Get(*this)->pitch);
+      auto bytes = unsigned(::Get(*this)->format->BytesPerPixel);
       for(auto y = 0u; y < size.y/2; y++) {
         auto lineidx1 = y * pitch;
         auto lineidx2 = (size.y - 1 - y) * pitch;
@@ -183,7 +183,7 @@ namespace cb {
           std::swap(pData[lineidx1 + x], pData[lineidx2 + x]);
         }
       }
-      SDL_UnlockSurface(mSurface);
+      SDL_UnlockSurface(::Get(*this));
     }
 
     CSurface CSurface::LoadBMP(cb::string const & filepath) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "Defines.h"
 #include "Consts.h"
 
