@@ -6,8 +6,8 @@ namespace cb {
   namespace sdl {
     class CPerfTimer {
     private:
-      Uint64 mFrequency;
-      Uint64 mLastCount;
+      u64 mFrequency;
+      u64 mLastCount;
       float mDelta;
       
     public:

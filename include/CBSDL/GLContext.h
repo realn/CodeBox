@@ -9,7 +9,7 @@ namespace cb {
   namespace sdl {
     class CWindow;
 
-    using GLAttributeMapT = std::map<GLAttribute, Sint32>;
+    using GLAttributeMapT = std::map<GLAttribute, s32>;
 
     class CGLContext {
     private:

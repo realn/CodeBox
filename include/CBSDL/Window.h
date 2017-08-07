@@ -5,16 +5,20 @@
 
 #include <glm/vec2.hpp>
 #include <vector>
-#include <SDL_video.h>
 
 namespace cb {
   namespace sdl {
     class CDisplayMode;
     class CSurface;
 
+    struct CRect {
+      glm::ivec2 pos;
+      glm::ivec2 size;
+    };
+
     class CWindow {
     private:
-      SDL_Window* mWindow = nullptr;
+      void* mWindow = nullptr;
 
     public:
       CWindow(const string& title,
@@ -23,8 +27,10 @@ namespace cb {
               const WindowFlag& flags = WindowFlag::None);
       CWindow(CWindow const&) = delete;
       CWindow(CWindow&& other);
-      explicit CWindow(SDL_Window* window);
+      explicit CWindow(void* window) : mWindow(window) {}
       ~CWindow();
+
+      void* Get() const { return mWindow; };
 
       bool SetDisplayMode(CDisplayMode const& mode);
       void SetTitle(string const& title);
@@ -53,8 +59,6 @@ namespace cb {
       bool GetGrab() const;
       float GetBrightness() const;
       float GetOpacity() const;
-      SDL_Window* Get() { return mWindow; }
-      SDL_Window const* Get() const { return mWindow; }
 
       void Show();
       void Hide();
@@ -63,7 +67,7 @@ namespace cb {
       void Maximize();
       void Restore();
       bool UpdateSurface();
-      bool UpdateSurfaceRects(const std::vector<SDL_Rect>& rects);
+      bool UpdateSurfaceRects(const std::vector<CRect>& rects);
       bool SetInputFocus();
       bool SetModalFor(CWindow& parent);
 
@@ -72,7 +76,7 @@ namespace cb {
       static glm::ivec2 const PosUndefined;
       static glm::ivec2 const PosCentered;
 
-      static CWindow FromId(Uint32 const Id);
+      static CWindow FromId(WindowID const Id);
       static CWindow FromGrabbed();
     };
   }

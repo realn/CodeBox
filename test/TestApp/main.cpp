@@ -1,7 +1,5 @@
 #include <iostream>
 
-#define SDL_MAIN_HANDLED
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <CBSDL/Consts.h>
@@ -31,7 +29,7 @@ public:
 };
 
 int main(char* argv[], int argc) {
-  auto sdlVideo = cb::sdl::CSystem(cb::sdl::System::Video);
+  auto sdlVideo = cb::sdl::CSystem(cb::sdl::System::VIDEO);
   auto window = cb::sdl::CWindow(L"OpenGL Test",
                                  cb::sdl::CWindow::PosCentered,
                                  glm::uvec2(640, 480),

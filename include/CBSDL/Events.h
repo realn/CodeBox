@@ -104,7 +104,6 @@ namespace cb {
     private:
       WindowID mWindowId;
       cb::string mText;
-      SDL_TextInputEvent mEvent = {0};
 
     public:
       CTextInputEvent() : mWindowId(0) {}

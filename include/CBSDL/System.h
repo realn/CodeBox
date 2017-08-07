@@ -1,23 +1,25 @@
 #pragma once
 
 #include "Defines.h"
-#include <SDL.h>
 
 namespace cb {
   namespace sdl {
     ENUM_FLAG(System) {
-      Audio = SDL_INIT_AUDIO,
-      Events = SDL_INIT_EVENTS,
-      GameController = SDL_INIT_GAMECONTROLLER,
-      Haptic = SDL_INIT_HAPTIC,
-      Joystick = SDL_INIT_JOYSTICK,
-      Timer = SDL_INIT_TIMER,
-      Video = SDL_INIT_VIDEO
+      TIMER = 0x00000001u,
+        AUDIO = 0x00000010u,
+        VIDEO = 0x00000020u,  /**< SDL_INIT_VIDEO implies SDL_INIT_EVENTS */
+        JOYSTICK = 0x00000200u,  /**< SDL_INIT_JOYSTICK implies SDL_INIT_EVENTS */
+        HAPTIC = 0x00001000u,
+        GAMECONTROLLER = 0x00002000u,  /**< SDL_INIT_GAMECONTROLLER implies SDL_INIT_JOYSTICK */
+        EVENTS = 0x00004000u,
+        NOPARACHUTE = 0x00100000u,  /**< compatibility; this flag is ignored. */
+        EVERYTHING = (TIMER | AUDIO | VIDEO | EVENTS | \
+                      JOYSTICK | HAPTIC | GAMECONTROLLER )
     };
 
     class CSystem {
     private:
-       System mFlags;
+      System mFlags;
     public:
       CSystem(System const system);
       ~CSystem();
