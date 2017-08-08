@@ -2,6 +2,21 @@
 
 namespace cb {
   namespace sdl {
+    enum class WindowFlag;
+    enum class PixelFormat;
+    enum class EventType;
+    enum class WindowEventType;
+    enum class KeyState;
+    enum class ScanCode;
+    enum class KeyMod;
+    enum class Button;
+    enum class GLAttribute;
+    enum class FontStyle;
+    enum class SeekPos;
+    enum class FileMode;
+    enum class FlipDir;
+    enum class System;
+
     class CWindow;
     class CSystem;
     class CDisplayMode;
