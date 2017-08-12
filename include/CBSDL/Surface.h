@@ -53,6 +53,11 @@ namespace cb {
                        glm::uvec2 const& srcSize);
       void Flip(FlipDir const dir);
 
+      void Fill(glm::vec4 const& color);
+      void Fill(glm::u8vec4 const& color);
+      void Fill(glm::vec4 const& color, glm::uvec2 const& pos, glm::uvec2 const& size);
+      void Fill(glm::u8vec4 const& color, glm::uvec2 const& pos, glm::uvec2 const& size);
+
       static CSurface LoadBMP(cb::string const& filepath);
       static CSurface LoadBMP(CRWObj& rwObj);
       static CSurface LoadPNG(cb::string const& filepath);

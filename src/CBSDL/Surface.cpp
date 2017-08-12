@@ -147,6 +147,32 @@ namespace cb {
       }
     }
 
+    void CSurface::Fill(glm::vec4 const & color) {
+      Fill(glm::u8vec4(color * 255.0f));
+    }
+
+    void CSurface::Fill(glm::u8vec4 const & color) {
+      auto surf = ::Get(*this);
+      auto col = SDL_MapRGBA(surf->format, color.r, color.g, color.b, color.a);
+      SDL_FillRect(surf, nullptr, col);
+      CB_SDL_CHECKERRORS();
+    }
+
+    void CSurface::Fill(glm::vec4 const & color, glm::uvec2 const & pos, glm::uvec2 const & size) {
+      Fill(glm::u8vec4(color * 255.0f), pos, size);
+    }
+
+    void CSurface::Fill(glm::u8vec4 const & color, glm::uvec2 const & pos, glm::uvec2 const & size) {
+      auto surf = ::Get(*this);
+      auto col = SDL_MapRGBA(surf->format, color.r, color.g, color.b, color.a);
+      auto rect = SDL_Rect{
+        static_cast<int>(pos.x), static_cast<int>(pos.y),
+        static_cast<int>(size.x), static_cast<int>(size.y)
+      };
+      SDL_FillRect(surf, &rect, col);
+      CB_SDL_CHECKERRORS();
+    }
+
     void CSurface::FlipHorizontal() {
       SDL_LockSurface(::Get(*this));
       auto pData = reinterpret_cast<cb::byte*>(::Get(*this)->pixels);
