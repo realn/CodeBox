@@ -266,5 +266,27 @@ namespace cb {
       CB_IMG_CHECKERRORS();
       return CSurface(surface);
     }
+
+    bool CSurface::SaveBMP(cb::string const & filepath) const {
+      auto file = CRWObj::FromFile(filepath, FileMode::Write);
+      return SaveBMP(file);
+    }
+
+    bool CSurface::SaveBMP(CRWObj & rwObj) const {
+      auto result = SDL_SaveBMP_RW(::Get(*this), ::Get(rwObj), 0);
+      CB_SDL_CHECKERRORS();
+      return result == 0;
+    }
+
+    bool CSurface::SavePNG(cb::string const & filepath) const {
+      auto file = CRWObj::FromFile(filepath, FileMode::Write);
+      return SavePNG(file);
+    }
+
+    bool CSurface::SavePNG(CRWObj & rwObj) const {
+      auto result = IMG_SavePNG_RW(::Get(*this), ::Get(rwObj), 0);
+      CB_SDL_CHECKERRORS();
+      return result == 0;
+    }
   }
 }

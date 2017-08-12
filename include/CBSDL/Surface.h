@@ -70,6 +70,11 @@ namespace cb {
       static CSurface Load(cb::string const& filepath);
       static CSurface Load(CRWObj& rwObj);
 
+      bool SaveBMP(cb::string const& filepath) const;
+      bool SaveBMP(CRWObj& rwObj) const;
+      bool SavePNG(cb::string const& filepath) const;
+      bool SavePNG(CRWObj& rwObj) const;
+
     private:
       void FlipHorizontal();
       void FlipVertical();
