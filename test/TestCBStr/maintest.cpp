@@ -8,7 +8,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std::literals;
 
 template<typename _FuncT, typename _ExpectedT, typename _LineInfoT, typename ..._ArgsT>
-void Test(_FuncT& func, const _ExpectedT& expected, const cb::string& msg, _LineInfoT lineInfo, _ArgsT... args) {
+void Test(_FuncT& func, const _ExpectedT& expected, cb::string const & msg, _LineInfoT lineInfo, _ArgsT... args) {
   Assert::AreEqual(expected, func(args...), msg.c_str(), lineInfo);
 }
 
@@ -23,14 +23,14 @@ namespace Microsoft {
         }
         return result;
       }
-      template<>
-      static std::wstring ToString<cb::charvector>(const cb::charvector& q) {
-        auto result = cb::string();
-        for(auto& item : q) {
-          result += item + L",";
-        }
-        return result;
-      }
+      //template<>
+      //static std::wstring ToString<cb::charvector>(const cb::charvector& q) {
+      //  auto result = cb::string();
+      //  for(auto& item : q) {
+      //    result += item + L",";
+      //  }
+      //  return result;
+      //}
     }
   }
 }
@@ -41,14 +41,15 @@ namespace TestCBStr {
     TEST_METHOD(StringCheckFuncsTest) {
       using subcmp1T = bool(const cb::string&, const cb::string&, const size_t);
       using subcmp2T = bool(const cb::string&, const cb::strvector&, const size_t);
+      auto val = size_t(2);
       
-      Test(cb::count, 2u, L"cb::count failed.", LINE_INFO(), L"baabaabab"s, L"aa"s);
-      Test<subcmp1T>(cb::subcmp, true, L"cb::subcmp failed.", LINE_INFO(), L"zstestzgg"s, L"test"s, 2u);
+      Test(cb::count, val, L"cb::count failed."s, LINE_INFO(), L"baabaabab"s, L"aa"s);
+      Test<subcmp1T>(cb::subcmp, true, L"cb::subcmp failed."s, LINE_INFO(), L"zstestzgg"s, L"test"s, 2u);
       Test<subcmp2T>(cb::subcmp, true, L"cb::subcmp list variant failed"s, LINE_INFO(),
                      L"sdfstestsdfs"s, cb::strvector({L"sets"s, L"test"s}), 4u);
       Test(cb::rsubcmp, true, L"cb::rsubcmp failed"s, LINE_INFO(), L"sdtstesta"s, L"test"s, 5);
       Test(cb::subrcmp, true, L"cb::subrcmp failed"s, LINE_INFO(), L"stestasd"s, L"test"s, 5);
-      Test(cb::strposrev, 2u, L"cb::strposrev failed."s, LINE_INFO(), L"test"s, 1u);
+      Test(cb::strposrev, val, L"cb::strposrev failed."s, LINE_INFO(), L"test"s, 1u);
     }
     TEST_METHOD(StringManipFuncsTest) {
       using replace1T = cb::string(const cb::string&, const cb::string&, const cb::string&);
@@ -77,8 +78,8 @@ namespace TestCBStr {
       Test(cb::fromStr<unsigned>, true, L"fromStr<unsigned> failed."s, LINE_INFO(), L"5"s, unsigned());
       Test(cb::fromStr<cb::string>, true, L"fromStr<string> failed."s, LINE_INFO(), L"test"s, cb::string());
 
-      Test(cb::toUtf8, cb::charvector({'a'}), L"toUtf8 failed.", LINE_INFO(), L"a"s, false);
-      Test(cb::fromUtf8, L"a"s, L"toUtf8 failed.", LINE_INFO(), cb::charvector({'a'}));
+      Test(cb::toUtf8, "a"s, L"toUtf8 failed.", LINE_INFO(), L"a"s);
+      Test(cb::fromUtf8, L"a"s, L"toUtf8 failed.", LINE_INFO(), "a"s);
     }
 
     TEST_METHOD(StringFormattingTest) {
