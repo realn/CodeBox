@@ -53,12 +53,12 @@ namespace TestCBStr {
     }
     TEST_METHOD(StringManipFuncsTest) {
       using replace1T = cb::string(const cb::string&, const cb::string&, const cb::string&);
-      using replace2T = cb::string(const cb::string&, const cb::strmap&, const bool);
+      using replace2T = cb::string(const cb::string&, const cb::strmap&);
 
       Test(cb::substrpos, L"test"s, L"cb::substrpos failed.", LINE_INFO(), L"sdftest", 3, 7);
       Test<replace1T>(cb::replace, L"mokaamokaa"s, L"cb::replace failed."s, LINE_INFO(), L"testatesta"s, L"test"s, L"moka"s);
       Test<replace2T>(cb::replace, L"mokaazulua"s, L"cb::replace map variant failed."s, LINE_INFO(), 
-                      L"testabawaa"s, cb::strmap({{L"test"s, L"moka"s}, {L"bawa"s, L"zulu"s}}), false);
+                      L"testabawaa"s, cb::strmap({{L"test"s, L"moka"s}, {L"bawa"s, L"zulu"s}}));
       Test(cb::join, L"somethinginhere"s, L"cb::join failed."s, LINE_INFO(),
            cb::strvector({L"some"s, L"thing"s, L"in"s, L"here"s}), cb::string());
         Test(cb::split, cb::strvector({L"some"s, L"thing"s, L"in"s, L"here"s}),

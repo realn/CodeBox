@@ -28,26 +28,28 @@ namespace cb {
     {L"<", L"&lt;"},
     {L">", L"&gt;"}
   };
+  const strmap XML_REPLACE_TAG_MAP_FLIP = mapflip(XML_REPLACE_TAG_MAP);
 
   const strmap XML_REPLACE_ATTR_MAP = {
     {XML_QUOTE_CHAR, XML_QUOTE_ESCAPE_CHAR},
     {XML_ESCAPE_CHAR, XML_ESCAPE_CHAR + XML_ESCAPE_CHAR}
   };
+  const strmap XML_REPLACE_ATTR_MAP_FLIP = mapflip(XML_REPLACE_ATTR_MAP);
 
   string escapeAttrChars(const string & text) {
-    return replace(text, XML_REPLACE_ATTR_MAP);
+    return replace_by_char(text, XML_REPLACE_ATTR_MAP);
   }
 
   string unescapeAttrChars(const string & text) {
-    return replace(text, XML_REPLACE_ATTR_MAP, true);
+    return replace_by_char(text, XML_REPLACE_ATTR_MAP_FLIP);
   }
 
   string escapeTagChars(const string & text) {
-    return replace(text, XML_REPLACE_TAG_MAP);
+    return replace_by_char(text, XML_REPLACE_TAG_MAP);
   }
 
   string unescapeTagChars(const string & text) {
-    return replace(text, XML_REPLACE_TAG_MAP, true);
+    return replace_by_char(text, XML_REPLACE_TAG_MAP_FLIP);
   }
 
   size_t findWS(const string & text, const size_t offset, const string& also) {
@@ -159,15 +161,22 @@ namespace cb {
     if(text.empty())
       return string();
 
-    auto result = text;
-    if(subcmp(result, XML_QUOTE_CHAR)) {
-      result = substrpos(result, 1);
-    }
+    auto result = string();
+    auto pos = size_t(0);
+    while(pos < text.length()) {
+      if(subcmp(text, XML_ESCAPE_CHAR, pos)) {
+        result += text.substr(pos, 2);
+        pos += 2;
+        continue;
+      }
+      if(subcmp(text, XML_QUOTE_CHAR, pos)) {
+        pos++;
+        continue;
+      }
 
-    if(rsubcmp(result, XML_QUOTE_CHAR, 0) && !rsubcmp(result, XML_QUOTE_ESCAPE_CHAR, 1)) {
-      result = substrpos(result, 0, strposrev(result));
-    }
-    
+      result += text[pos];
+      pos++;
+    }    
     return result;
   }
 

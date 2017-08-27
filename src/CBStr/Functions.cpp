@@ -40,6 +40,15 @@ namespace cb {
     return text.compare(offset - what.length(), what.length(), what) == 0;
   }
 
+  strvector::const_iterator subfind(string const & text, strvector const & list, size_t const pos) {
+    for(auto it = list.begin(); it != list.end(); it++) {
+      if(subcmp(text, *it, pos)) {
+        return it;
+      }
+    }
+    return list.end();
+  }
+
   // string manipulation
 
   string substrpos(string const& text, size_t const pos, size_t const endpos) {
@@ -71,16 +80,45 @@ namespace cb {
     return result;
   }
 
-  string replace(string const & text, const strmap & list, bool const flip) {
+  string replace(string const & text, const strmap & list) {
     auto result = text;
-    if(!flip) {
-      for(auto& item : list) {
-        result = replace(result, item.first, item.second);
+    for(auto& item : list) {
+      result = replace(result, item.first, item.second);
+    }
+    return result;
+  }
+
+  string replace_by_char(string const & text, string const & what, string const & with) {
+    auto result = string();
+    auto i = size_t(0); 
+    while(i < text.length()) {
+      if(subcmp(text, what, i)) {
+        result += with;
+        i += what.length();
+      }
+      else {
+        result += text[i];
+        i++;
       }
     }
-    else {
-      for(auto& item : list) {
-        result = replace(result, item.second, item.first);
+    return result;
+  }
+
+  string replace_by_char(string const & text, strmap const & list) {
+    auto result = string();
+    auto keys = mapkeys(list);
+    auto i = size_t(0);
+    while(i < text.length()) {
+      auto it = subfind(text, keys, i);
+      if(it != keys.end()) {
+        auto mapit = list.find(*it);
+
+        result += mapit->second;
+        i += mapit->first.length();
+      }
+      else {
+        result += text[i];
+        i++;
       }
     }
     return result;

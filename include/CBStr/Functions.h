@@ -15,6 +15,8 @@ namespace cb {
 
   extern bool subrcmp(string const& text, string const& what, size_t const offset = 0);
 
+  extern strvector::const_iterator subfind(string const& text, strvector const& list, size_t const pos);
+
   extern size_t strposrev(string const& text, size_t const roffset = 0);
 
 
@@ -24,7 +26,11 @@ namespace cb {
 
   extern string replace(string const& text, string const& what, string const& with);
 
-  extern string replace(string const& text, const strmap& list, bool const flip = false);
+  extern string replace(string const& text, strmap const& list);
+
+  extern string replace_by_char(string const& text, string const& what, string const& with);
+
+  extern string replace_by_char(string const& text, strmap const& list);
 
   extern string join(const strvector& list, string const& glue = string());
 
