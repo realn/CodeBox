@@ -21,13 +21,14 @@ namespace cb {
   extern const strvector XML_TAG_END_LIST;
   extern const strvector XML_TAG_START_LIST;
 
-  extern const strmap XML_REPLACE_MAP;
+  extern const strmap XML_REPLACE_TAG_MAP;
+  extern const strmap XML_REPLACE_ATTR_MAP;
 
-  extern string escapeChars(const string& text);
-  extern string unescapeChars(const string& text);
+  extern string escapeAttrChars(const string& text);
+  extern string unescapeAttrChars(const string& text);
 
-  extern string escapeXmlChars(const string& text);
-  extern string unescapeXmlChars(const string& text);
+  extern string escapeTagChars(const string& text);
+  extern string unescapeTagChars(const string& text);
 
   extern size_t findWS(const string& text, const size_t offset = 0, const string& also = string());
   extern size_t findWS(const string& text, const size_t offset, const strvector& also);

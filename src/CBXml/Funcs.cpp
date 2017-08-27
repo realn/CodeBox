@@ -23,28 +23,31 @@ namespace cb {
   const strvector XML_TAG_END_LIST = {XML_TAG_END, XML_TAG_CLOSE_END};
   const strvector XML_TAG_START_LIST = {XML_TAG_START, XML_TAG_CLOSE_START};
 
-  const strmap XML_REPLACE_MAP =
+  const strmap XML_REPLACE_TAG_MAP =
   {
     {L"<", L"&lt;"},
     {L">", L"&gt;"}
   };
 
+  const strmap XML_REPLACE_ATTR_MAP = {
+    {XML_QUOTE_CHAR, XML_QUOTE_ESCAPE_CHAR},
+    {XML_ESCAPE_CHAR, XML_ESCAPE_CHAR + XML_ESCAPE_CHAR}
+  };
 
-
-  string escapeChars(const string & text) {
-    return replace(text, XML_QUOTE_CHAR, XML_QUOTE_ESCAPE_CHAR);
+  string escapeAttrChars(const string & text) {
+    return replace(text, XML_REPLACE_ATTR_MAP);
   }
 
-  string unescapeChars(const string & text) {
-    return replace(text, XML_QUOTE_ESCAPE_CHAR, XML_QUOTE_CHAR);
+  string unescapeAttrChars(const string & text) {
+    return replace(text, XML_REPLACE_ATTR_MAP, true);
   }
 
-  string escapeXmlChars(const string & text) {
-    return replace(text, XML_REPLACE_MAP);
+  string escapeTagChars(const string & text) {
+    return replace(text, XML_REPLACE_TAG_MAP);
   }
 
-  string unescapeXmlChars(const string & text) {
-    return replace(text, XML_REPLACE_MAP, true);
+  string unescapeTagChars(const string & text) {
+    return replace(text, XML_REPLACE_TAG_MAP, true);
   }
 
   size_t findWS(const string & text, const size_t offset, const string& also) {
@@ -149,7 +152,7 @@ namespace cb {
   }
 
   string inQuotes(const string & text) {
-    return XML_QUOTE_CHAR + escapeChars(text) + XML_QUOTE_CHAR;
+    return XML_QUOTE_CHAR + text + XML_QUOTE_CHAR;
   }
 
   string stripQuotes(const string & text) {
@@ -165,7 +168,7 @@ namespace cb {
       result = substrpos(result, 0, strposrev(result));
     }
     
-    return unescapeChars(result);
+    return result;
   }
 
   string stripWS(const string & text) {

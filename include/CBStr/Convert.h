@@ -58,6 +58,7 @@ namespace cb {
 
   template<typename ..._Args>
   string format(string const& fmt, _Args... args) {
-    return detail::format(fmt, strvector(), args...);
+    auto list = strvector();
+    return detail::format(fmt, list, args...);
   }
 }

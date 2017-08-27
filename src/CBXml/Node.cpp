@@ -70,7 +70,7 @@ namespace cb {
       // find begining of new node - this will mark the end of the text node
       auto endpos = text.find(XML_TAG_START, pos);
 
-      mName = unescapeXmlChars(substrpos(text, pos, endpos));
+      mName = unescapeTagChars(substrpos(text, pos, endpos));
       return endpos;
     }
 
@@ -155,7 +155,7 @@ namespace cb {
     auto ending = genEnding(fmt);
 
     if(mType == XmlNodeType::Text) {
-      return padding + escapeXmlChars(mName);
+      return padding + escapeTagChars(mName);
     }
     if(mType == XmlNodeType::CData) {
       return padding + XML_CDATA_TAG_START + mName + XML_CDATA_TAG_END;

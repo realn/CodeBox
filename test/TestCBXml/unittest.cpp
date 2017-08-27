@@ -89,5 +89,30 @@ namespace TestCBXml {
       Assert::IsTrue(cb::ReadXmlObject(node, test), L"Deserialization failed.", LINE_INFO());
       Assert::AreEqual(L"Other"s, test.mSubClass.mVal0, L"Object value check failed.", LINE_INFO());
     }
+
+    TEST_METHOD(NonStandardCharsTest) {
+      auto rootName = L"Root"s;
+      auto attrName = L"Attr"s;
+      auto subNodeName1 = L"SubNode1"s;
+      auto subNodeName2 = L"SubNode2"s;
+      auto subNodeName3 = L"SubNode3"s;;
+      auto attrValue = L"\"\\"s;
+      auto tagValue = L"<><>\"\\"s;
+
+      auto node = cb::CXmlNode();
+      node.SetName(rootName);
+      node[subNodeName1].Attributes[attrName] = attrValue;
+      node[subNodeName2].SetValue(tagValue);
+      node[subNodeName3].SetValue(tagValue, true);
+
+      auto nodeText = node.ToString();
+      node.clear();
+      Assert::IsFalse(node.Parse(nodeText) == cb::string::npos, L"XML Node parsing failed.", LINE_INFO());
+
+      Assert::AreEqual(rootName, node.GetName(), L"Root name not equal.", LINE_INFO());
+      Assert::AreEqual(attrValue, node[subNodeName1].Attributes[attrName].GetValue(), L"Attribute name not equal.", LINE_INFO());
+      Assert::AreEqual(tagValue, node[subNodeName2].GetValue(), L"Text value not equal.", LINE_INFO());
+      Assert::AreEqual(tagValue, node[subNodeName3].GetValue(), L"CData value data node equal.", LINE_INFO());
+    }
   };
 }

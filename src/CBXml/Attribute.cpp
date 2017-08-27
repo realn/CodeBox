@@ -9,6 +9,7 @@ namespace cb {
   using namespace std::string_literals;
 
   const auto XML_EQUAL = L"="s;
+  const auto XML_ATTR_FMT = L"{0}{1}{2}";
 
   CXmlAttribute::CXmlAttribute() {}
 
@@ -29,7 +30,7 @@ namespace cb {
   CXmlAttribute::~CXmlAttribute() {}
   
   string CXmlAttribute::ToString() const {
-    return mName + XML_EQUAL + inQuotes(mValue);
+    return format(XML_ATTR_FMT, mName, XML_EQUAL, inQuotes(escapeAttrChars(mValue)));
   }
 
   size_t CXmlAttribute::Parse(string const& text, size_t const offset) {
@@ -60,7 +61,7 @@ namespace cb {
       return string::npos;
     }
 
-    mValue = stripQuotes(stripWS(substrpos(text, pos, endpos)));
+    mValue = unescapeAttrChars(stripQuotes(stripWS(substrpos(text, pos, endpos))));
     return endpos;
   }
 
