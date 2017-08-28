@@ -36,7 +36,7 @@ namespace cb {
   bool fromStr(const string& text, _Type& outValue) {
     auto ss = stringstream();
     ss << text;
-    ss >> outValue;
+    ss >> std::noskipws >> outValue;
     return !ss.fail();
   }
 
