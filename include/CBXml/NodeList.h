@@ -66,7 +66,7 @@ namespace cb {
     XmlNodePtrListT Search(string const& name);
     XmlNodeConstPtrListT Search(string const& name) const;
 
-    size_t Parse(string const& text, size_t const offset = 0);
+    size_t Parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
 
     string ToString(CXmlStringFormat const & fmt = CXmlStringFormat()) const;
 

@@ -59,8 +59,12 @@ namespace cb {
     Attributes.clear();
   }
 
-  size_t CXmlNode::Parse(string const & text, size_t const offset) {
+  size_t CXmlNode::Parse(string const & text, size_t const offset, cb::ostream& err) {
     auto pos = findNonWS(text, offset);
+    if(pos == string::npos) {
+      err << L"Unexpected end of string." << std::endl;
+      return string::npos;
+    }
 
     // check for starting tag
     if(!subcmp(text, XML_TAG_START, pos)) {
@@ -69,6 +73,10 @@ namespace cb {
 
       // find begining of new node - this will mark the end of the text node
       auto endpos = text.find(XML_TAG_START, pos);
+      if(endpos == string::npos) {
+        err << L"Invalid tag end, node is incompleted." << std::endl;
+        return string::npos;
+      }
 
       mName = unescapeTagChars(substrpos(text, pos, endpos));
       return endpos;
@@ -78,9 +86,8 @@ namespace cb {
       // it's an cdata node
       pos += XML_CDATA_TAG_START.length();
       auto endpos = text.find(XML_CDATA_TAG_END, pos);
-
       if(endpos == string::npos) {
-        // it's an invaid node
+        err << L"Failed to find tag ending, inalid node." << std::endl;
         return string::npos;
       }
 
@@ -90,7 +97,7 @@ namespace cb {
     }
 
     if(subcmp(text, XML_TAG_CLOSE_START, pos)) {
-      // invalid end tag 
+      err << L"Invalid tag closing, invalid node." << std::endl;
       return string::npos;
     }
 
@@ -99,23 +106,36 @@ namespace cb {
     
     // find name begining
     pos = findNonWS(text, pos + XML_TAG_START.length());
+    if(pos == string::npos) {
+      err << L"Failed to find tag name begining." << std::endl;
+      return string::npos;
+    }
 
     // find name ending
     auto endpos = findWS(text, pos, XML_TAG_END_LIST);
-
-    if(pos == endpos || pos == string::npos || endpos == string::npos) {
+    if(endpos == string::npos) {
+      err << L"Failed to find tag name ending." << std::endl;
       return string::npos;
     }
 
     // found tag name
     mName = substrpos(text, pos, endpos);
+    if(mName.empty()) {
+      err << L"Empty node name, invalid node." << std::endl;
+      return string::npos;
+    }
 
     // parse possible attributes
-    pos = Attributes.Parse(text, endpos);
+    pos = Attributes.Parse(text, endpos, err);
+    if(pos == string::npos) {
+      err << L"Error while parsing node " << mName << L" attributes, invalid node." << std::endl;
+      return string::npos;
+    }
 
     // find tag ending
     pos = findXml(text, XML_TAG_END_LIST, pos);
     if(pos == string::npos) {
+      err << L"Failed tag ending of node " << mName << L", invalid node." << std::endl;
       return string::npos;
     }
 
@@ -126,24 +146,41 @@ namespace cb {
 
     // tag has possible sub nodes;
     pos = Nodes.Parse(text, pos + XML_TAG_END.length());
+    if(pos == string::npos) {
+      err << L"Error while parsing sub nodes of node " << mName << std::endl;
+      return string::npos;
+    }
 
     if(!subcmp(text, XML_TAG_CLOSE_START, pos)) {
-      // missing close tag start
+      err << L"Missing closing tag start for node " << mName << std::endl;
       return string::npos;
     }
 
     pos = findNonWS(text, pos + XML_TAG_CLOSE_START.length());
+    if(pos == string::npos) {
+      err << L"Failed to find ending tag name for node " << mName << L", unexpected end of string." << std::endl;
+      return string::npos;
+    }
     endpos = findWS(text, pos, XML_TAG_END_LIST);
+    if(endpos == string::npos) {
+      err << L"Failed to find ending tag name ending for node " << mName << L", unexpected end of string." << std::endl;
+      return string::npos;
+    }
 
-    if(mName != substrpos(text, pos, endpos)) {
-      // invalid closing tag name
+    auto endName = substrpos(text, pos, endpos);
+    if(mName != endName) {
+      err << mName << L" and its ending tag " << endName << L" does not match." << std::endl;
       return string::npos;
     }
 
     pos = findNonWS(text, endpos);
+    if(pos == string::npos) {
+      err << L"Could not find ending of closing tag for node " << mName << ", unexpected end of string." << std::endl;
+      return string::npos;
+    }
 
     if(!subcmp(text, XML_TAG_END, pos)) {
-      // invalid closing tag ending
+      err << L"Invalid enging for closing tag for node " << mName << std::endl;
       return string::npos;
     }
 
@@ -192,5 +229,9 @@ namespace cb {
     mName = std::move(other.mName);
     Attributes = std::move(other.Attributes);
     Nodes = std::move(other.Nodes);
+  }
+
+  void CXmlNode::operator=(string const & value) {
+    SetValue(value);
   }
 }

@@ -23,7 +23,7 @@ namespace cb {
 
     string ToString() const;
 
-    size_t Parse(string const & text, size_t const offset = 0);
+    size_t Parse(string const & text, size_t const offset = 0, cb::ostream& err = std::wcerr);
 
     void operator=(CXmlAttribute const& other);
     void operator=(CXmlAttribute&& other);

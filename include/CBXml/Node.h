@@ -39,15 +39,16 @@ namespace cb {
 
     void clear();
 
-    size_t Parse(string const& text, size_t const offset = 0);
+    size_t Parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
 
     string ToString(CXmlStringFormat const & fmt = CXmlStringFormat()) const;
 
     void operator=(CXmlNode const & other);
     void operator=(CXmlNode&& other);
+    void operator=(string const& value);
 
-    CXmlNode& operator[](string const & name) { return Nodes[name]; };
     const CXmlNode& operator[](string const & name) const { return Nodes[name]; }
+    CXmlNode& operator[](string const & name) { return Nodes[name]; };
   };
 }
 

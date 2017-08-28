@@ -99,13 +99,9 @@ namespace TestCBXml {
       auto attrValue = L"\"\\"s;
       auto tagValue = L"<><>\"\\"s;
 
-      auto node = cb::CXmlNode();
-      node.SetName(rootName);
-      node.Nodes.AddNode(subNodeName1);
-      node.Nodes.AddNode(subNodeName2);
-      node.Nodes.AddNode(subNodeName3);
-      node[subNodeName1].Attributes.SetValue(attrName, attrValue);
-      node[subNodeName2].SetValue(tagValue);
+      auto node = cb::CXmlNode(rootName);
+      node[subNodeName1].Attributes[attrName] = attrValue;
+      node[subNodeName2] = tagValue;
       node[subNodeName3].SetValue(tagValue, true);
 
       auto nodeText = node.ToString();

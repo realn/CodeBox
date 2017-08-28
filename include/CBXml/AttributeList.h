@@ -43,14 +43,14 @@ namespace cb {
 
     iterator erase(iterator it);
 
-    size_t Parse(string const& text, size_t const offset = 0);
+    size_t Parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
     string ToString() const;
 
     void operator=(CXmlAttributeList const& other);
     void operator=(CXmlAttributeList&& other);
 
     const CXmlAttribute& operator[](string const& name) const { return *find(name); }
-    CXmlAttribute& operator[](string const& name) { return *find(name); }
+    CXmlAttribute& operator[](string const& name);
   };
 }
 

@@ -56,19 +56,19 @@ namespace cb {
 
   inline CXmlAttributeList::iterator CXmlAttributeList::erase(iterator it) { return mAttrList.erase(it); }
 
-  size_t CXmlAttributeList::Parse(string const & text, size_t const offset) {
+  size_t CXmlAttributeList::Parse(string const & text, size_t const offset, cb::ostream& err) {
     clear();
     auto pos = findNonWS(text, offset, XML_TAG_END_LIST);
-
-    auto attr = CXmlAttribute();
     while(pos != string::npos && !subcmp(text, XML_TAG_END_LIST, pos)) {
+      auto attr = CXmlAttribute();
       pos = attr.Parse(text, pos);
 
       if(pos != string::npos) {
         mAttrList.push_back(attr);
       }
       else {
-        return false;
+        err << L"Failed to parse attribute list - some error on string." << std::endl;
+        return string::npos;
       }
 
       pos = findNonWS(text, pos, XML_TAG_END_LIST);
@@ -92,4 +92,14 @@ namespace cb {
   void CXmlAttributeList::operator=(CXmlAttributeList && other) {
     mAttrList = std::move(other.mAttrList);
   }
+
+  CXmlAttribute& CXmlAttributeList::operator[](string const& name) { 
+    auto it = find(name);
+    if(it != end()) {
+      return *it;
+    }
+    mAttrList.push_back(CXmlAttribute(name));
+    return *mAttrList.rbegin(); 
+  }
+
 }

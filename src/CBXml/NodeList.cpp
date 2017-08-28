@@ -83,13 +83,13 @@ namespace cb {
     return result;
   }
 
-  size_t CXmlNodeList::Parse(string const & text, size_t const offset) {
+  size_t CXmlNodeList::Parse(string const & text, size_t const offset, cb::ostream& err) {
     clear();
 
     size_t pos = findNonWS(text, offset, XML_TAG_START);
     while(pos != string::npos && !subcmp(text, XML_TAG_CLOSE_START, pos)) {
-      CXmlNode node;
-      pos = node.Parse(text, pos);
+      auto node = CXmlNode();
+      pos = node.Parse(text, pos, err);
 
       if(pos != string::npos) {
         mNodeList.push_back(node);
@@ -117,7 +117,12 @@ namespace cb {
   }
 
   CXmlNode & CXmlNodeList::operator[](string const & name) {
-    return *find(name);
+    auto it = find(name);
+    if(it != end()) {
+      return *it;
+    }
+    mNodeList.push_back(CXmlNode(name));
+    return *mNodeList.rbegin();
   }
 
   void CXmlNodeList::operator=(CXmlNodeList const & other) {
