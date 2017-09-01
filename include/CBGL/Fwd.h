@@ -14,6 +14,16 @@ namespace cb {
     enum class InputFormat;
     enum class TextureFilter;
     enum class TextureWrap;
+    enum class BlendFactor;
+    enum class BlendFunc;
+    enum class CullFace;
+    enum class FrontFace;
+    enum class DepthFunc;
+    enum class State;
+
+    struct CBlendState;
+    struct CCullState;
+    struct CDepthState;
 
     class CBuffer;
     class CShader;
