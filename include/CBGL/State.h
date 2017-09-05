@@ -81,7 +81,10 @@ namespace cb {
       float RangeFar = 1.0f;
     };
 
+    using statemap = std::map<State, bool>;
+
     extern void setStateEnabled(State const state, bool enabled);
+    inline void setStateEnabled(statemap const& states) { for(auto& item : states) { setStateEnabled(item.first, item.second); } }
     extern void setState(CBlendState const& state);
     extern void setState(CCullState const& state);
     extern void setState(CDepthState const& state);
@@ -93,23 +96,26 @@ namespace cb {
 
     class CStateGuard {
     private:
-      State mState;
-      bool mEnabledAfter;
+      statemap mStates;
     public:
-      CStateGuard(State const state, bool const enabledAfter) : mState(state), mEnabledAfter(enabledAfter) {}
-      CStateGuard(CStateGuard&& other) : mState(State::NONE), mEnabledAfter(false) {
-        std::swap(mState, other.mState); std::swap(mEnabledAfter, other.mEnabledAfter);
-      }
+      CStateGuard(statemap const& states) : mStates(states) {}
+      CStateGuard(CStateGuard&& other) { std::swap(mStates, other.mStates); }
       CStateGuard(CStateGuard const& other) = delete;
-      ~CStateGuard() { if(mState != State::NONE) { setStateEnabled(mState, mEnabledAfter); } }
+      ~CStateGuard() { setStateEnabled(mStates); }
 
-      void operator=(CStateGuard&& other) { std::swap(mState, other.mState); std::swap(mEnabledAfter, other.mEnabledAfter); }
+      void operator=(CStateGuard&& other) { std::swap(mStates, other.mStates); }
       void operator=(CStateGuard const& other) = delete;
     };
 
     inline CStateGuard bindStateEnabled(State const state, bool const enabled) {
       setStateEnabled(state, enabled);
-      return CStateGuard(state, !enabled);
+      return CStateGuard({{state, !enabled}});
+    }
+    inline CStateGuard bindStateEnabled(statemap const& states) {
+      setStateEnabled(states);
+      auto nstates = states;
+      for(auto& item : nstates) { item.second = !item.second; }
+      return CStateGuard(nstates);
     }
   }
 }
