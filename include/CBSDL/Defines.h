@@ -32,16 +32,30 @@ namespace cb {
 #ifndef ENUM_FLAG
 #define ENUM_FLAG_OPERATOR(Type,Op) \
 constexpr Type const operator Op(Type const& arg1, Type const& arg2) { \
-  return static_cast<Type const>(static_cast<unsigned const>(arg1) Op static_cast<unsigned const>(arg2)); \
+  return static_cast<Type const>(static_cast<cb::u32 const>(arg1) Op static_cast<cb::u32 const>(arg2)); \
+};
+#define ENUM_FLAG_ASSIGN_OPERATOR(Type,OpAss,Op) \
+constexpr Type const operator OpAss(Type& arg1, Type const& arg2) { \
+  arg1 = arg1 Op arg2; \
+  return arg1; \
 };
 #define ENUM_FLAG(Type) \
 enum class Type; \
 ENUM_FLAG_OPERATOR(Type, |) \
 ENUM_FLAG_OPERATOR(Type, &) \
 ENUM_FLAG_OPERATOR(Type, ^) \
+ENUM_FLAG_ASSIGN_OPERATOR(Type, |=, |) \
+ENUM_FLAG_ASSIGN_OPERATOR(Type, &=, & ) \
+ENUM_FLAG_ASSIGN_OPERATOR(Type, ^=, ^ ) \
 constexpr Type const operator ~(Type const& arg) { \
-  return static_cast<Type const>(~static_cast<unsigned const>(arg)); \
+  return static_cast<Type const>(~static_cast<cb::u32 const>(arg)); \
 }; \
+constexpr bool const isTrueOr(Type const& arg) { \
+  return static_cast<cb::u32 const>(arg) > 0; \
+} \
+constexpr bool const isTrueAnd(Type const& arg) { \
+  return static_cast<cb::u32 const>(~arg) == 0; \
+} \
 enum class Type \
 
 #endif
