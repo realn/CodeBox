@@ -50,11 +50,11 @@ ENUM_FLAG_ASSIGN_OPERATOR(Type, ^=, ^ ) \
 constexpr Type const operator ~(Type const& arg) { \
   return static_cast<Type const>(~static_cast<cb::u32 const>(arg)); \
 }; \
-constexpr bool const isTrueOr(Type const& arg) { \
-  return static_cast<cb::u32 const>(arg) > 0; \
+constexpr bool const isTrueOr(Type const& arg, Type const& bits) { \
+  return static_cast<cb::u32 const>(arg & bits) > 0; \
 } \
-constexpr bool const isTrueAnd(Type const& arg) { \
-  return static_cast<cb::u32 const>(~arg) == 0; \
+constexpr bool const isTrueAnd(Type const& arg, Type const& bits) { \
+  return static_cast<cb::u32 const>((~(arg & bits)) & bits) == 0; \
 } \
 enum class Type \
 
