@@ -19,6 +19,8 @@ namespace cb {
 
   extern size_t strposrev(string const& text, size_t const roffset = 0);
 
+  extern bool ends_with(string const& text, string const& with);
+
 
   // string manipulation
 

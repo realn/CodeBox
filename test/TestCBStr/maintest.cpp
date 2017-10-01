@@ -50,6 +50,7 @@ namespace TestCBStr {
       Test(cb::rsubcmp, true, L"cb::rsubcmp failed"s, LINE_INFO(), L"sdtstesta"s, L"test"s, 5);
       Test(cb::subrcmp, true, L"cb::subrcmp failed"s, LINE_INFO(), L"stestasd"s, L"test"s, 5);
       Test(cb::strposrev, val, L"cb::strposrev failed."s, LINE_INFO(), L"test"s, 1u);
+      Test(cb::ends_with, true, L"cb::ends_with failed."s, LINE_INFO(), L"alamasnieg"s, L"snieg"s);
     }
     TEST_METHOD(StringManipFuncsTest) {
       using replace1T = cb::string(const cb::string&, const cb::string&, const cb::string&);

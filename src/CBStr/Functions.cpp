@@ -185,6 +185,13 @@ namespace cb {
     return text.length() - (1 + roffset);
   }
 
+  bool ends_with(string const & text, string const & with) {
+    if(with.length() > text.length()) {
+      return false;
+    }
+    return text.compare(text.length() - with.length(), with.length(), with) == 0;
+  }
+
   string repeat(string const & text, size_t const times) {
     if(times == 0)
       return string();

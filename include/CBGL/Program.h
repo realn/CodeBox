@@ -27,6 +27,7 @@ namespace cb {
 
       void Attach(CShader const& shader);
       void Attach(std::initializer_list<CShader> const& shaders);
+      void Attach(std::vector<CShader> const& shaders);
       bool Link();
       bool IsLinked() const;
       bool IsValid() const;

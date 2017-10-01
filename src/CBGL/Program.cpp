@@ -52,6 +52,12 @@ namespace cb {
       }
     }
 
+    void CProgram::Attach(std::vector<CShader> const & shaders) {
+      for(auto& shader : shaders) {
+        Attach(shader);
+      }
+    }
+
     bool CProgram::Link() {
       glLinkProgram(mId);
       CB_GL_CHECKERRORS();
