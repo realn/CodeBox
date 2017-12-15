@@ -23,7 +23,7 @@
     <ProjectGuid>{6191B53E-E40C-4410-8329-255D37E88D3E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CBSDL</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

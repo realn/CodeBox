@@ -38,7 +38,7 @@
     <ProjectGuid>{AB2D9AF3-63CE-47CC-8E2F-41D1ED4220A1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CBMath</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
