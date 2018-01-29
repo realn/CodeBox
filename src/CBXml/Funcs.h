@@ -8,21 +8,24 @@ namespace cb {
 
   extern const string XML_SPACE;
   extern const string XML_QUOTE_CHAR;
-  extern const string XML_ESCAPE_CHAR;
-  extern const string XML_QUOTE_ESCAPE_CHAR;
+  extern const string XML_AMP_CHAR;
   extern const string XML_CDATA_TAG_START;
   extern const string XML_CDATA_TAG_END;
+
   extern const string XML_TAG_START;
   extern const string XML_TAG_END;
   extern const string XML_TAG_CLOSE_START;
   extern const string XML_TAG_CLOSE_END;
 
+  extern const string XML_ESCAPE_CHAR;
+  extern const string XML_ESCAPE_QUOTE_CHAR;
+  extern const string XML_ESCAPE_TAG_START;
+  extern const string XML_ESCAPE_TAG_END;
+  extern const string XML_ESCAPE_AMP_CHAR;
+
   extern const strvector XML_WHITESPACE_LIST;
   extern const strvector XML_TAG_END_LIST;
   extern const strvector XML_TAG_START_LIST;
-
-  extern const strmap XML_REPLACE_TAG_MAP;
-  extern const strmap XML_REPLACE_ATTR_MAP;
 
   extern string escapeAttrChars(const string& text);
   extern string unescapeAttrChars(const string& text);

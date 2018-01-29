@@ -10,50 +10,52 @@
 namespace cb {
   const string XML_SPACE = L" ";
   const string XML_QUOTE_CHAR = L"\"";
-  const string XML_ESCAPE_CHAR = L"\\";
-  const string XML_QUOTE_ESCAPE_CHAR = XML_ESCAPE_CHAR + XML_QUOTE_CHAR;
+  const string XML_AMP_CHAR = L"&"s;
   const string XML_CDATA_TAG_START = L"<![CDATA[";
   const string XML_CDATA_TAG_END = L"]]/>";
   const string XML_TAG_START = L"<";
   const string XML_TAG_CLOSE_START = L"</";
   const string XML_TAG_END = L">";
   const string XML_TAG_CLOSE_END = L"/>";
+  
+  const string XML_ESCAPE_CHAR = L"\\";
+  const string XML_ESCAPE_QUOTE_CHAR = L"&quot;"s;
+  const string XML_ESCAPE_TAG_START = L"&lt;"s;
+  const string XML_ESCAPE_TAG_END = L"&gt;"s;
+  const string XML_ESCAPE_AMP_CHAR = L"&amp;"s;
 
-  const strvector XML_WHITESPACE_LIST = {L" ", L"\t", L"\n", L"\r"};
-  const strvector XML_TAG_END_LIST = {XML_TAG_END, XML_TAG_CLOSE_END};
-  const strvector XML_TAG_START_LIST = {XML_TAG_START, XML_TAG_CLOSE_START};
+  const strvector XML_WHITESPACE_LIST = { L" ", L"\t", L"\n", L"\r" };
+  const strvector XML_TAG_END_LIST = { XML_TAG_END, XML_TAG_CLOSE_END };
+  const strvector XML_TAG_START_LIST = { XML_TAG_START, XML_TAG_CLOSE_START };
 
-  const strmap XML_REPLACE_TAG_MAP =
-  {
-    {L"<", L"&lt;"},
-    {L">", L"&gt;"}
-  };
-  const strmap XML_REPLACE_TAG_MAP_FLIP = mapflip(XML_REPLACE_TAG_MAP);
-
-  const strmap XML_REPLACE_ATTR_MAP = {
-    {XML_QUOTE_CHAR, XML_QUOTE_ESCAPE_CHAR},
+  auto const XML_ESCAPE_CHAR_MAP = strmap{
+    {XML_TAG_START, XML_ESCAPE_TAG_START},
+    {XML_TAG_END, XML_ESCAPE_TAG_END},
+    {XML_QUOTE_CHAR, XML_ESCAPE_QUOTE_CHAR},
+    {XML_AMP_CHAR, XML_ESCAPE_AMP_CHAR},
     {XML_ESCAPE_CHAR, XML_ESCAPE_CHAR + XML_ESCAPE_CHAR}
   };
-  const strmap XML_REPLACE_ATTR_MAP_FLIP = mapflip(XML_REPLACE_ATTR_MAP);
+
+  auto const XML_ESCAPE_CHAR_MAP_FLIP = mapflip(XML_ESCAPE_CHAR_MAP);
 
   string escapeAttrChars(const string & text) {
-    return replace_by_char(text, XML_REPLACE_ATTR_MAP);
+    return replace_by_char(text, XML_ESCAPE_CHAR_MAP);
   }
 
   string unescapeAttrChars(const string & text) {
-    return replace_by_char(text, XML_REPLACE_ATTR_MAP_FLIP);
+    return replace_by_char(text, XML_ESCAPE_CHAR_MAP_FLIP);
   }
 
   string escapeTagChars(const string & text) {
-    return replace_by_char(text, XML_REPLACE_TAG_MAP);
+    return replace_by_char(text, XML_ESCAPE_CHAR_MAP);
   }
 
   string unescapeTagChars(const string & text) {
-    return replace_by_char(text, XML_REPLACE_TAG_MAP_FLIP);
+    return replace_by_char(text, XML_ESCAPE_CHAR_MAP_FLIP);
   }
 
   size_t findWS(const string & text, const size_t offset, const string& also) {
-    auto list = {also};
+    auto list = { also };
     return findWS(text, offset, list);
   }
 
@@ -85,7 +87,7 @@ namespace cb {
   }
 
   size_t findNonWS(const string & text, const size_t offset, const string& also) {
-    auto list = {also};
+    auto list = { also };
     return findNonWS(text, offset, list);
   }
 
@@ -99,7 +101,7 @@ namespace cb {
       if(!subcmp(text, XML_WHITESPACE_LIST, i)) {
         return i;
       }
-      
+
       if(!also.empty() && subcmp(text, also, i)) {
         return i;
       }
@@ -176,7 +178,7 @@ namespace cb {
 
       result += text[pos];
       pos++;
-    }    
+    }
     return result;
   }
 
