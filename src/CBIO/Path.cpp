@@ -25,6 +25,14 @@ namespace cb {
     return filename.substr(pos);
   }
 
+  string filenamebase(string const & filename) {
+    auto pos = filenameextpos(filename);
+    if(pos == string::npos) {
+      return filename;
+    }
+    return filename.substr(0, pos > 0 ? pos - 1 : pos);
+  }
+
   string makefilename(string const & name, string const & ext) {
     return name + PATH_EXT_SEP + ext;
   }

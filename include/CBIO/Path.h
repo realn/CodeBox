@@ -6,6 +6,7 @@
 namespace cb {
   extern size_t filenameextpos(string const& filename);
   extern string filenameext(string const& filename);
+  extern string filenamebase(string const& filename);
   extern string makefilename(string const& name, string const& ext);
 
   extern string clearpath(string const& path);
