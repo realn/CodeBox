@@ -178,6 +178,7 @@
     <ClCompile Include="DisplayMode.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="Funcs.cpp" />
     <ClCompile Include="GLContext.cpp" />
     <ClCompile Include="RWObj.cpp" />
     <ClCompile Include="SDLConvert.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="..\..\include\CBSDL\System.h" />
     <ClInclude Include="..\..\include\CBSDL\Timer.h" />
     <ClInclude Include="..\..\include\CBSDL\Window.h" />
+    <ClInclude Include="Funcs.h" />
     <ClInclude Include="SDLConvert.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
