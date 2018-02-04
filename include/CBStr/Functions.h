@@ -21,6 +21,7 @@ namespace cb {
 
   extern bool ends_with(string const& text, string const& with);
 
+  extern size_t strfind_of(string const& text, strvector const& list, size_t const offset = 0, strvector::const_iterator outIt = strvector::const_iterator());
 
   // string manipulation
 
@@ -37,6 +38,8 @@ namespace cb {
   extern string join(const strvector& list, string const& glue = string());
 
   extern strvector split(string const& text, string const& knife = string(), bool const skipEmpty = false);
+
+  extern strvector split(string const& text, strvector const& knifes = strvector(), bool const skipEmpty = false);
 
   extern string varReplace(string const& format, const strvector& list);
 

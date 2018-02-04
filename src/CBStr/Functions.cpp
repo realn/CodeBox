@@ -161,6 +161,31 @@ namespace cb {
     return result;
   }
 
+  strvector split(string const & text, strvector const & knifes, bool const skipEmpty) {
+    auto result = strvector();
+    if(knifes.empty()) {
+      for(auto& item : text) {
+        result.push_back(string(1, item));
+      }
+      return result;
+    }
+
+    auto pos = size_t(0u);
+    auto it = knifes.end();
+    while(pos != string::npos) {
+      auto next_pos = strfind_of(text, knifes, pos, it);
+      auto item = substrpos(text, pos, next_pos);
+      if(!(item.empty() && skipEmpty)) {
+        result.push_back(item);
+      }
+      if(next_pos != string::npos) {
+        next_pos += it->length();
+      }
+      pos = next_pos;
+    }
+    return result;
+  }
+
   string varReplace(string const& format, strvector const& list) {
     if(format.empty()) {
       return string();
@@ -190,6 +215,25 @@ namespace cb {
       return false;
     }
     return text.compare(text.length() - with.length(), with.length(), with) == 0;
+  }
+
+  size_t strfind_of(string const & text, strvector const& list, size_t const offset, strvector::const_iterator outIt) {
+    size_t result = string::npos;
+    outIt = list.end();
+    for(auto it = list.begin(); it < list.end(); it++) {
+      if(it->empty())
+        continue;
+
+      auto pos = text.find(*it, offset);
+      if(pos == string::npos)
+        continue;
+
+      if(result == string::npos || pos < result) {
+        result = pos;
+        outIt = it;
+      }
+    }
+    return result;
   }
 
   string repeat(string const & text, size_t const times) {
