@@ -139,6 +139,7 @@ namespace cb {
 
   strvector split(string const& text, string const& knife, bool const skipEmpty) {
     auto result = strvector();
+    result.reserve(30);
     if(knife.empty()) {
       for(auto& item : text) {
         result.push_back(string(1, item));
@@ -163,6 +164,7 @@ namespace cb {
 
   strvector split(string const & text, strvector const & knifes, bool const skipEmpty) {
     auto result = strvector();
+    result.reserve(30);
     if(knifes.empty()) {
       for(auto& item : text) {
         result.push_back(string(1, item));
