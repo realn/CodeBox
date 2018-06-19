@@ -92,7 +92,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>cbsdl</TargetName>
     <IncludePath>$(SolutionDir)..\3rd\SDL\include;$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\SDL_image;$(SolutionDir)..\3rd\SDL_ttf;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\3rd\SDL\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_image\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_ttf\VisualC\external\lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\3rd\SDL\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_image\VisualC\$(Platform)\$(Configuration)\;$(SolutionDir)..\3rd\SDL_ttf\VisualC\external\lib\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -199,6 +199,7 @@
     <ClInclude Include="..\..\include\CBSDL\DisplayMode.h" />
     <ClInclude Include="..\..\include\CBSDL\Events.h" />
     <ClInclude Include="..\..\include\CBSDL\Font.h" />
+    <ClInclude Include="..\..\include\CBSDL\Funcs.h" />
     <ClInclude Include="..\..\include\CBSDL\Fwd.h" />
     <ClInclude Include="..\..\include\CBSDL\GLContext.h" />
     <ClInclude Include="..\..\include\CBSDL\RWObj.h" />
@@ -206,7 +207,6 @@
     <ClInclude Include="..\..\include\CBSDL\System.h" />
     <ClInclude Include="..\..\include\CBSDL\Timer.h" />
     <ClInclude Include="..\..\include\CBSDL\Window.h" />
-    <ClInclude Include="Funcs.h" />
     <ClInclude Include="SDLConvert.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

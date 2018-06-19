@@ -95,7 +95,7 @@
     <ClInclude Include="SDLConvert.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Funcs.h">
+    <ClInclude Include="..\..\include\CBSDL\Funcs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
