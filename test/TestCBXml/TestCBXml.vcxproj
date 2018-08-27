@@ -23,7 +23,7 @@
     <ProjectGuid>{BBDD5876-6BF1-40D3-B0DE-323F54CBC6B8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TestCBXml</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
