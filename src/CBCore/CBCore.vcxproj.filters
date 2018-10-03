@@ -9,50 +9,29 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\utf8">
-      <UniqueIdentifier>{e201fd3b-6de6-4966-8596-a968fa9cf1c2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Include">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\CBCore\Defines.h">
+      <Filter>Include</Filter>
+    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="utf8.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utf8\checked.h">
-      <Filter>Source Files\utf8</Filter>
-    </ClInclude>
-    <ClInclude Include="utf8\core.h">
-      <Filter>Source Files\utf8</Filter>
-    </ClInclude>
-    <ClInclude Include="utf8\unchecked.h">
-      <Filter>Source Files\utf8</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\CBStr\Defines.h">
+    <ClInclude Include="..\..\include\CBCore\Finalize.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\CBStr\StringEx.h">
+    <ClInclude Include="..\..\include\CBCore\Reverse.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\CBStr\Convert.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\CBStr\Functions.h">
+    <ClInclude Include="..\..\include\CBCore\Flags.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Convert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

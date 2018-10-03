@@ -1,29 +1,8 @@
 #pragma once
 
-#include <string>
-#include <sstream>
-#include <vector>
-#include <map>
-#include <algorithm>
+#include <CBCore/Defines.h>
 
 namespace cb {
-  using s8 = signed char;
-  using s16 = signed short;
-  using s32 = signed int;
-  using s64 = signed __int64;
-
-  using u8 = unsigned char;
-  using u16 = unsigned short;
-  using u32 = unsigned int;
-  using u64 = unsigned __int64;
-
-  using string = std::wstring;
-
-  using strvector = std::vector<string>;
-  using stringstream = std::wstringstream;
-  using strmap = std::map<string, string>;
-  using utf8string = std::string;
-
   template<typename _Type>
   string toStr(const _Type& value) {
     auto ss = stringstream();
@@ -58,89 +37,4 @@ namespace cb {
     }
     return false;
   }
-
-  template<typename _LambdaT>
-  class OnScopeExit {
-  private:
-    _LambdaT mLambda;
-  public:
-    OnScopeExit(_LambdaT onScope) : mLambda(onScope) {}
-    ~OnScopeExit() { mLambda(); }
-  };
-
-  template<typename _LambdaT>
-  auto finalize(_LambdaT onScopeExit) {
-    return OnScopeExit<_LambdaT>(onScopeExit);
-  }
-
-  template<typename _KeyType, typename _ValueType>
-  std::vector<_KeyType> mapkeys(std::map<_KeyType, _ValueType> const& obj) {
-    auto result = std::vector<_KeyType>();
-    for(auto& item : obj) {
-      result.push_back(item.first);
-    }
-    return result;
-  }
-
-  template<typename _KeyType, typename _ValueType>
-  std::vector<_ValueType> mapvalues(std::map<_KeyType, _ValueType> const& obj) {
-    auto result = std::vector<_ValueType>();
-    for(auto& item : obj) {
-      result.push_back(item.second);
-    }
-    return result;
-  }
-
-  template<typename _KeyType, typename _ValueType>
-  std::map<_ValueType, _KeyType> mapflip(std::map<_KeyType, _ValueType> const& obj) {
-    auto result = std::map<_ValueType, _KeyType>();
-    for(auto& item : obj) {
-      result.insert({item.second, item.first});
-    }
-    return result;
-  }
-
-  template<class _T>
-  struct reverse_adapter { 
-    _T& iterable; 
-  public:
-    auto begin() { return std::rbegin(iterable); }
-    auto begin() const { return std::rbegin(iterable); }
-    auto end() { return std::rend(iterable); }
-    auto end() const { return std::rend(iterable); }
-  };
-
-  template<class _T>
-  reverse_adapter<_T> reverse(_T&& iterable) { return { iterable }; }
 }
-
-#ifndef ENUM_FLAG
-#define ENUM_FLAG_OPERATOR(Type,Op) \
-constexpr Type const operator Op(Type const& arg1, Type const& arg2) { \
-  return static_cast<Type const>(static_cast<cb::u32 const>(arg1) Op static_cast<cb::u32 const>(arg2)); \
-};
-#define ENUM_FLAG_ASSIGN_OPERATOR(Type,OpAss,Op) \
-constexpr Type const operator OpAss(Type& arg1, Type const& arg2) { \
-  arg1 = arg1 Op arg2; \
-  return arg1; \
-};
-#define ENUM_FLAG(Type) \
-enum class Type; \
-ENUM_FLAG_OPERATOR(Type, |) \
-ENUM_FLAG_OPERATOR(Type, &) \
-ENUM_FLAG_OPERATOR(Type, ^) \
-ENUM_FLAG_ASSIGN_OPERATOR(Type, |=, |) \
-ENUM_FLAG_ASSIGN_OPERATOR(Type, &=, & ) \
-ENUM_FLAG_ASSIGN_OPERATOR(Type, ^=, ^ ) \
-constexpr Type const operator ~(Type const& arg) { \
-  return static_cast<Type const>(~static_cast<cb::u32 const>(arg)); \
-}; \
-constexpr bool const isTrueOr(Type const& arg, Type const& bits) { \
-  return static_cast<cb::u32 const>(arg & bits) > 0; \
-} \
-constexpr bool const isTrueAnd(Type const& arg, Type const& bits) { \
-  return static_cast<cb::u32 const>((~(arg & bits)) & bits) == 0; \
-} \
-enum class Type \
-
-#endif

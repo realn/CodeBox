@@ -1,5 +1,7 @@
 #pragma once
 
+#include <CBCore/Flags.h>
+
 #include "Defines.h"
 
 namespace cb {
