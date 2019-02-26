@@ -1,11 +1,10 @@
 #include "stdafx.h"
-#include <CBXml/NodeList.h>
-#include <CBXml/Node.h>
 #include "Funcs.h"
 
-#include <CBStr/StringEx.h>
-
 #include <algorithm>
+#include <CBCore/StringFunctions.h>
+#include <CBXml/Node.h>
+#include <CBXml/NodeList.h>
 
 namespace cb {
   CXmlNodeList::CXmlNodeList() {}

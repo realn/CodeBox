@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "Funcs.h"
 
-#include <CBXml/StringFormat.h>
-
 #include <map>
-
-#include <CBStr/StringEx.h>
+#include <CBCore/StringFunctions.h>
+#include <CBXml/StringFormat.h>
 
 namespace cb {
   const string XML_SPACE = L" ";

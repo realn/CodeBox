@@ -1,5 +1,4 @@
-#ifndef __CB_XML_NODE_LIST_H__
-#define __CB_XML_NODE_LIST_H__
+#pragma once
 
 #include "Defines.h"
 #include "StringFormat.h"
@@ -77,6 +76,4 @@ namespace cb {
     void operator=(CXmlNodeList&& other);
   };
 }
-
-#endif // !__CB_XML_NODE_LIST_H__
 

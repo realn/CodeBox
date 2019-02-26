@@ -51,11 +51,11 @@ namespace cb {
 
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void SetData(std::vector<_Type, _TypeAlloc> const& data, BufferUsage const& usage = BufferUsage::STATIC_DRAW) {
-        SetDataPriv(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
+        SetDataRaw(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
       }
       template<typename _Type, size_t _TypeSize>
       void SetData(std::array<_Type, _TypeSize> const& data, BufferUsage const& usage = BufferUsage::STATIC_DRAW) {
-        SetDataPriv(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
+        SetDataRaw(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
       }
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void SetData(std::initializer_list<_Type> const& data, BufferUsage const& usage = BufferUsage::STATIC_DRAW) {
@@ -65,11 +65,11 @@ namespace cb {
 
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void SetSubData(std::vector<_Type, _TypeAlloc> const& data, size_t const offset = 0) {
-        SetSubDataPriv(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
+        SetSubDataRaw(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
       }
       template<typename _Type, size_t _TypeSize>
       void SetSubData(std::array<_Type, _TypeSize> const& data, size_t const offset = 0) {
-        SetSubDataPriv(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
+        SetSubDataRaw(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
       }
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void SetSubData(std::initializer_list<_Type> const& data, size_t const offset = 0) {
@@ -77,9 +77,8 @@ namespace cb {
         SetSubData(datavec, offset);
       }
 
-    private:
-      void SetDataPriv(void const* pData, std::size_t const& size, BufferUsage const& usage);
-      void SetSubDataPriv(std::size_t const& offset, void const* pData, std::size_t const& size);
+      void SetDataRaw(void const* pData, std::size_t const& size, BufferUsage const& usage);
+      void SetSubDataRaw(std::size_t const& offset, void const* pData, std::size_t const& size);
     };
 
     extern void drawArrays(PrimitiveType const primType,

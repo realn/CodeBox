@@ -1,5 +1,4 @@
-#ifndef __CB_XML_DOCUMENT_H__
-#define __CB_XML_DOCUMENT_H__
+#pragma once
 
 #include "Node.h"
 #include "StringFormat.h"
@@ -25,5 +24,3 @@ namespace cb {
     string ToString() const;
   };
 }
-
-#endif // !__CB_XML_DOCUMENT_H__

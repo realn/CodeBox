@@ -2,7 +2,7 @@
 #include <CBSDL/Font.h>
 #include <CBSDL/RWObj.h>
 #include <CBSDL/Surface.h>
-#include <CBStr/StringEx.h>
+#include <CBCore/StringConvert.h>
 
 #include <SDL_ttf.h>
 

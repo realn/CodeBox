@@ -3,9 +3,10 @@
 #include <CBSDL/DisplayMode.h>
 #include <CBSDL/Surface.h>
 #include <CBSDL/Consts.h>
+#include <CBCore/StringConvert.h>
 
-#include <SDL_video.h>
 #include "SDLConvert.h"
+#include <SDL_video.h>
 #include <algorithm>
 #include <exception>
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "../../include/CBSDL/Funcs.h"
-#include "../../include/CBSDL/Consts.h"
+#include <CBSDL/Consts.h>
+#include <CBSDL/Funcs.h>
+#include <CBCore/StringConvert.h>
 
 #include <SDL_mouse.h>
 

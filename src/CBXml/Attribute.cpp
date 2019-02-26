@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include <CBXml/Attribute.h>
+#include <CBCore/StringConvert.h>
+#include <CBCore/StringFunctions.h>
 
 #include "Funcs.h"
-
-#include <CBStr/StringEx.h>
 
 namespace cb {
   using namespace std::string_literals;

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include <CBSDL/Events.h>
 #include <CBSDL/Consts.h>
+#include <CBCore/StringConvert.h>
+
 #include <SDL_events.h>
 
 inline SDL_Event& Get(cb::sdl::CEvent& event) {

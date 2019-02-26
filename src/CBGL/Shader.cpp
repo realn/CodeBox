@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include <CBGL/Shader.h>
-
-#include <CBStr/StringEx.h>
+#include <CBCore/StringConvert.h>
 
 namespace cb {
   namespace gl {

@@ -1,10 +1,11 @@
 #include "stdafx.h"
-#include <CBXml/AttributeList.h>
-
 #include "Funcs.h"
 
 #include <algorithm>
-#include <CBStr/StringEx.h>
+
+#include <CBCore/StringConvert.h>
+#include <CBCore/StringFunctions.h>
+#include <CBXml/AttributeList.h>
 
 namespace cb {
   CXmlAttributeList::CXmlAttributeList() {}

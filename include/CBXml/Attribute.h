@@ -1,5 +1,4 @@
-#ifndef __CB_XML_ATTRIBUTE_H__
-#define __CB_XML_ATTRIBUTE_H__
+#pragma once
 
 #include "Defines.h"
 
@@ -33,6 +32,3 @@ namespace cb {
     operator string&() { return mValue; }
   };
 }
-
-
-#endif // !__CB_XML_ATTRIBUTE_H__

@@ -1,5 +1,4 @@
-#ifndef __CB_XML_ATTRIBUTE_LIST_H__
-#define __CB_XML_ATTRIBUTE_LIST_H__
+#pragma once
 
 #include "Attribute.h"
 
@@ -53,5 +52,3 @@ namespace cb {
     CXmlAttribute& operator[](string const& name);
   };
 }
-
-#endif // !__CB_XML_ATTRIBUTE_LIST_H__

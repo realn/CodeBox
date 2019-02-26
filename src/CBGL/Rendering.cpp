@@ -33,6 +33,52 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
+    void setViewport(const CViewport & viewport) {
+      glViewport(viewport.Pos.x, viewport.Pos.y, viewport.Size.x, viewport.Size.y);
+      CB_GL_CHECKERRORS();
+    }
+
+    CViewport getViewport() {
+      GLint viewport[4];
+      glGetIntegerv(GL_VIEWPORT, viewport);
+      CB_GL_CHECKERRORS();
+      return CViewport{ 
+        {viewport[0], viewport[1]}, 
+        {static_cast<cb::u32>(viewport[2]), static_cast<cb::u32>(viewport[3]) } 
+      };
+    }
+
+    void setScissorRect(const CViewport & rect) {
+      glScissor(rect.Pos.x, rect.Pos.y, rect.Size.x, rect.Size.y);
+    }
+
+    CViewport getScissorRect() {
+      GLint viewport[4];
+      glGetIntegerv(GL_SCISSOR_BOX, viewport);
+      CB_GL_CHECKERRORS();
+      return CViewport{
+        {viewport[0], viewport[1]},
+        {static_cast<cb::u32>(viewport[2]), static_cast<cb::u32>(viewport[3]) }
+      };
+    }
+
+    void setScissorTest(bool enabled) {
+      if (enabled) {
+        glEnable(GL_SCISSOR_TEST);
+      }
+      else {
+        glDisable(GL_SCISSOR_TEST);
+      }
+      CB_GL_CHECKERRORS();
+    }
+
+    bool isScissorTestEnabled() {
+      GLint result;
+      glGetIntegerv(GL_SCISSOR_TEST, &result);
+      CB_GL_CHECKERRORS();
+      return result == GL_TRUE;
+    }
+
 
   }
 }

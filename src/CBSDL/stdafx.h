@@ -9,8 +9,7 @@
 
 #include <SDL.h>
 
-#include <CBStr/Defines.h>
-#include <CBStr/StringEx.h>
+#include <CBCore/Defines.h>
 
 extern void CB_SDL_CHECKERRORS();
 extern void CB_IMG_CHECKERRORS();

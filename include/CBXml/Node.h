@@ -1,5 +1,4 @@
-#ifndef __CB_XML_NODE_H__
-#define __CB_XML_NODE_H__
+#pragma once
 
 #include "AttributeList.h"
 #include "NodeList.h"
@@ -51,5 +50,3 @@ namespace cb {
     CXmlNode& operator[](string const & name) { return Nodes[name]; };
   };
 }
-
-#endif // !__CB_XML_NODE_H__

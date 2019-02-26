@@ -41,7 +41,7 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void CBuffer::SetDataPriv(void const * pData, std::size_t const & size, BufferUsage const & usage) {
+    void CBuffer::SetDataRaw(void const * pData, std::size_t const & size, BufferUsage const & usage) {
       auto gbuf = bind(*this);
       glBufferData(static_cast<GLenum>(mTarget),
                    static_cast<GLsizeiptr>(size),
@@ -50,7 +50,7 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void CBuffer::SetSubDataPriv(std::size_t const & offset, void const * pData, std::size_t const & size) {
+    void CBuffer::SetSubDataRaw(std::size_t const & offset, void const * pData, std::size_t const & size) {
       auto gbuf = bind(*this);
       glBufferSubData(static_cast<GLenum>(mTarget),
                       static_cast<GLintptr>(offset),

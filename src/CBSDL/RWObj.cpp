@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <CBSDL/RWObj.h>
+#include <CBCore/StringConvert.h>
 
 inline SDL_RWops* Get(cb::sdl::CRWObj& obj) {
   return reinterpret_cast<SDL_RWops*>(obj.Get());

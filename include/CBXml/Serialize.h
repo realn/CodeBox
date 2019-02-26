@@ -1,5 +1,4 @@
-#ifndef __CB_XML_SERIALIZE_H__
-#define __CB_XML_SERIALIZE_H__
+#pragma once
 
 #include "Node.h"
 #include "NodeList.h"
@@ -266,5 +265,3 @@ namespace cb {
 #define CB_DEFINEXMLREAD(OBJ) template<> bool cb::CXmlSerialize<OBJ>::Read() 
 #define CB_DEFINEXMLWRITE(OBJ) template<> bool cb::CXmlSerialize<OBJ>::Write() 
 #define CB_DEFINEXMLRW(OBJ) template<> bool cb::CXmlSerialize<OBJ>::RWObj() 
-
-#endif // !__CB_XML_SERIALIZE_H__

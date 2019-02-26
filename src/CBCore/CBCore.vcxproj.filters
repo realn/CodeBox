@@ -13,6 +13,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\utf8">
+      <UniqueIdentifier>{1c1700a1-5e0e-4353-b359-5fad8d7dc10b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\CBCore\Defines.h">
@@ -30,9 +33,69 @@
     <ClInclude Include="..\..\include\CBCore\Flags.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\File.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\Path.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\StringConvert.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\StringFunctions.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\Consts.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\Log.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\LogFormat.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\Logger.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\CBCore\PlainTextLogFormat.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="utf8.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utf8\checked.h">
+      <Filter>Source Files\utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="utf8\core.h">
+      <Filter>Source Files\utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="utf8\unchecked.h">
+      <Filter>Source Files\utf8</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringConvert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlainTextLogFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

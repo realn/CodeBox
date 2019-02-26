@@ -1,5 +1,4 @@
-#ifndef __CB_XML_STRINGFORMAT_H__
-#define __CB_XML_STRINGFORMAT_H__
+#pragma once
 
 #include "Defines.h"
 
@@ -22,6 +21,4 @@ namespace cb {
     CXmlStringFormat(CXmlStringFormat const & other);
   };
 }
-
-#endif // !__CB_XML_STRINGFORMAT_H__
 

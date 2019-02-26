@@ -22,7 +22,7 @@
     <ProjectGuid>{EB51E9EE-CC6E-4E81-BA9A-B33A024BE528}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TestApp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -166,30 +166,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="main2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader_f.glsl" />
     <None Include="shader_v.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\CBCore\CBCore.vcxproj">
+      <Project>{d6098923-d1b3-4c96-820b-df7cdba906de}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\CBGL\CBGL.vcxproj">
       <Project>{cf032a6f-36e4-4cf8-bc01-b63d021b2ca9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\CBIO\CBIO.vcxproj">
-      <Project>{31a3c5fd-deb8-465e-8f93-956e554c2604}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\CBLog\CBLog.vcxproj">
-      <Project>{9936a2ee-0c27-421e-93e1-5d72851e4706}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\src\CBMath\CBMath.vcxproj">
       <Project>{ab2d9af3-63ce-47cc-8e2f-41d1ed4220a1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\src\CBSDL\CBSDL.vcxproj">
       <Project>{6191b53e-e40c-4410-8329-255d37e88d3e}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\CBStr\CBStr.vcxproj">
-      <Project>{9d9df584-c892-4cb6-b531-c085e803dade}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\src\CBXml\CBXml.vcxproj">
       <Project>{90eeef07-258a-49a1-aec4-325a51f8fc06}</Project>

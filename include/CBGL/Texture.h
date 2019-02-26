@@ -85,11 +85,11 @@ namespace cb {
 
       template<typename _Type>
       void SetData(InputFormat const inputFormat, std::vector<_Type> const& data) {
-        SetDataPriv(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
+        SetDataRaw(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
       }
       template<typename _Type, size_t _TypeSize>
       void SetData(InputFormat const inputFormat, std::array<_Type, _TypeSize> const& data) {
-        SetDataPriv(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
+        SetDataRaw(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
       }
       template<typename _Type>
       void SetData(InputFormat const inputFormat, std::initializer_list<_Type> const& data) {
@@ -105,8 +105,9 @@ namespace cb {
       void Bind(unsigned const unit = 0) const;
       void UnBind(unsigned const unit = 0) const;
 
+      void SetDataRaw(InputFormat const inputFormat, DataType const inputType, void const* pData);
+
     private:
-      void SetDataPriv(InputFormat const inputFormat, DataType const inputType, void const* pData);
       void SetParamPriv(unsigned param, unsigned value);
       static unsigned GetMinFilter(TextureFilter const minFilter, TextureFilter const mipFilter);
     };

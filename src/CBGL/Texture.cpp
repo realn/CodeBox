@@ -70,7 +70,7 @@ namespace cb {
       glActiveTexture(GL_TEXTURE0);
     }
 
-    void CTexture::SetDataPriv(InputFormat const inputFormat, DataType const inputType, void const * pData) {
+    void CTexture::SetDataRaw(InputFormat const inputFormat, DataType const inputType, void const * pData) {
       auto gtex = bind(*this);
       glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mSize.x, mSize.y, static_cast<GLenum>(inputFormat), static_cast<GLenum>(inputType), pData);
       CB_GL_CHECKERRORS();

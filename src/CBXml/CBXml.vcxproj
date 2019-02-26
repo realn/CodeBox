@@ -142,11 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CBStr\CBStr.vcxproj">
-      <Project>{9d9df584-c892-4cb6-b531-c085e803dade}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\include\CBXml\Attribute.h" />
     <ClInclude Include="..\..\include\CBXml\AttributeList.h" />
     <ClInclude Include="..\..\include\CBXml\Defines.h" />
@@ -173,6 +168,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StringFormat.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CBCore\CBCore.vcxproj">
+      <Project>{d6098923-d1b3-4c96-820b-df7cdba906de}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

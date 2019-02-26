@@ -170,8 +170,8 @@
     <ProjectReference Include="..\..\3rd\SDL_ttf\VisualC\SDL_ttf.vcxproj">
       <Project>{dddbd07d-dc76-4af6-8d02-3e2deb6ee255}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CBStr\CBStr.vcxproj">
-      <Project>{9d9df584-c892-4cb6-b531-c085e803dade}</Project>
+    <ProjectReference Include="..\CBCore\CBCore.vcxproj">
+      <Project>{d6098923-d1b3-4c96-820b-df7cdba906de}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

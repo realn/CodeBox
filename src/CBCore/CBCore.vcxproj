@@ -76,6 +76,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>cbcore</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -151,19 +152,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\CBCore\Consts.h" />
     <ClInclude Include="..\..\include\CBCore\Defines.h" />
+    <ClInclude Include="..\..\include\CBCore\File.h" />
     <ClInclude Include="..\..\include\CBCore\Finalize.h" />
     <ClInclude Include="..\..\include\CBCore\Flags.h" />
+    <ClInclude Include="..\..\include\CBCore\Log.h" />
+    <ClInclude Include="..\..\include\CBCore\LogFormat.h" />
+    <ClInclude Include="..\..\include\CBCore\Logger.h" />
+    <ClInclude Include="..\..\include\CBCore\Path.h" />
+    <ClInclude Include="..\..\include\CBCore\PlainTextLogFormat.h" />
     <ClInclude Include="..\..\include\CBCore\Reverse.h" />
+    <ClInclude Include="..\..\include\CBCore\StringConvert.h" />
+    <ClInclude Include="..\..\include\CBCore\StringFunctions.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="utf8.h" />
+    <ClInclude Include="utf8\checked.h" />
+    <ClInclude Include="utf8\core.h" />
+    <ClInclude Include="utf8\unchecked.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="PlainTextLogFormat.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StringConvert.cpp" />
+    <ClCompile Include="StringFunctions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
