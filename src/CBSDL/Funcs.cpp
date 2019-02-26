@@ -7,15 +7,6 @@
 
 namespace cb {
   namespace sdl {
-    bool IsCursorVisible() {
-      return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
-    }
-
-    void SetCursorVisible(bool const value) {
-      SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);
-      CB_SDL_CHECKERRORS();
-    }
-
     cb::string GetNameFromScanCode(ScanCode const code) {
       auto szName = SDL_GetScancodeName(static_cast<SDL_Scancode>(code));
       CB_SDL_CHECKERRORS();
