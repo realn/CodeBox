@@ -17,6 +17,7 @@ namespace cb {
     enum class FlipDir;
     enum class System;
 
+    class CCursor;
     class CWindow;
     class CSystem;
     class CDisplayMode;

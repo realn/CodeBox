@@ -80,6 +80,10 @@ namespace cb {
     inline operator _Enum() const {
       return static_cast<_Enum>(mValue);
     }
+
+    inline _Enum Get() const {
+      return static_cast<_Enum>(mValue);
+    }
   };
 }
 

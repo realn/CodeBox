@@ -18,5 +18,32 @@ namespace cb {
       CB_SDL_CHECKERRORS();
       return static_cast<cb::sdl::ScanCode>(code);
     }
+
+    bool HasClipboardText() {
+      return SDL_HasClipboardText() == SDL_TRUE;
+    }
+
+    void SetClipboardText(const cb::string & text) {
+      auto utf8text = cb::toUtf8(text);
+      SDL_SetClipboardText(utf8text.c_str());
+      CB_SDL_CHECKERRORS();
+    }
+
+    cb::string GetClipboardText() {
+      auto utf8text = SDL_GetClipboardText();
+      CB_SDL_CHECKERRORS();
+      return cb::fromUtf8(utf8text);
+    }
+
+    void SetModState(const KeyMods mods) {
+      SDL_SetModState(static_cast<SDL_Keymod>(mods.Get()));
+      CB_SDL_CHECKERRORS();
+    }
+
+    KeyMods GetModState() {
+      auto mods = static_cast<KeyMod>(SDL_GetModState());
+      CB_SDL_CHECKERRORS();
+      return KeyMods(mods);
+    }
   }
 }
