@@ -4,6 +4,7 @@
 
 namespace cb {
   namespace sdl {
+    enum class SystemCursor;
     class CSurface;
 
     class CCursor {
@@ -15,6 +16,7 @@ namespace cb {
 
       CCursor(const data8u& data, const data8u& mask, const glm::uvec2& size, const glm::uvec2& hotPos);
       CCursor(CSurface& surface, const glm::uvec2& hotPos);
+      CCursor(const SystemCursor cursor);
       CCursor(const CCursor&) = delete;
       CCursor(CCursor&& other);
       explicit CCursor(void* cursor);

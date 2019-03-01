@@ -7,6 +7,7 @@
 
 #include "SDLConvert.h"
 #include <SDL_video.h>
+#include <SDL_syswm.h>
 #include <algorithm>
 #include <exception>
 
@@ -137,7 +138,7 @@ namespace cb {
       return res;
     }
 
-    WindowFlag CWindow::GetFlags() const {
+    WindowFlags CWindow::GetFlags() const {
       auto flags = SDL_GetWindowFlags(::Get(*this));
       CB_SDL_CHECKERRORS();
       return static_cast<WindowFlag>(flags);
@@ -159,6 +160,13 @@ namespace cb {
     glm::uvec2 CWindow::GetSize() const {
       auto result = glm::ivec2();
       SDL_GetWindowSize(::Get(*this), &result.x, &result.y);
+      CB_SDL_CHECKERRORS();
+      return glm::uvec2(result);
+    }
+
+    glm::uvec2 CWindow::GetDrawableSize() const {
+      auto result = glm::ivec2();
+      SDL_GL_GetDrawableSize(::Get(*this), &result.x, &result.y);
       CB_SDL_CHECKERRORS();
       return glm::uvec2(result);
     }
@@ -256,6 +264,22 @@ namespace cb {
       auto res = SDL_SetWindowModalFor(::Get(*this), ::Get(parent));
       CB_SDL_CHECKERRORS();
       return res == 0;
+    }
+
+    void CWindow::WarpMouse(glm::ivec2 pos) {
+      SDL_WarpMouseInWindow(::Get(*this), pos.x, pos.y);
+      CB_SDL_CHECKERRORS();
+    }
+
+    void * CWindow::GetWindowNativeHandle() const {
+#ifdef _WIN32
+      SDL_SysWMinfo wmInfo;
+      SDL_VERSION(&wmInfo.version);
+      SDL_GetWindowWMInfo(::Get(*this), &wmInfo);
+      return wmInfo.info.win.window;
+#else
+      return nullptr;
+#endif
     }
 
     CWindow CWindow::FromId(WindowID const Id) {

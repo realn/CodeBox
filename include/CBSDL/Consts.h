@@ -520,6 +520,14 @@ namespace cb {
       X2 = 5,
     };
 
+    ENUM_FLAG(ButtonFlag) {
+      LEFT = ShiftBit(Button::LEFT),
+      MIDDLE = ShiftBit(Button::MIDDLE),
+      RIGHT = ShiftBit(Button::RIGHT),
+      X1 = ShiftBit(Button::X1),
+      X2 = ShiftBit(Button::X2)
+    };
+
     enum class GLAttribute {
       RED_SIZE,
       GREEN_SIZE,
@@ -546,6 +554,22 @@ namespace cb {
       SHARE_WITH_CURRENT_CONTEXT,
       FRAMEBUFFER_SRGB_CAPABLE,
       CONTEXT_RELEASE_BEHAVIOR
+    };
+
+    enum class SystemCursor {
+      ARROW,     /**< Arrow */
+      IBEAM,     /**< I-beam */
+      WAIT,      /**< Wait */
+      CROSSHAIR, /**< Crosshair */
+      WAITARROW, /**< Small wait cursor (or Wait if not available) */
+      SIZENWSE,  /**< Double arrow pointing northwest and southeast */
+      SIZENESW,  /**< Double arrow pointing northeast and southwest */
+      SIZEWE,    /**< Double arrow pointing west and east */
+      SIZENS,    /**< Double arrow pointing north and south */
+      SIZEALL,   /**< Four pointed arrow pointing north, south, east, and west */
+      NO,        /**< Slashed circle or crossbones */
+      HAND,      /**< Hand */
+      NUM_SYSTEM_CURSORS
     };
   }
 }

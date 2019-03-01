@@ -45,5 +45,17 @@ namespace cb {
       CB_SDL_CHECKERRORS();
       return KeyMods(mods);
     }
+
+    ButtonFlags GetMouseModState(glm::ivec2 & outPos) {
+      auto state = SDL_GetMouseState(&outPos.x, &outPos.y);
+      CB_SDL_CHECKERRORS();
+      return static_cast<ButtonFlag>(state);
+    }
+
+    ButtonFlags GetGlobalMouseModSate(glm::ivec2 & outPod) {
+      auto state = SDL_GetGlobalMouseState(&outPod.x, &outPod.y);
+      CB_SDL_CHECKERRORS();
+      return static_cast<ButtonFlag>(state);
+    }
   }
 }

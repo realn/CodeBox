@@ -16,6 +16,9 @@ namespace cb {
       void Update();
 
       float GetTimeDelta() const;
+
+      u64 GetFrequency() const { return mFrequency; }
+      u64 GetLastCount() const { return mLastCount; }
     };
   }
 }

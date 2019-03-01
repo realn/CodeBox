@@ -24,6 +24,11 @@ namespace cb {
       CB_SDL_CHECKERRORS();
     }
 
+    CCursor::CCursor(const SystemCursor cursor) {
+      mCursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor));
+      CB_SDL_CHECKERRORS();
+    }
+
     CCursor::CCursor(CCursor && other) : mCursor(nullptr) {
       std::swap(mCursor, other.mCursor);
     }

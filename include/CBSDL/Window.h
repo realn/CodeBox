@@ -49,10 +49,11 @@ namespace cb {
       CDisplayMode GetDisplayMode() const;
       PixelFormat GetPixelFormat() const;
       WindowID GetId() const;
-      WindowFlag GetFlags() const;
+      WindowFlags GetFlags() const;
       string GetTitle() const;
       glm::ivec2 GetPosition() const;
       glm::uvec2 GetSize() const;
+      glm::uvec2 GetDrawableSize() const;
       glm::uvec2 GetMinimumSize() const;
       glm::uvec2 GetMaximumSize() const;
       CSurface GetSurface();
@@ -70,8 +71,11 @@ namespace cb {
       bool UpdateSurfaceRects(const std::vector<CRect>& rects);
       bool SetInputFocus();
       bool SetModalFor(CWindow& parent);
+      void WarpMouse(glm::ivec2 pos);
 
       void operator=(CWindow const & other) = delete;
+
+      void* GetWindowNativeHandle() const;
 
       static glm::ivec2 const PosUndefined;
       static glm::ivec2 const PosCentered;

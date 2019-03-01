@@ -17,5 +17,8 @@ namespace cb {
 
     extern void SetModState(const KeyMods mods);
     extern KeyMods GetModState();
+
+    extern ButtonFlags GetMouseModState(glm::ivec2& outPos = glm::ivec2());
+    extern ButtonFlags GetGlobalMouseModSate(glm::ivec2& outPod = glm::ivec2());
   }
 }

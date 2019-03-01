@@ -10,5 +10,10 @@ namespace cb {
     using WindowID = u32;
     using DisplayID = u32;
     using MouseID = u32;
+
+    template<typename _Type>
+    constexpr int ShiftBit(_Type value, int shiftAdj = -1) {
+      return 1 << (static_cast<int>(value) + shiftAdj);
+    }
   }
 }
