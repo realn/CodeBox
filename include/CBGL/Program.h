@@ -38,6 +38,7 @@ namespace cb {
       void SetInLocation(std::map<unsigned, cb::string> const& locations);
       void SetOutLocation(unsigned const index, cb::string const& name);
       void SetOutLocation(std::map<unsigned, cb::string> const& locations);
+      AttributeId GetInLocation(const cb::string& name) const;
 
       UniformId GetUniformId(cb::string const& name) const;
       void SetUniform(UniformId const id, int const& value);

@@ -117,6 +117,16 @@ namespace cb {
       }
     }
 
+    AttributeId CProgram::GetInLocation(const cb::string & name) const {
+      auto vecName = cb::toUtf8(name);
+      auto id = glGetAttribLocation(mId, vecName.data());
+      CB_GL_CHECKERRORS();
+      if (id < 0) {
+        throw std::exception("Attribute location not found.");
+      }
+      return static_cast<AttributeId>(id);
+    }
+
     UniformId CProgram::GetUniformId(cb::string const & name) const {
       auto vecName = cb::toUtf8(name);
       auto id = glGetUniformLocation(mId, vecName.data());

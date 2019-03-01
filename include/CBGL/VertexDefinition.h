@@ -15,6 +15,7 @@ namespace cb {
       unsigned mStride;
       unsigned mOffset;
       unsigned mDivisor;
+      bool mNormalized;
 
     public:
       CVertexSource(unsigned const index,
@@ -22,13 +23,16 @@ namespace cb {
                     unsigned const number,
                     unsigned const stride,
                     unsigned const offset = 0,
-                    unsigned const divisor = 0)
+                    unsigned const divisor = 0,
+                    bool normalized = false
+        )
         : mIndex(index)
         , mType(type)
         , mNumber(number)
         , mStride(stride)
         , mOffset(offset) 
         , mDivisor(divisor)
+        , mNormalized(normalized)
       {}
 
       unsigned GetIndex() const { return mIndex; }
@@ -37,6 +41,7 @@ namespace cb {
       unsigned GetStride() const { return mStride; }
       unsigned GetOffset() const { return mOffset; }
       unsigned GetDivisor() const { return mDivisor; }
+      bool GetNormalized() const { return mNormalized; }
     };
 
     class CVertexDefinition {

@@ -16,7 +16,7 @@ namespace cb {
         glVertexAttribPointer(source.GetIndex(),
                               source.GetNumber(),
                               static_cast<GLenum>(source.GetType()),
-                              GL_FALSE,
+                              source.GetNormalized() ? GL_TRUE : GL_FALSE,
                               source.GetStride(),
                               reinterpret_cast<const void*>(static_cast<size_t>(source.GetOffset())));
         glEnableVertexAttribArray(source.GetIndex());
