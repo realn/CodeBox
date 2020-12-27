@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include <CBStr/Defines.h>
-#include <CBStr/StringEx.h>
+#include <CBCore/Defines.h>
+#include <CBCore/StringConvert.h>
+#include <CBCore/StringFunctions.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std::literals;

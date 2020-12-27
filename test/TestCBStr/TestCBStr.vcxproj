@@ -161,8 +161,8 @@
     <ClCompile Include="maintest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CBStr\CBStr.vcxproj">
-      <Project>{9d9df584-c892-4cb6-b531-c085e803dade}</Project>
+    <ProjectReference Include="..\..\src\CBCore\CBCore.vcxproj">
+      <Project>{d6098923-d1b3-4c96-820b-df7cdba906de}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include <CBStr/StringEx.h>
+#include <CBCore/StringConvert.h>
+#include <CBCore/StringFunctions.h>
 #include <CBXml/Attribute.h>
 #include <CBXml/AttributeList.h>
 #include <CBXml/Node.h>

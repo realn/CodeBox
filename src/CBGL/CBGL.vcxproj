@@ -50,9 +50,6 @@
     <ClCompile Include="VertexDefinition.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rd\glew\build\vc12\glew_static.vcxproj">
-      <Project>{664e6f0d-6784-4760-9565-d54f8eb1edf4}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\CBCore\CBCore.vcxproj">
       <Project>{d6098923-d1b3-4c96-820b-df7cdba906de}</Project>
     </ProjectReference>
@@ -120,8 +117,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>cbgl</TargetName>
-    <IncludePath>$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\glew\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\3rd\glew\lib\$(Configuration)\$(Platform);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\glm;$(SolutionDir)..\..\glew\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\glew\lib\$(Configuration)\$(Platform);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)..\3rd\glm;$(SolutionDir)..\3rd\glew\include;$(IncludePath)</IncludePath>

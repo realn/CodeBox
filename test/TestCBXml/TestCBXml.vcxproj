@@ -164,8 +164,8 @@
     <ClCompile Include="unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CBStr\CBStr.vcxproj">
-      <Project>{9d9df584-c892-4cb6-b531-c085e803dade}</Project>
+    <ProjectReference Include="..\..\src\CBCore\CBCore.vcxproj">
+      <Project>{d6098923-d1b3-4c96-820b-df7cdba906de}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\src\CBXml\CBXml.vcxproj">
       <Project>{90eeef07-258a-49a1-aec4-325a51f8fc06}</Project>

@@ -100,7 +100,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>cbmath</TargetName>
-    <IncludePath>$(SolutionDir)..\3rd\glm;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>cbmath</TargetName>
