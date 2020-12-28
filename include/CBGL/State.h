@@ -99,7 +99,7 @@ namespace cb {
       statemap mStates;
     public:
       CStateGuard(statemap const& states) : mStates(states) {}
-      CStateGuard(CStateGuard&& other) { std::swap(mStates, other.mStates); }
+      CStateGuard(CStateGuard&& other) = default;
       CStateGuard(CStateGuard const& other) = delete;
       ~CStateGuard() { setStateEnabled(mStates); }
 

@@ -21,7 +21,7 @@ namespace cb {
       Close();
     }
 
-    void CRWObj::SetPos(Sint64 const pos, SeekPos const whence) {
+    void CRWObj::SetPos(s64 const pos, SeekPos const whence) {
       SDL_RWseek(::Get(*this), pos, static_cast<int>(whence));
       CB_SDL_CHECKERRORS();
     }

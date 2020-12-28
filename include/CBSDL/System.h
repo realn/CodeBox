@@ -25,6 +25,8 @@ namespace cb {
     public:
       CSystem(System const system);
       ~CSystem();
+
+      void SetMainReady();
     };
   }
 }
