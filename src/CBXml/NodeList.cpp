@@ -7,16 +7,13 @@
 #include <CBXml/NodeList.h>
 
 namespace cb {
-  CXmlNodeList::CXmlNodeList() {}
+  CXmlNodeList::CXmlNodeList() = default;
 
-  CXmlNodeList::CXmlNodeList(const CXmlNodeList & other)
-    : mNodeList(other.mNodeList) {}
+  CXmlNodeList::CXmlNodeList(const CXmlNodeList& other) = default;
 
-  CXmlNodeList::CXmlNodeList(CXmlNodeList && other)
-    : mNodeList(std::move(other.mNodeList))
-  {}
+  CXmlNodeList::CXmlNodeList(CXmlNodeList&& other) = default;
 
-  CXmlNodeList::~CXmlNodeList() {}
+  CXmlNodeList::~CXmlNodeList() = default;
 
   void CXmlNodeList::AddNode(CXmlNode && node) {
     mNodeList.push_back(node);

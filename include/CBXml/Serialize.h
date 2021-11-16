@@ -7,15 +7,25 @@ namespace cb {
   template<typename _Type> string toStr(const _Type& value);
   template<typename _Type> bool fromStr(const string& text, _Type& outValue);
 
+  struct CXmlUserData {
+    virtual ~CXmlUserData();
+  };
+
 
   class CXmlSerializeBase {
   protected:
     CXmlNode& mNode;
     bool mWrite;
+    std::shared_ptr<CXmlUserData> mUserData;
 
   public:
-    CXmlSerializeBase(const CXmlNode& node, const bool write);
+    CXmlSerializeBase(const CXmlNode& node, const bool write, std::shared_ptr<CXmlUserData> userData = {});
     virtual ~CXmlSerializeBase();
+
+    template<class _Type, class = std::enable_if_t<std::is_base_of_v<CXmlUserData, _Type>>>
+    std::shared_ptr<_Type> GetUserData() const {
+      return std::dynamic_pointer_cast<_Type>(mUserData);
+    }
   };
 
   template<typename _Type>
@@ -25,9 +35,10 @@ namespace cb {
     _Type& mObject;
 
   public:
-    CXmlSerialize(const CXmlNode& node, 
-                  const _Type& object, 
-                  const bool write = false);
+    CXmlSerialize(const CXmlNode& node,
+                  const _Type& object,
+                  const bool write = false,
+                  std::shared_ptr<CXmlUserData> userData = {});
     virtual ~CXmlSerialize();
 
     bool RWObj();
@@ -53,6 +64,9 @@ namespace cb {
     bool RWNode(const string& name, _ObjType& object);
 
     template<typename _ObjType>
+    bool AddNode(const string& name, const _ObjType& object);
+
+    template<typename _ObjType>
     bool GetNodeList(std::vector<_ObjType>& list, const string& elemName) const;
 
     template<typename _ObjType>
@@ -74,24 +88,25 @@ namespace cb {
 
 
   template<typename _Type>
-  bool ReadXmlObject(const CXmlNode& node, _Type& object) {
-    auto xmlObj = CXmlSerialize<_Type>(node, object, false);
+  bool ReadXmlObject(const CXmlNode& node, _Type& object, std::shared_ptr<CXmlUserData> userData = {}) {
+    auto xmlObj = CXmlSerialize<_Type>(node, object, false, userData);
     return xmlObj.Read();
   }
 
   template<typename _Type>
-  bool WriteXmlObject(CXmlNode& node, const _Type& object) {
-    auto xmlObj = CXmlSerialize<_Type>(node, object, true);
+  bool WriteXmlObject(CXmlNode& node, const _Type& object, std::shared_ptr<CXmlUserData> userData = {}) {
+    auto xmlObj = CXmlSerialize<_Type>(node, object, true, userData);
     return xmlObj.Write();
   }
 
 
 
   template<typename _Type>
-  inline CXmlSerialize<_Type>::CXmlSerialize(const CXmlNode & node, 
-                                             const _Type & object, 
-                                             const bool write)
-    : CXmlSerializeBase(node, write)
+  inline CXmlSerialize<_Type>::CXmlSerialize(const CXmlNode& node,
+                                             const _Type& object,
+                                             const bool write, 
+                                             std::shared_ptr<CXmlUserData> userData)
+    : CXmlSerializeBase(node, write, userData)
     , mObject(const_cast<_Type&>(object)) {}
 
   template<typename _Type>
@@ -101,19 +116,19 @@ namespace cb {
   bool CXmlSerialize<_Type>::RWObj() { return false; }
 
   template<typename _Type>
-  bool CXmlSerialize<_Type>::Read() { 
+  bool CXmlSerialize<_Type>::Read() {
     return RWObj();
   }
 
   template<typename _Type>
-  bool CXmlSerialize<_Type>::Write() { 
+  bool CXmlSerialize<_Type>::Write() {
     return RWObj();
   }
 
   template<typename _Type>
   template<typename _AttrType>
-  inline bool CXmlSerialize<_Type>::GetAttribute(const string & name, 
-                                                 _AttrType & object) const {
+  inline bool CXmlSerialize<_Type>::GetAttribute(const string& name,
+                                                 _AttrType& object) const {
     auto val = mNode.Attributes.GetValue(name);
     if(val.empty())
       return false;
@@ -122,8 +137,8 @@ namespace cb {
 
   template<typename _Type>
   template<typename _AttrType>
-  inline bool CXmlSerialize<_Type>::SetAttribute(const string & name, 
-                                                 const _AttrType & object) {
+  inline bool CXmlSerialize<_Type>::SetAttribute(const string& name,
+                                                 const _AttrType& object) {
     auto val = toStr(object);
     mNode.Attributes.SetValue(name, val);
     return true;
@@ -131,8 +146,8 @@ namespace cb {
 
   template<typename _Type>
   template<typename _AttrType>
-  inline bool CXmlSerialize<_Type>::RWAttribute(const string & name, 
-                                                _AttrType & object) {
+  inline bool CXmlSerialize<_Type>::RWAttribute(const string& name,
+                                                _AttrType& object) {
     if(mWrite)
       return SetAttribute(name, object);
     return GetAttribute(name, object);
@@ -140,31 +155,31 @@ namespace cb {
 
   template<typename _Type>
   template<typename _ObjType>
-  inline bool CXmlSerialize<_Type>::GetNode(const string & name, 
-                                            _ObjType & object) const {
+  inline bool CXmlSerialize<_Type>::GetNode(const string& name,
+                                            _ObjType& object) const {
     auto it = mNode.Nodes.find(name);
     if(it == mNode.Nodes.end()) {
       return false;
     }
-    return ReadXmlObject(*it, object);
+    return ReadXmlObject(*it, object, mUserData);
   }
 
   template<typename _Type>
   template<typename _ObjType>
-  inline bool CXmlSerialize<_Type>::SetNode(const string & name, 
-                                            const _ObjType & object) {
+  inline bool CXmlSerialize<_Type>::SetNode(const string& name,
+                                            const _ObjType& object) {
     auto it = mNode.Nodes.find(name);
     if(it != mNode.Nodes.end()) {
-      return WriteXmlObject(*it, object);
+      return WriteXmlObject(*it, object, mUserData);
     }
     auto& node = mNode.Nodes.AddNode(name);
-    return WriteXmlObject(node, object);
+    return WriteXmlObject(node, object, mUserData);
   }
 
   template<typename _Type>
   template<typename _ObjType>
-  inline bool CXmlSerialize<_Type>::RWNode(const string & name, 
-                                           _ObjType & object) {
+  inline bool CXmlSerialize<_Type>::RWNode(const string& name,
+                                           _ObjType& object) {
     if(mWrite)
       return SetNode(name, object);
     return GetNode(name, object);
@@ -172,13 +187,21 @@ namespace cb {
 
   template<typename _Type>
   template<typename _ObjType>
-  inline bool CXmlSerialize<_Type>::GetNodeList(std::vector<_ObjType>& list, 
-                                                const string & elemName) const {
+  inline bool CXmlSerialize<_Type>::AddNode(const string& name,
+                                            const _ObjType& object) {
+    auto& node = mNode.Nodes.AddNode(name);
+    return WriteXmlObject(node, object, mUserData);
+  }
+
+  template<typename _Type>
+  template<typename _ObjType>
+  inline bool CXmlSerialize<_Type>::GetNodeList(std::vector<_ObjType>& list,
+                                                const string& elemName) const {
     list.clear();
     auto nodeList = mNode.Nodes.Search(elemName);
     for(auto& pNode : nodeList) {
       auto obj = _ObjType();
-      if(!ReadXmlObject(*pNode, obj)) {
+      if(!ReadXmlObject(*pNode, obj, mUserData)) {
         return false;
       }
       list.push_back(std::move(obj));
@@ -188,12 +211,12 @@ namespace cb {
 
   template<typename _Type>
   template<typename _ObjType>
-  inline bool CXmlSerialize<_Type>::SetNodeList(const std::vector<_ObjType>& list, 
-                                                const string & elemName) {
+  inline bool CXmlSerialize<_Type>::SetNodeList(const std::vector<_ObjType>& list,
+                                                const string& elemName) {
     mNode.Nodes.Remove(elemName);
     for(auto& item : list) {
       auto& node = mNode.Nodes.AddNode(elemName);
-      if(!WriteXmlObject(node, item)) {
+      if(!WriteXmlObject(node, item, mUserData)) {
         return false;
       }
     }
@@ -202,8 +225,8 @@ namespace cb {
 
   template<typename _Type>
   template<typename _ObjType>
-  inline bool CXmlSerialize<_Type>::RWNodeList(std::vector<_ObjType>& list, 
-                                               const string & elemName) {
+  inline bool CXmlSerialize<_Type>::RWNodeList(std::vector<_ObjType>& list,
+                                               const string& elemName) {
     if(mWrite)
       return SetNodeList(list, elemName);
     return GetNodeList(list, elemName);
@@ -211,9 +234,9 @@ namespace cb {
 
   template<typename _Type>
   template<typename _AttrType, typename _ObjType>
-  inline bool CXmlSerialize<_Type>::GetNodeMap(std::map<_AttrType, _ObjType>& list, 
-                                               const string & elemName, 
-                                               const string & keyName) const {
+  inline bool CXmlSerialize<_Type>::GetNodeMap(std::map<_AttrType, _ObjType>& list,
+                                               const string& elemName,
+                                               const string& keyName) const {
     list.clear();
     auto nodeList = mNode.Nodes.Search(elemName);
     for(auto& pNode : nodeList) {
@@ -233,9 +256,9 @@ namespace cb {
 
   template<typename _Type>
   template<typename _AttrType, typename _ObjType>
-  inline bool CXmlSerialize<_Type>::SetNodeMap(const std::map<_AttrType, _ObjType>& list, 
-                                               const string & elemName, 
-                                               const string & keyName) {
+  inline bool CXmlSerialize<_Type>::SetNodeMap(const std::map<_AttrType, _ObjType>& list,
+                                               const string& elemName,
+                                               const string& keyName) {
     mNode.Nodes.Remove(elemName);
     for(auto& item : list) {
       auto node = CXmlNode(elemName);
@@ -253,9 +276,9 @@ namespace cb {
 
   template<typename _Type>
   template<typename _AttrType, typename _ObjType>
-  inline bool CXmlSerialize<_Type>::RWNodeMap(std::map<_AttrType, _ObjType>& list, 
-                                              const string & elemName, 
-                                              const string & keyName) {
+  inline bool CXmlSerialize<_Type>::RWNodeMap(std::map<_AttrType, _ObjType>& list,
+                                              const string& elemName,
+                                              const string& keyName) {
     if(mWrite)
       return SetNodeMap(list, elemName, keyName);
     return GetNodeMap(list, elemName, keyName);
