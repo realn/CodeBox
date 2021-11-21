@@ -11,9 +11,12 @@ namespace cb {
 
   auto const STR_BOOL_TRUE = L"true"s;
   auto const STR_BOOL_FALSE = L"false"s;
-  
+
   auto const STR_BOOL_TRUE_CAP = L"True"s;
   auto const STR_BOOL_FALSE_CAP = L"False"s;
+
+  auto const STR_BOOL_TRUE_HIGH = L"TRUE";
+  auto const STR_BOOL_FALSE_HIGH = L"FALSE";
 
   auto const STR_FORMAT_BRACE_LEFT = L"{"s;
   auto const STR_FORMAT_BRACE_RIGHT = L"}"s;
@@ -22,7 +25,7 @@ namespace cb {
     return val;
   }
 
-  string toStr(bool const & val) {
+  string toStr(bool const& val) {
     return val ? STR_BOOL_TRUE : STR_BOOL_FALSE;
   }
 
@@ -31,12 +34,12 @@ namespace cb {
     return true;
   }
 
-  bool fromStr(string const & text, bool & outVal) {
-    if(text == STR_BOOL_TRUE || text == STR_BOOL_TRUE_CAP) {
+  bool fromStr(string const& text, bool& outVal) {
+    if (text == STR_BOOL_TRUE || text == STR_BOOL_TRUE_CAP || text == STR_BOOL_TRUE_HIGH) {
       outVal = true;
       return true;
     }
-    if(text == STR_BOOL_FALSE || text == STR_BOOL_FALSE_CAP) {
+    if (text == STR_BOOL_FALSE || text == STR_BOOL_FALSE_CAP || text == STR_BOOL_FALSE_HIGH) {
       outVal = false;
       return true;
     }
@@ -44,19 +47,19 @@ namespace cb {
   }
 
 
-  utf8string toUtf8(string const & text) {
+  utf8string toUtf8(string const& text) {
     auto result = utf8string();
     utf8::utf16to8(text.begin(), text.end(), std::back_inserter(result));
     return result;
   }
 
-  string fromUtf8(utf8string const & text) {
+  string fromUtf8(utf8string const& text) {
     auto result = string();
     utf8::utf8to16(text.begin(), text.end(), std::back_inserter(result));
     return result;
   }
 
-  size_t utf8len(utf8string const & text) {
+  size_t utf8len(utf8string const& text) {
     return utf8::distance(text.begin(), text.end());
   }
 

@@ -4,57 +4,60 @@
 #include <CBCore/PlainTextLogFormat.h>
 
 namespace cb {
-  std::weak_ptr<CLogger> CLogger::mInstance;
+  std::weak_ptr<Logger> Logger::instance;
 
-  CLogger::CLogger() {}
+  Logger::~Logger() = default;
 
-  CLogger::~CLogger() {}
-
-  void CLogger::AddStream(std::shared_ptr<ostream> pStream) {
-    if(pStream) {
-      mStreamMap[pStream] = std::make_unique<CPlainTextLogFormat>();
+  void Logger::addStream(std::shared_ptr<ostream> pStream) {
+    if (pStream) {
+      streamMap[pStream] = std::make_unique<PlainTextLogFormatter>();
     }
   }
 
-  void CLogger::AddStream(std::shared_ptr<ostream> pStream, 
-                          std::unique_ptr<ILogFormat> pFormat) {
-    if(pStream) {
-      if(pFormat) {
-        mStreamMap[pStream] = std::move(pFormat);
+  void Logger::addStream(std::shared_ptr<ostream> pStream,
+    std::unique_ptr<ILogFormatter> pFormat) {
+    if (pStream) {
+      if (pFormat) {
+        streamMap[pStream] = std::move(pFormat);
       }
       else {
-        mStreamMap[pStream] = std::make_unique<CPlainTextLogFormat>();
+        streamMap[pStream] = std::make_unique<PlainTextLogFormatter>();
       }
     }
   }
 
-  void CLogger::ClearStreams() {
-    mStreamMap.clear();
+  void Logger::clearStreams() {
+    streamMap.clear();
   }
 
-  void CLogger::BeginLog(string const & msg) {
-    for(auto& item : mStreamMap) {
-      item.second->BeginLog(*item.first, msg);
+  void Logger::beginLog(string const& msg) {
+    for (auto& item : streamMap) {
+      item.second->beginLog(*item.first, msg);
     }
   }
 
-  void CLogger::LogMsg(LogLvl const level, string const & msg) {
-    for(auto& item : mStreamMap) {
-      item.second->LogMsg(*item.first, level, msg);
+  void Logger::logMsg(LogLvl const level, string const& msg) {
+    for (auto& item : streamMap) {
+      item.second->logMsg(*item.first, level, msg);
     }
   }
 
-  void CLogger::EndLog(string const & msg) {
-    for(auto& item : mStreamMap) {
-      item.second->EndLog(*item.first, msg);
+  void Logger::endLog(string const& msg) {
+    for (auto& item : streamMap) {
+      item.second->endLog(*item.first, msg);
     }
   }
 
-  void CLogger::SetInstance(std::shared_ptr<CLogger> logger) {
-    mInstance = logger;
+  void Logger::setInstance(std::shared_ptr<Logger> logger) {
+    instance = logger;
   }
 
-  std::shared_ptr<CLogger> CLogger::GetInstance() {
-    return mInstance.lock();
+  std::shared_ptr<Logger> Logger::getInstance() {
+    auto logger = instance.lock();
+    if (!logger) {
+      logger = std::make_shared<Logger>();
+      instance = logger;
+    }
+    return logger;
   }
 }

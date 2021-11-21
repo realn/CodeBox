@@ -3,19 +3,15 @@
 #include "LogFormat.h"
 
 namespace cb {
-  class CPlainTextLogFormat :
-    public ILogFormat {
+  class PlainTextLogFormatter :
+    public ILogFormatter {
   public:
-    CPlainTextLogFormat();
-    virtual ~CPlainTextLogFormat();
+    PlainTextLogFormatter() = default;
 
     // Inherited via ILogFormat
-    virtual void BeginLog(ostream & stream, string const & msg) override;
-    virtual void EndLog(ostream & stream, string const & msg) override;
-    virtual void LogMsg(ostream & stream, LogLvl const level, string const & msg) override;
-
-  private:
-    string GetTimeStamp() const;
+    void beginLog(ostream & stream, string const & msg) override;
+    void endLog(ostream & stream, string const & msg) override;
+    void logMsg(ostream & stream, LogLvl const level, string const & msg) override;
   };
 }
 

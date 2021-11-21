@@ -5,9 +5,9 @@
 
 namespace cb {
   void log(LogLvl const level, string const& msg) {
-    auto pLog = CLogger::GetInstance();
+    auto pLog = Logger::getInstance();
     if(pLog) {
-      pLog->LogMsg(level, msg);
+      pLog->logMsg(level, msg);
     }
   }
 

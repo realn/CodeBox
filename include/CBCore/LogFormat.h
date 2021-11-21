@@ -4,16 +4,12 @@
 #include "Consts.h"
 
 namespace cb {
-  class ILogFormat {
+  class ILogFormatter {
   public:
-    ILogFormat() = default;
-    virtual ~ILogFormat() = default;
+    virtual ~ILogFormatter() = default;
 
-    virtual void BeginLog(ostream& stream, string const& msg) = 0;
-    virtual void EndLog(ostream& stream, string const& msg) = 0;
-    virtual void LogMsg(ostream& stream, LogLvl const level, string const& msg) = 0;
-
-    ILogFormat(ILogFormat const&) = delete;
-    void operator=(ILogFormat const&) = delete;
+    virtual void beginLog(ostream& stream, string const& msg) = 0;
+    virtual void endLog(ostream& stream, string const& msg) = 0;
+    virtual void logMsg(ostream& stream, LogLvl const level, string const& msg) = 0;
   };
 }

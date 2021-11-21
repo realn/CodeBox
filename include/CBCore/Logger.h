@@ -8,32 +8,31 @@
 #include <memory>
 
 namespace cb {
-  class ILogFormat;
+  class ILogFormatter;
 
-  class CLogger {
+  class Logger {
   private:
     using StreamItem = std::shared_ptr<ostream>;
-    using StreamFormat = std::unique_ptr<ILogFormat>;
-    using StreamMap = std::map<StreamItem, StreamFormat>;
+    using StreamFormatter = std::unique_ptr<ILogFormatter>;
+    using StreamMap = std::map<StreamItem, StreamFormatter>;
 
-    StreamMap mStreamMap;
+    StreamMap streamMap;
 
-    static std::weak_ptr<CLogger> mInstance;
+    static std::weak_ptr<Logger> instance;
 
   public:
-    CLogger();
-    ~CLogger();
+    ~Logger();
 
-    void AddStream(std::shared_ptr<ostream> pStream);
-    void AddStream(std::shared_ptr<ostream> pStream, std::unique_ptr<ILogFormat> pFormat);
-    void ClearStreams();
+    void addStream(std::shared_ptr<ostream> stream);
+    void addStream(std::shared_ptr<ostream> stream, std::unique_ptr<ILogFormatter> formatter);
+    void clearStreams();
 
-    void BeginLog(string const& msg = string());
-    void LogMsg(LogLvl const level, string const& msg);
-    void EndLog(string const& msg = string());
+    void beginLog(string const& msg = string());
+    void logMsg(LogLvl const level, string const& msg);
+    void endLog(string const& msg = string());
 
-    static void SetInstance(std::shared_ptr<CLogger> logger);
-    static std::shared_ptr<CLogger> GetInstance();
+    static void setInstance(std::shared_ptr<Logger> logger);
+    static std::shared_ptr<Logger> getInstance();
   };
 }
 

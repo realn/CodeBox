@@ -40,13 +40,13 @@ namespace cb {
     return false;
   }
 
-  extern string toStr(string const& val);
+  string toStr(string const& val);
 
-  extern string toStr(bool const& val);
+  string toStr(bool const& val);
 
-  extern bool fromStr(string const& text, string& outVal);
+  bool fromStr(string const& text, string& outVal);
 
-  extern bool fromStr(string const& text, bool& outVal);
+  bool fromStr(string const& text, bool& outVal);
 
   template<>
   inline string toStr<string>(string const& val) {
@@ -68,13 +68,13 @@ namespace cb {
     return fromStr(text, outVal);
   }
 
-  extern utf8string toUtf8(string const& text);
+  utf8string toUtf8(string const& text);
 
-  extern string fromUtf8(utf8string const& text);
+  string fromUtf8(utf8string const& text);
 
-  extern size_t utf8len(utf8string const& text);
+  size_t utf8len(utf8string const& text);
 
-  extern string varReplace(string const& format, const strvector& list);
+  string varReplace(string const& format, const strvector& list);
 
   // string formating
 

@@ -39,7 +39,7 @@ namespace cb {
   template<typename _KeyType, typename _ValueType>
   std::vector<_ValueType> mapvalues(std::map<_KeyType, _ValueType> const& obj) {
     auto result = std::vector<_ValueType>();
-    for(auto& item : obj) {
+    for (auto& item : obj) {
       result.push_back(item.second);
     }
     return result;
@@ -48,7 +48,7 @@ namespace cb {
   template<typename _KeyType, typename _ValueType>
   std::vector<_KeyType> mapkeys(std::map<_KeyType, _ValueType> const& obj) {
     auto result = std::vector<_KeyType>();
-    for(auto& item : obj) {
+    for (auto& item : obj) {
       result.push_back(item.first);
     }
     return result;
@@ -57,7 +57,7 @@ namespace cb {
   template<typename _KeyType, typename _ValueType>
   std::map<_ValueType, _KeyType> mapflip(std::map<_KeyType, _ValueType> const& obj) {
     auto result = std::map<_ValueType, _KeyType>();
-    for(auto& item : obj) {
+    for (auto& item : obj) {
       result.insert({ item.second, item.first });
     }
     return result;

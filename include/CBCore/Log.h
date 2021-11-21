@@ -6,7 +6,7 @@
 namespace cb {
   template<typename _Type> cb::string toStr(const _Type& value);
 
-  extern void log(LogLvl const level, string const& msg);
+  void log(LogLvl const level, string const& msg);
 
   inline void debug(string const& msg) { log(LogLvl::Debug, msg); }
   inline void info(string const& msg) { log(LogLvl::Info, msg); }
@@ -15,14 +15,10 @@ namespace cb {
   inline void crit(string const& msg) { log(LogLvl::Critical, msg); }
 
   namespace detail {
-    extern void log(LogLvl const level, string const& fmt, strvector& arglist);
+    void log(LogLvl const level, string const& fmt, strvector& arglist);
 
     template<typename _Type, typename ..._Args>
-    inline void log(LogLvl const level, 
-             string const& fmt, 
-             strvector& arglist, 
-             _Type& arg0, 
-             _Args ... args) {
+    inline void log(LogLvl const level, string const& fmt, strvector& arglist, _Type& arg0, _Args ... args) {
       arglist.push_back(toStr(arg0));
       log(level, fmt, arglist, args...);
     }
