@@ -13,9 +13,9 @@ namespace cb {
     CRect(const CRect& other);
     CRect(const glm::vec2& min, const glm::vec2& max);
 
-    glm::vec2 GetSize() const { return Max - Min; }
+    glm::vec2 getSize() const { return Max - Min; }
     float GetWidth() const { return Max.x - Min.x; }
-    float GetHeight() const { return Max.y - Min.y; }
+    float getHeight() const { return Max.y - Min.y; }
     glm::vec2 GetMinXMaxY() const { return glm::vec2(Min.x, Max.y); }
     glm::vec2 GetMaxXMinY() const { return glm::vec2(Max.x, Min.y); }
 

@@ -17,7 +17,7 @@ namespace Microsoft {
   namespace VisualStudio {
     namespace CppUnitTestFramework {
       template<>
-      static std::wstring ToString<cb::strvector>(const cb::strvector& q) {
+      static std::wstring toString<cb::strvector>(const cb::strvector& q) {
         auto result = cb::string();
         for(auto& item : q) {
           result += item + L",";

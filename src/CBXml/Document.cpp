@@ -2,34 +2,33 @@
 #include <CBXml/Document.h>
 
 namespace cb {
-  CXmlDocument::CXmlDocument()
+  XmlDocument::XmlDocument()
     : mValid(false)
-    , StringFormat(true, true)
-  {}
-
-  CXmlDocument::CXmlDocument(string const & text)
-    : mValid(false)
-    , StringFormat(true, true)
-  {
-    Parse(text);
+    , StringFormat(true, true) {
   }
 
-  void CXmlDocument::clear() {
+  XmlDocument::XmlDocument(string const& text)
+    : mValid(false)
+    , StringFormat(true, true) {
+    parse(text);
+  }
+
+  void XmlDocument::clear() {
     RootNode.clear();
     mValid = false;
   }
 
-  bool CXmlDocument::IsValid() const {
+  bool XmlDocument::isValid() const {
     return mValid;
   }
 
-  bool CXmlDocument::Parse(string const& text) {
+  bool XmlDocument::parse(string const& text) {
     clear();
-    mValid = RootNode.Parse(text) != string::npos;
+    mValid = RootNode.parse(text) != string::npos;
     return mValid;
   }
 
-  string CXmlDocument::ToString() const {
-    return RootNode.ToString(StringFormat);
+  string XmlDocument::toString() const {
+    return RootNode.toString(StringFormat);
   }
 }

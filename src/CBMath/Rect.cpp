@@ -47,19 +47,19 @@ namespace cb {
   }
 
   bool CRect::operator<(const CRect & other) const {
-    return glm::all(glm::lessThan(GetSize(), other.GetSize()));
+    return glm::all(glm::lessThan(getSize(), other.getSize()));
   }
 
   bool CRect::operator<=(const CRect & other) const {
-    return glm::all(glm::lessThanEqual(GetSize(), other.GetSize()));
+    return glm::all(glm::lessThanEqual(getSize(), other.getSize()));
   }
 
   bool CRect::operator>(const CRect & other) const {
-    return glm::all(glm::greaterThan(GetSize(), other.GetSize()));
+    return glm::all(glm::greaterThan(getSize(), other.getSize()));
   }
 
   bool CRect::operator>=(const CRect & other) const {
-    return glm::all(glm::greaterThanEqual(GetSize(), other.GetSize()));
+    return glm::all(glm::greaterThanEqual(getSize(), other.getSize()));
   }
 
   void CRect::operator=(const CRect & other) {

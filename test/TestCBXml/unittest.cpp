@@ -32,62 +32,62 @@ public:
 };
 
 template<>
-bool cb::CXmlSerialize<DummySubClass>::RWObj() {
+bool cb::XmlSerialize<DummySubClass>::process() {
   return
-    RWAttribute(L"mVal0", mObject.mVal0) &&
-    RWAttribute(L"mName", mObject.mName);
+    processAttribute(L"mVal0", mObject.mVal0) &&
+    processAttribute(L"mName", mObject.mName);
 }
 
 template<>
-bool cb::CXmlSerialize<DummyClass>::RWObj() {
+bool cb::XmlSerialize<DummyClass>::process() {
   return
-    RWAttribute(L"mVal0", mObject.mVal0) &&
-    RWAttribute(L"mVal1", mObject.mVal1) &&
-    RWNode(L"mSubClass", mObject.mSubClass) &&
-    RWNodeList(mObject.mVector, L"mVectorItem") &&
-    RWNodeMap(mObject.mMap, L"mMapItem", L"Key");
+    processAttribute(L"mVal0", mObject.mVal0) &&
+    processAttribute(L"mVal1", mObject.mVal1) &&
+    processNode(L"mSubClass", mObject.mSubClass) &&
+    processNodeList(mObject.mVector, L"mVectorItem") &&
+    processNodeMap(mObject.mMap, L"mMapItem", L"Key");
 }
 
 namespace TestCBXml {
   TEST_CLASS(CBXmlUnitTest) {
   public:
     TEST_METHOD(BasicXmlManipulationTest) {
-      auto attrib = cb::CXmlAttribute(L"TestAttrib", L"TestValue");
-      Assert::AreEqual(L"TestAttrib=\"TestValue\""s, attrib.ToString(), L"Attribute::ToString failed.", LINE_INFO());
+      auto attrib = cb::XmlAttribute(L"TestAttrib", L"TestValue");
+      Assert::AreEqual(L"TestAttrib=\"TestValue\""s, attrib.toString(), L"Attribute::ToString failed.", LINE_INFO());
 
-      auto attribList = cb::CXmlAttributeList();
-      attribList.SetValue(L"test1", L"o");
-      attribList.SetValue(L"test2", L"value");
-      Assert::AreEqual(L"test1=\"o\" test2=\"value\""s, attribList.ToString(), L"AttributeList::Tostring failed.", LINE_INFO());
-      Assert::AreEqual(L"value"s, attribList.GetValue(L"test2"), L"AttribList::GetValue failed.", LINE_INFO());
-      Assert::AreEqual(L"none"s, attribList.GetValue(L"test3", L"none"), L"AttrbList::GetValueDef failed.", LINE_INFO());
+      auto attribList = cb::XmlAttributeList();
+      attribList.setValue(L"test1", L"o");
+      attribList.setValue(L"test2", L"value");
+      Assert::AreEqual(L"test1=\"o\" test2=\"value\""s, attribList.toString(), L"AttributeList::Tostring failed.", LINE_INFO());
+      Assert::AreEqual(L"value"s, attribList.getValue(L"test2"), L"AttribList::GetValue failed.", LINE_INFO());
+      Assert::AreEqual(L"none"s, attribList.getValue(L"test3", L"none"), L"AttrbList::GetValueDef failed.", LINE_INFO());
 
-      auto fmt = cb::CXmlStringFormat(false, false);
-      auto node = cb::CXmlNode(L"TestNode");
-      node.Attributes.SetValue(L"test", L"value");
-      Assert::AreEqual(L"<TestNode test=\"value\" />"s, node.ToString(fmt), L"Node::ToString failed.", LINE_INFO());
+      auto fmt = cb::XmlStringFormat(false, false);
+      auto node = cb::XmlNode(L"TestNode");
+      node.Attributes.setValue(L"test", L"value");
+      Assert::AreEqual(L"<TestNode test=\"value\" />"s, node.toString(fmt), L"Node::ToString failed.", LINE_INFO());
 
-      node.Nodes.AddNode(L"SubNode");
+      node.Nodes.addNode(L"SubNode");
       {
-        auto otherNode = cb::CXmlNode(L"OtherNode");
-        otherNode.SetValue(L"SOMEDATA");
-        node.Nodes.AddNode(std::move(otherNode));
+        auto otherNode = cb::XmlNode(L"OtherNode");
+        otherNode.setValue(L"SOMEDATA");
+        node.Nodes.addNode(std::move(otherNode));
       }
-      Assert::AreEqual(L"<TestNode test=\"value\"><SubNode /><OtherNode>SOMEDATA</OtherNode></TestNode>"s, node.ToString(fmt), L"Node::ToString (1) failed.", LINE_INFO());
+      Assert::AreEqual(L"<TestNode test=\"value\"><SubNode /><OtherNode>SOMEDATA</OtherNode></TestNode>"s, node.toString(fmt), L"Node::ToString (1) failed.", LINE_INFO());
 
-      node[L"OtherNode"].SetValue(L"SOMEDATA", true);
-      Assert::AreEqual(L"<TestNode test=\"value\"><SubNode /><OtherNode><![CDATA[SOMEDATA]]/></OtherNode></TestNode>"s, node.ToString(fmt), L"Node::ToString (1) failed.", LINE_INFO());
+      node[L"OtherNode"].setValue(L"SOMEDATA", true);
+      Assert::AreEqual(L"<TestNode test=\"value\"><SubNode /><OtherNode><![CDATA[SOMEDATA]]/></OtherNode></TestNode>"s, node.toString(fmt), L"Node::ToString (1) failed.", LINE_INFO());
     }
 
     TEST_METHOD(XmlSerializationTest) {
       auto test = DummyClass();
-      auto node = cb::CXmlNode();
+      auto node = cb::XmlNode();
 
-      Assert::IsTrue(cb::WriteXmlObject(node, test), L"Serialization failed.", LINE_INFO());
+      Assert::IsTrue(cb::writeXmlObject(node, test), L"Serialization failed.", LINE_INFO());
       Assert::AreEqual(L"Test"s, cb::string(node[L"mSubClass"].Attributes[L"mVal0"]), L"Serialized value get failed.", LINE_INFO());
 
       node[L"mSubClass"].Attributes[L"mVal0"] = L"Other";
-      Assert::IsTrue(cb::ReadXmlObject(node, test), L"Deserialization failed.", LINE_INFO());
+      Assert::IsTrue(cb::readXmlObject(node, test), L"Deserialization failed.", LINE_INFO());
       Assert::AreEqual(L"Other"s, test.mSubClass.mVal0, L"Object value check failed.", LINE_INFO());
     }
 
@@ -100,19 +100,19 @@ namespace TestCBXml {
       auto attrValue = L"\"\\"s;
       auto tagValue = L"<><>\"\\"s;
 
-      auto node = cb::CXmlNode(rootName);
+      auto node = cb::XmlNode(rootName);
       node[subNodeName1].Attributes[attrName] = attrValue;
       node[subNodeName2] = tagValue;
-      node[subNodeName3].SetValue(tagValue, true);
+      node[subNodeName3].setValue(tagValue, true);
 
-      auto nodeText = node.ToString();
+      auto nodeText = node.toString();
       node.clear();
-      Assert::IsFalse(node.Parse(nodeText) == cb::string::npos, L"XML Node parsing failed.", LINE_INFO());
+      Assert::IsFalse(node.parse(nodeText) == cb::string::npos, L"XML Node parsing failed.", LINE_INFO());
 
-      Assert::AreEqual(rootName, node.GetName(), L"Root name not equal.", LINE_INFO());
-      Assert::AreEqual(attrValue, node[subNodeName1].Attributes[attrName].GetValue(), L"Attribute name not equal.", LINE_INFO());
-      Assert::AreEqual(tagValue, node[subNodeName2].GetValue(), L"Text value not equal.", LINE_INFO());
-      Assert::AreEqual(tagValue, node[subNodeName3].GetValue(), L"CData value data node equal.", LINE_INFO());
+      Assert::AreEqual(rootName, node.getName(), L"Root name not equal.", LINE_INFO());
+      Assert::AreEqual(attrValue, node[subNodeName1].Attributes[attrName].getValue(), L"Attribute name not equal.", LINE_INFO());
+      Assert::AreEqual(tagValue, node[subNodeName2].getValue(), L"Text value not equal.", LINE_INFO());
+      Assert::AreEqual(tagValue, node[subNodeName3].getValue(), L"CData value data node equal.", LINE_INFO());
     }
   };
 }

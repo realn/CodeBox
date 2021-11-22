@@ -4,23 +4,23 @@
 #include "StringFormat.h"
 
 namespace cb {
-  class CXmlDocument {
+  class XmlDocument {
   private:
     bool mValid;
 
   public:
-    CXmlNode RootNode;
-    CXmlStringFormat StringFormat;
+    XmlNode RootNode;
+    XmlStringFormat StringFormat;
 
-    CXmlDocument();
-    CXmlDocument(string const & text);
+    XmlDocument();
+    XmlDocument(string const& text);
 
     void clear();
 
-    bool IsValid() const;
+    bool isValid() const;
 
-    bool Parse(string const& text);
+    bool parse(string const& text);
 
-    string ToString() const;
+    string toString() const;
   };
 }

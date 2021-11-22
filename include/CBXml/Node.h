@@ -7,13 +7,13 @@
 namespace cb {
   enum class XmlNodeType {
     Normal = 0,
-    Text = 1,
+    text = 1,
     CData = 2
   };
 
-  class CXmlNode {
+  class XmlNode {
   public:
-    CXmlAttributeList Attributes;
+    XmlAttributeList Attributes;
     CXmlNodeList Nodes;
 
   private:
@@ -21,32 +21,32 @@ namespace cb {
     XmlNodeType mType;
 
   public:
-    CXmlNode(string const& name = string());
-    CXmlNode(XmlNodeType const type, string const& value = string());
-    CXmlNode(CXmlNode const& other);
-    CXmlNode(CXmlNode&& other);
-    ~CXmlNode();
+    XmlNode(string const& name = string());
+    XmlNode(XmlNodeType const type, string const& value = string());
+    XmlNode(XmlNode const& other);
+    XmlNode(XmlNode&& other);
+    ~XmlNode();
 
     void SetType(XmlNodeType const type) { mType = type; }
-    XmlNodeType GetType() const { return mType; }
+    XmlNodeType getType() const { return mType; }
 
     void SetName(string const& name) { mName = name; }
-    string GetName() const { return mName; }
+    string getName() const { return mName; }
 
-    void SetValue(string const& value, bool const cdata = false);
-    string GetValue() const;
+    void setValue(string const& value, bool const cdata = false);
+    string getValue() const;
 
     void clear();
 
-    size_t Parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
+    size_t parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
 
-    string ToString(CXmlStringFormat const & fmt = CXmlStringFormat()) const;
+    string toString(XmlStringFormat const& fmt = XmlStringFormat()) const;
 
-    void operator=(CXmlNode const & other);
-    void operator=(CXmlNode&& other);
+    void operator=(XmlNode const& other);
+    void operator=(XmlNode&& other);
     void operator=(string const& value);
 
-    const CXmlNode& operator[](string const & name) const { return Nodes[name]; }
-    CXmlNode& operator[](string const & name) { return Nodes[name]; };
+    const XmlNode& operator[](string const& name) const { return Nodes[name]; }
+    XmlNode& operator[](string const& name) { return Nodes[name]; };
   };
 }

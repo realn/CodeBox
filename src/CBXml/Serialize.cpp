@@ -2,14 +2,15 @@
 #include <CBXml/Serialize.h>
 
 namespace cb {
-  CXmlUserData::~CXmlUserData() {}
+  XmlUserData::~XmlUserData() {}
 
-  CXmlSerializeBase::CXmlSerializeBase(const CXmlNode& node,
-                                       const bool write,
-                                       std::shared_ptr<CXmlUserData> userData)
-    : mNode(const_cast<CXmlNode&>(node))
+  XmlSerializeBase::XmlSerializeBase(const XmlNode& node,
+                                     const bool write,
+                                     std::shared_ptr<XmlUserData> userData)
+    : mNode(const_cast<XmlNode&>(node))
     , mWrite(write)
-    , mUserData(userData) {}
+    , mUserData(userData) {
+  }
 
-  CXmlSerializeBase::~CXmlSerializeBase() {}
+  XmlSerializeBase::~XmlSerializeBase() {}
 }

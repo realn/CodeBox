@@ -15,7 +15,7 @@ namespace cb {
   const string XML_TAG_CLOSE_START = L"</";
   const string XML_TAG_END = L">";
   const string XML_TAG_CLOSE_END = L"/>";
-  
+
   const string XML_ESCAPE_CHAR = L"\\";
   const string XML_ESCAPE_QUOTE_CHAR = L"&quot;"s;
   const string XML_ESCAPE_TAG_START = L"&lt;"s;
@@ -36,140 +36,140 @@ namespace cb {
 
   auto const XML_ESCAPE_CHAR_MAP_FLIP = mapflip(XML_ESCAPE_CHAR_MAP);
 
-  string escapeAttrChars(const string & text) {
+  string escapeAttrChars(const string& text) {
     return replace_by_char(text, XML_ESCAPE_CHAR_MAP);
   }
 
-  string unescapeAttrChars(const string & text) {
+  string unescapeAttrChars(const string& text) {
     return replace_by_char(text, XML_ESCAPE_CHAR_MAP_FLIP);
   }
 
-  string escapeTagChars(const string & text) {
+  string escapeTagChars(const string& text) {
     return replace_by_char(text, XML_ESCAPE_CHAR_MAP);
   }
 
-  string unescapeTagChars(const string & text) {
+  string unescapeTagChars(const string& text) {
     return replace_by_char(text, XML_ESCAPE_CHAR_MAP_FLIP);
   }
 
-  size_t findWS(const string & text, const size_t offset, const string& also) {
+  size_t findWS(const string& text, const size_t offset, const string& also) {
     auto list = { also };
     return findWS(text, offset, list);
   }
 
-  size_t findWS(const string & text, const size_t offset, const strvector& also) {
+  size_t findWS(const string& text, const size_t offset, const strvector& also) {
     auto inQuote = false;
-    for(auto i = offset; i < text.length(); i++) {
-      if(subcmp(text, XML_ESCAPE_CHAR, i)) {
+    for (auto i = offset; i < text.length(); i++) {
+      if (subcmp(text, XML_ESCAPE_CHAR, i)) {
         i++;
         continue;
       }
 
-      if(subcmp(text, XML_QUOTE_CHAR, i)) {
+      if (subcmp(text, XML_QUOTE_CHAR, i)) {
         inQuote = !inQuote;
       }
 
-      if(inQuote) {
+      if (inQuote) {
         continue;
       }
 
-      if(subcmp(text, XML_WHITESPACE_LIST, i)) {
+      if (subcmp(text, XML_WHITESPACE_LIST, i)) {
         return i;
       }
 
-      if(!also.empty() && subcmp(text, also, i)) {
+      if (!also.empty() && subcmp(text, also, i)) {
         return i;
       }
     }
     return string::npos;
   }
 
-  size_t findNonWS(const string & text, const size_t offset, const string& also) {
+  size_t findNonWS(const string& text, const size_t offset, const string& also) {
     auto list = { also };
     return findNonWS(text, offset, list);
   }
 
-  size_t findNonWS(const string & text, const size_t offset, const strvector& also) {
-    for(auto i = offset; i < text.length(); i++) {
-      if(subcmp(text, XML_ESCAPE_CHAR, i)) {
+  size_t findNonWS(const string& text, const size_t offset, const strvector& also) {
+    for (auto i = offset; i < text.length(); i++) {
+      if (subcmp(text, XML_ESCAPE_CHAR, i)) {
         i++;
         continue;
       }
 
-      if(!subcmp(text, XML_WHITESPACE_LIST, i)) {
+      if (!subcmp(text, XML_WHITESPACE_LIST, i)) {
         return i;
       }
 
-      if(!also.empty() && subcmp(text, also, i)) {
+      if (!also.empty() && subcmp(text, also, i)) {
         return i;
       }
     }
     return string::npos;
   }
 
-  size_t findXml(const string & text, const string & what, const size_t offset) {
+  size_t findXml(const string& text, const string& what, const size_t offset) {
     auto inQuote = false;
-    for(auto i = offset; i < text.length(); i++) {
-      if(subcmp(text, XML_ESCAPE_CHAR, i)) {
+    for (auto i = offset; i < text.length(); i++) {
+      if (subcmp(text, XML_ESCAPE_CHAR, i)) {
         i++;
         continue;
       }
 
-      if(subcmp(text, XML_QUOTE_CHAR, i)) {
+      if (subcmp(text, XML_QUOTE_CHAR, i)) {
         inQuote = !inQuote;
       }
 
-      if(inQuote) {
+      if (inQuote) {
         continue;
       }
 
-      if(subcmp(text, what, i)) {
+      if (subcmp(text, what, i)) {
         return i;
       }
     }
     return string::npos;
   }
 
-  size_t findXml(const string & text, const strvector& what, const size_t offset) {
+  size_t findXml(const string& text, const strvector& what, const size_t offset) {
     auto inQuote = false;
-    for(auto i = offset; i < text.length(); i++) {
-      if(subcmp(text, XML_ESCAPE_CHAR, i)) {
+    for (auto i = offset; i < text.length(); i++) {
+      if (subcmp(text, XML_ESCAPE_CHAR, i)) {
         i++;
         continue;
       }
 
-      if(subcmp(text, XML_QUOTE_CHAR, i)) {
+      if (subcmp(text, XML_QUOTE_CHAR, i)) {
         inQuote = !inQuote;
       }
 
-      if(inQuote) {
+      if (inQuote) {
         continue;
       }
 
-      if(subcmp(text, what, i)) {
+      if (subcmp(text, what, i)) {
         return i;
       }
     }
     return string::npos;
   }
 
-  string inQuotes(const string & text) {
+  string inQuotes(const string& text) {
     return XML_QUOTE_CHAR + text + XML_QUOTE_CHAR;
   }
 
-  string stripQuotes(const string & text) {
-    if(text.empty())
+  string stripQuotes(const string& text) {
+    if (text.empty())
       return string();
 
     auto result = string();
     auto pos = size_t(0);
-    while(pos < text.length()) {
-      if(subcmp(text, XML_ESCAPE_CHAR, pos)) {
+    while (pos < text.length()) {
+      if (subcmp(text, XML_ESCAPE_CHAR, pos)) {
         result += text.substr(pos, 2);
         pos += 2;
         continue;
       }
-      if(subcmp(text, XML_QUOTE_CHAR, pos)) {
+      if (subcmp(text, XML_QUOTE_CHAR, pos)) {
         pos++;
         continue;
       }
@@ -180,23 +180,23 @@ namespace cb {
     return result;
   }
 
-  string stripWS(const string & text) {
+  string stripWS(const string& text) {
     auto res = string();
     auto escape = false;
     auto quote = false;
-    for(auto i = 0u; i < text.length(); i++) {
-      if(subcmp(text, XML_ESCAPE_CHAR, i)) {
+    for (auto i = 0u; i < text.length(); i++) {
+      if (subcmp(text, XML_ESCAPE_CHAR, i)) {
         res += XML_ESCAPE_CHAR;
         escape = true;
         continue;
       }
 
-      if(!escape) {
-        if(subcmp(text, XML_QUOTE_CHAR, i)) {
+      if (!escape) {
+        if (subcmp(text, XML_QUOTE_CHAR, i)) {
           quote = !quote;
         }
 
-        if(!quote && subcmp(text, XML_WHITESPACE_LIST, i)) {
+        if (!quote && subcmp(text, XML_WHITESPACE_LIST, i)) {
           continue;
         }
       }
@@ -207,15 +207,15 @@ namespace cb {
     return res;
   }
 
-  string genPadding(const CXmlStringFormat & fmt) {
-    if(fmt.mNesting) {
+  string genPadding(const XmlStringFormat& fmt) {
+    if (fmt.mNesting) {
       return repeat(fmt.mNestingStr, fmt.mNestingLevel);
     }
     return string();
   }
 
-  string genEnding(const CXmlStringFormat & fmt) {
-    if(fmt.mNewLines) {
+  string genEnding(const XmlStringFormat& fmt) {
+    if (fmt.mNewLines) {
       return fmt.mNewLineStr;
     }
     return string();

@@ -3,32 +3,32 @@
 #include "Defines.h"
 
 namespace cb {
-  class CXmlAttribute {
+  class XmlAttribute {
   private:
     string  mName;
     string  mValue;
 
   public:
-    CXmlAttribute();
-    CXmlAttribute(CXmlAttribute const& other);
-    CXmlAttribute(CXmlAttribute&& other);
-    explicit CXmlAttribute(string const name, string const value = string());
-    ~CXmlAttribute();
+    XmlAttribute();
+    XmlAttribute(XmlAttribute const& other);
+    XmlAttribute(XmlAttribute&& other);
+    explicit XmlAttribute(string const name, string const value = string());
+    ~XmlAttribute();
 
-    const string& GetName() const { return mName; }
-    const string& GetValue() const { return mValue; }
+    const string& getName() const { return mName; }
+    const string& getValue() const { return mValue; }
 
-    void SetValue(string const val) { mValue = val; }
+    void setValue(string const val) { mValue = val; }
 
-    string ToString() const;
+    string toString() const;
 
-    size_t Parse(string const & text, size_t const offset = 0, cb::ostream& err = std::wcerr);
+    size_t parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
 
-    void operator=(CXmlAttribute const& other);
-    void operator=(CXmlAttribute&& other);
+    void operator=(XmlAttribute const& other);
+    void operator=(XmlAttribute&& other);
     void operator=(string const& value) { mValue = value; }
 
-    operator const string&() const { return mValue; }
-    operator string&() { return mValue; }
+    operator const string& () const { return mValue; }
+    operator string& () { return mValue; }
   };
 }

@@ -3,7 +3,7 @@
 #include "Defines.h"
 
 namespace cb {
-  class CXmlStringFormat {
+  class XmlStringFormat {
   public:
     static string const DefaultNestingStr;
     static string const DefaultNewLineStr;
@@ -14,11 +14,11 @@ namespace cb {
     size_t mNestingLevel;
     string mNestingStr;
 
-    CXmlStringFormat(bool const newLines = false,
+    XmlStringFormat(bool const newLines = false,
                      bool const nesting = false,
                      string const nestingStr = DefaultNestingStr,
                      string const newLineStr = DefaultNewLineStr);
-    CXmlStringFormat(CXmlStringFormat const & other);
+    XmlStringFormat(XmlStringFormat const & other);
   };
 }
 

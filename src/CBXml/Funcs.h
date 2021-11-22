@@ -4,7 +4,7 @@
 #include <CBXml/Defines.h>
 
 namespace cb {
-  class CXmlStringFormat;
+  class XmlStringFormat;
 
   extern const string XML_SPACE;
   extern const string XML_QUOTE_CHAR;
@@ -46,8 +46,8 @@ namespace cb {
 
   extern string stripWS(const string& text);
 
-  extern string genPadding(const CXmlStringFormat& fmt);
-  extern string genEnding(const CXmlStringFormat& fmt);
+  extern string genPadding(const XmlStringFormat& fmt);
+  extern string genEnding(const XmlStringFormat& fmt);
 }
 
 #endif // !__CB_XML_FUNCS_H__

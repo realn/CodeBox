@@ -15,17 +15,17 @@ namespace cb {
 
   CXmlNodeList::~CXmlNodeList() = default;
 
-  void CXmlNodeList::AddNode(CXmlNode && node) {
+  void CXmlNodeList::addNode(XmlNode&& node) {
     mNodeList.push_back(node);
   }
 
-  CXmlNode & CXmlNodeList::AddNode(string const & name) {
-    mNodeList.push_back(CXmlNode(name));
+  XmlNode& CXmlNodeList::addNode(string const& name) {
+    mNodeList.push_back(XmlNode(name));
     return *mNodeList.rbegin();
   }
 
-  CXmlNode & CXmlNodeList::AddNode(XmlNodeType const type) {
-    mNodeList.push_back(CXmlNode(type));
+  XmlNode& CXmlNodeList::addNode(XmlNodeType const type) {
+    mNodeList.push_back(XmlNode(type));
     return *mNodeList.rbegin();
   }
 
@@ -41,53 +41,53 @@ namespace cb {
     return mNodeList.erase(beg, end);
   }
 
-  void CXmlNodeList::Remove(string const & name) {
+  void CXmlNodeList::Remove(string const& name) {
     auto pred =
-      [name](const CXmlNode& node)->auto{return node.GetName() == name; };
+      [name](const XmlNode& node)->auto{return node.getName() == name; };
     erase(std::remove_if(begin(), end(), pred), end());
   }
 
-  CXmlNodeList::iterator CXmlNodeList::find(string const & name) {
+  CXmlNodeList::iterator CXmlNodeList::find(string const& name) {
     auto pred =
-      [name](const CXmlNode& node)->auto{return node.GetName() == name; };
+      [name](const XmlNode& node)->auto{return node.getName() == name; };
     return std::find_if(begin(), end(), pred);
   }
 
-  CXmlNodeList::const_iterator CXmlNodeList::find(string const & name) const {
+  CXmlNodeList::const_iterator CXmlNodeList::find(string const& name) const {
     auto pred =
-      [name](const CXmlNode& node)->auto{return node.GetName() == name; };
+      [name](const XmlNode& node)->auto{return node.getName() == name; };
     return std::find_if(begin(), end(), pred);
   }
 
-  XmlNodePtrListT CXmlNodeList::Search(string const & name) {
+  XmlNodePtrListT CXmlNodeList::search(string const& name) {
     auto result = XmlNodePtrListT();
-    for(auto& node : *this) {
-      if(node.GetName() == name) {
+    for (auto& node : *this) {
+      if (node.getName() == name) {
         result.push_back(&node);
       }
     }
     return result;
   }
 
-  XmlNodeConstPtrListT CXmlNodeList::Search(string const & name) const {
+  XmlNodeConstPtrListT CXmlNodeList::search(string const& name) const {
     auto result = XmlNodeConstPtrListT();
-    for(auto& node : *this) {
-      if(node.GetName() == name) {
+    for (auto& node : *this) {
+      if (node.getName() == name) {
         result.push_back(&node);
       }
     }
     return result;
   }
 
-  size_t CXmlNodeList::Parse(string const & text, size_t const offset, cb::ostream& err) {
+  size_t CXmlNodeList::parse(string const& text, size_t const offset, cb::ostream& err) {
     clear();
 
     size_t pos = findNonWS(text, offset, XML_TAG_START);
-    while(pos != string::npos && !subcmp(text, XML_TAG_CLOSE_START, pos)) {
-      auto node = CXmlNode();
-      pos = node.Parse(text, pos, err);
+    while (pos != string::npos && !subcmp(text, XML_TAG_CLOSE_START, pos)) {
+      auto node = XmlNode();
+      pos = node.parse(text, pos, err);
 
-      if(pos != string::npos) {
+      if (pos != string::npos) {
         mNodeList.push_back(node);
       }
       else {
@@ -100,32 +100,32 @@ namespace cb {
     return pos;
   }
 
-  string CXmlNodeList::ToString(CXmlStringFormat const & fmt) const {
+  string CXmlNodeList::toString(XmlStringFormat const& fmt) const {
     auto list = strvector();
-    for(auto& node : *this) {
-      list.push_back(node.ToString(fmt));
+    for (auto& node : *this) {
+      list.push_back(node.toString(fmt));
     }
     return join(list, genEnding(fmt));
   }
 
-  const CXmlNode & CXmlNodeList::operator[](string const & name) const {
+  const XmlNode& CXmlNodeList::operator[](string const& name) const {
     return *find(name);
   }
 
-  CXmlNode & CXmlNodeList::operator[](string const & name) {
+  XmlNode& CXmlNodeList::operator[](string const& name) {
     auto it = find(name);
-    if(it != end()) {
+    if (it != end()) {
       return *it;
     }
-    mNodeList.push_back(CXmlNode(name));
+    mNodeList.push_back(XmlNode(name));
     return *mNodeList.rbegin();
   }
 
-  void CXmlNodeList::operator=(CXmlNodeList const & other) {
+  void CXmlNodeList::operator=(CXmlNodeList const& other) {
     mNodeList = other.mNodeList;
   }
 
-  void CXmlNodeList::operator=(CXmlNodeList && other) {
+  void CXmlNodeList::operator=(CXmlNodeList&& other) {
     mNodeList = std::move(other.mNodeList);
   }
 }

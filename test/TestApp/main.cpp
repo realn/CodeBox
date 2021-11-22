@@ -29,13 +29,13 @@ public:
 };
 
 int main(char* argv[], int argc) {
-  auto sdlVideo = cb::sdl::CSystem(cb::sdl::System::VIDEO);
-  auto window = cb::sdl::CWindow(L"OpenGL Test",
-                                 cb::sdl::CWindow::PosCentered,
+  auto sdlVideo = cb::sdl::System(cb::sdl::System::VIDEO);
+  auto window = cb::sdl::Window(L"OpenGL Test",
+                                 cb::sdl::Window::PosCentered,
                                  glm::uvec2(640, 480),
                                  cb::sdl::WindowFlag::OPENGL);
-  window.Show();
-  auto glctx = cb::sdl::CGLContext(window, {
+  window.show();
+  auto glctx = cb::sdl::GLContext(window, {
     {cb::sdl::GLAttribute::BUFFER_SIZE, 32},
     {cb::sdl::GLAttribute::DEPTH_SIZE, 24},
     {cb::sdl::GLAttribute::STENCIL_SIZE, 8},
@@ -82,26 +82,26 @@ int main(char* argv[], int argc) {
 
   auto texture = cb::gl::Texture({128,128}, cb::gl::TextureFormat::RGBA8);
   {
-    auto font = cb::sdl::CFont(L"Instruction.otf", 96);
+    auto font = cb::sdl::Font(L"Instruction.otf", 96);
 
-    auto fontSurf = font.RenderBlended(L"T", {1.0f, 1.0f, 1.0f, 1.0f});
-    fontSurf = fontSurf.Convert(cb::sdl::PixelFormat::RGBA32);
-    auto texSurf = cb::sdl::CSurface({128, 128}, 32, cb::sdl::PixelFormat::RGBA32);
-    texSurf.Paste({0, 0}, fontSurf);
-    texSurf.Flip(cb::sdl::FlipDir::Vertical);
+    auto fontSurf = font.renderBlended(L"T", {1.0f, 1.0f, 1.0f, 1.0f});
+    fontSurf = fontSurf.convert(cb::sdl::PixelFormat::RGBA32);
+    auto texSurf = cb::sdl::Surface({128, 128}, 32, cb::sdl::PixelFormat::RGBA32);
+    texSurf.paste({0, 0}, fontSurf);
+    texSurf.flip(cb::sdl::FlipDir::Vertical);
 
-    texture.SetData(cb::gl::InputFormat::RGBA, texSurf.GetPixels());
+    texture.SetData(cb::gl::InputFormat::RGBA, texSurf.getPixels());
   }
 
-  auto timer = cb::sdl::CPerfTimer();
-  auto event = cb::sdl::CEvent();
+  auto timer = cb::sdl::PerformanceTimer();
+  auto event = cb::sdl::Event();
   auto run = true;
   while(run) {
-    timer.Update();
+    timer.update();
 
-    while(cb::sdl::CEvent::Poll(event)) {
-      if(event.GetType() == cb::sdl::EventType::WINDOWEVENT &&
-         event.Window().GetType() == cb::sdl::WindowEventType::CLOSE) {
+    while(cb::sdl::Event::poll(event)) {
+      if(event.getType() == cb::sdl::EventType::WINDOWEVENT &&
+         event.window().getType() == cb::sdl::WindowEventType::CLOSE) {
         run = false;
       }
     }
@@ -123,7 +123,7 @@ int main(char* argv[], int argc) {
       program.SetUniform(L"mTransform", glm::transpose(glm::ortho(-s.x, s.x, -s.y, s.y)));
       program.SetUniform(L"texBase", 0);
 
-      if(!program.IsValid()) {
+      if(!program.isValid()) {
         auto info = program.GetLinkLog();
         std::wcout << info << std::endl;
       }
@@ -131,7 +131,7 @@ int main(char* argv[], int argc) {
       cb::gl::drawElements(cb::gl::PrimitiveType::TRIANGLES, 6);
     }
 
-    glctx.SwapWindow(window);
+    glctx.swapWindow(window);
   }
 
   return 0;

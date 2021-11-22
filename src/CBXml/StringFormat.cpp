@@ -2,25 +2,25 @@
 #include <CBXml/StringFormat.h>
 
 namespace cb {
-  string const CXmlStringFormat::DefaultNestingStr = L"  ";
-  string const CXmlStringFormat::DefaultNewLineStr = L"\n";
+  string const XmlStringFormat::DefaultNestingStr = L"  ";
+  string const XmlStringFormat::DefaultNewLineStr = L"\n";
 
-  CXmlStringFormat::CXmlStringFormat(bool const newLines,
-                                     bool const nesting, 
-                                     string const nestingStr,
-                                     string const newLineStr)
+  XmlStringFormat::XmlStringFormat(bool const newLines,
+                                   bool const nesting,
+                                   string const nestingStr,
+                                   string const newLineStr)
     : mNewLines(newLines)
     , mNesting(nesting)
     , mNewLineStr(newLineStr)
     , mNestingLevel(0)
-    , mNestingStr(nestingStr)
-  {}
+    , mNestingStr(nestingStr) {
+  }
 
-  CXmlStringFormat::CXmlStringFormat(CXmlStringFormat const & other)
+  XmlStringFormat::XmlStringFormat(XmlStringFormat const& other)
     : mNewLines(other.mNewLines)
     , mNesting(other.mNesting)
     , mNewLineStr(other.mNewLineStr)
     , mNestingLevel(other.mNestingLevel)
-    , mNestingStr(other.mNestingStr)
-  {}
+    , mNestingStr(other.mNestingStr) {
+  }
 }

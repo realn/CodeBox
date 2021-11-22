@@ -7,17 +7,17 @@
 #include <map>
 
 namespace cb {
-  class CXmlNode;
+  class XmlNode;
   enum class XmlNodeType;
 
-  using XmlNodePtrT = CXmlNode*;
-  using XmlNodeConstPtrT = CXmlNode const*;
+  using XmlNodePtrT = XmlNode*;
+  using XmlNodeConstPtrT = XmlNode const*;
   using XmlNodePtrListT = std::vector<XmlNodePtrT>;
   using XmlNodeConstPtrListT = std::vector<XmlNodeConstPtrT>;
 
   class CXmlNodeList {
   public:
-    using NodeListT = std::vector<CXmlNode>;
+    using NodeListT = std::vector<XmlNode>;
     using iterator = NodeListT::iterator;
     using const_iterator = NodeListT::const_iterator;
 
@@ -26,33 +26,33 @@ namespace cb {
 
   public:
     CXmlNodeList();
-    CXmlNodeList(CXmlNodeList const & other);
+    CXmlNodeList(CXmlNodeList const& other);
     CXmlNodeList(CXmlNodeList&& other);
     ~CXmlNodeList();
 
-    void AddNode(CXmlNode&& node);
-    CXmlNode& AddNode(string const& name);
-    CXmlNode& AddNode(XmlNodeType const type);
+    void addNode(XmlNode&& node);
+    XmlNode& addNode(string const& name);
+    XmlNode& addNode(XmlNodeType const type);
 
     size_t size() const { return mNodeList.size(); }
     bool empty() const { return mNodeList.empty(); }
 
     void clear();
 
-    CXmlNode& Get(size_t const index) { return mNodeList[index]; }
-    const CXmlNode& Get(size_t const index) const { return mNodeList[index]; }
+    XmlNode& get(size_t const index) { return mNodeList[index]; }
+    const XmlNode& get(size_t const index) const { return mNodeList[index]; }
 
     iterator begin() { return mNodeList.begin(); }
     const_iterator begin() const { return mNodeList.begin(); }
 
-    CXmlNode& first() { return *begin(); }
-    const CXmlNode& first() const { return *begin(); }
+    XmlNode& first() { return *begin(); }
+    const XmlNode& first() const { return *begin(); }
 
     iterator end() { return mNodeList.end(); }
     const_iterator end() const { return mNodeList.end(); }
 
-    CXmlNode& last() { return *(end() - 1); }
-    CXmlNode const & last() const { return *(end() - 1); }
+    XmlNode& last() { return *(end() - 1); }
+    XmlNode const& last() const { return *(end() - 1); }
 
     iterator erase(const_iterator it);
     iterator erase(const_iterator beg, const_iterator end);
@@ -62,17 +62,17 @@ namespace cb {
     iterator find(string const& name);
     const_iterator find(string const& name) const;
 
-    XmlNodePtrListT Search(string const& name);
-    XmlNodeConstPtrListT Search(string const& name) const;
+    XmlNodePtrListT search(string const& name);
+    XmlNodeConstPtrListT search(string const& name) const;
 
-    size_t Parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
+    size_t parse(string const& text, size_t const offset = 0, cb::ostream& err = std::wcerr);
 
-    string ToString(CXmlStringFormat const & fmt = CXmlStringFormat()) const;
+    string toString(XmlStringFormat const& fmt = XmlStringFormat()) const;
 
-    const CXmlNode& operator[](string const& name) const;
-    CXmlNode& operator[](string const& name);
+    const XmlNode& operator[](string const& name) const;
+    XmlNode& operator[](string const& name);
 
-    void operator=(CXmlNodeList const & other);
+    void operator=(CXmlNodeList const& other);
     void operator=(CXmlNodeList&& other);
   };
 }
