@@ -11,20 +11,20 @@
 #include <algorithm>
 #include <exception>
 
-inline SDL_Window* Get(cb::sdl::CWindow& obj) {
-  return reinterpret_cast<SDL_Window*>(obj.Get());
+inline SDL_Window* get(cb::sdl::Window& obj) {
+  return reinterpret_cast<SDL_Window*>(obj.get());
 }
 
-inline SDL_Window* Get(cb::sdl::CWindow const& obj) {
-  return reinterpret_cast<SDL_Window*>(obj.Get());
+inline SDL_Window* get(cb::sdl::Window const& obj) {
+  return reinterpret_cast<SDL_Window*>(obj.get());
 }
 
 namespace cb {
   namespace sdl {
-    glm::ivec2 const CWindow::PosUndefined = glm::ivec2(SDL_WINDOWPOS_UNDEFINED);
-    glm::ivec2 const CWindow::PosCentered = glm::ivec2(SDL_WINDOWPOS_CENTERED);
+    glm::ivec2 const Window::PosUndefined = glm::ivec2(SDL_WINDOWPOS_UNDEFINED);
+    glm::ivec2 const Window::PosCentered = glm::ivec2(SDL_WINDOWPOS_CENTERED);
 
-    CWindow::CWindow(cb::string const & name,
+    Window::Window(cb::string const & name,
                      glm::ivec2 const & pos,
                      glm::uvec2 const & size,
                      WindowFlag const & flags) {
@@ -36,262 +36,262 @@ namespace cb {
       CB_SDL_CHECKERRORS();
     }
 
-    CWindow::CWindow(CWindow && other) {
+    Window::Window(Window && other) {
       std::swap(mWindow, other.mWindow);
     }
 
-    CWindow::~CWindow() {
+    Window::~Window() {
       if(mWindow) {
-        SDL_DestroyWindow(::Get(*this));
+        SDL_DestroyWindow(::get(*this));
         mWindow = nullptr;
       }
     }
 
-    bool CWindow::SetDisplayMode(CDisplayMode const & mode) {
+    bool Window::setDisplayMode(DisplayMode const & mode) {
       auto sdlmode = convert(mode);
-      auto res = SDL_SetWindowDisplayMode(::Get(*this), &sdlmode);
+      auto res = SDL_SetWindowDisplayMode(::get(*this), &sdlmode);
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
 
-    void CWindow::SetTitle(string const & title) {
+    void Window::setTitle(string const & title) {
       auto winTitle = toUtf8(title);
-      SDL_SetWindowTitle(::Get(*this), winTitle.data());
+      SDL_SetWindowTitle(::get(*this), winTitle.data());
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::SetPosition(glm::ivec2 const & pos) {
-      SDL_SetWindowPosition(::Get(*this), pos.x, pos.y);
+    void Window::setPosition(glm::ivec2 const & pos) {
+      SDL_SetWindowPosition(::get(*this), pos.x, pos.y);
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::SetSize(glm::uvec2 const & size) {
-      SDL_SetWindowSize(::Get(*this), static_cast<int>(size.x), static_cast<int>(size.y));
+    void Window::setSize(glm::uvec2 const & size) {
+      SDL_SetWindowSize(::get(*this), static_cast<int>(size.x), static_cast<int>(size.y));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::SetMinimumSize(glm::uvec2 const & size) {
-      SDL_SetWindowMinimumSize(::Get(*this), static_cast<int>(size.x), static_cast<int>(size.y));
+    void Window::setMinimumSize(glm::uvec2 const & size) {
+      SDL_SetWindowMinimumSize(::get(*this), static_cast<int>(size.x), static_cast<int>(size.y));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::SetMaximumSize(glm::uvec2 const & size) {
-      SDL_SetWindowMaximumSize(::Get(*this), static_cast<int>(size.x), static_cast<int>(size.y));
+    void Window::setMaximumSize(glm::uvec2 const & size) {
+      SDL_SetWindowMaximumSize(::get(*this), static_cast<int>(size.x), static_cast<int>(size.y));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::SetBordered(bool const value) {
-      SDL_SetWindowBordered(::Get(*this), value ? SDL_TRUE : SDL_FALSE);
+    void Window::setBordered(bool const value) {
+      SDL_SetWindowBordered(::get(*this), value ? SDL_TRUE : SDL_FALSE);
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::SetResizeable(bool const value) {
-      SDL_SetWindowResizable(::Get(*this), value ? SDL_TRUE : SDL_FALSE);
+    void Window::setResizeable(bool const value) {
+      SDL_SetWindowResizable(::get(*this), value ? SDL_TRUE : SDL_FALSE);
       CB_SDL_CHECKERRORS();
     }
 
-    bool CWindow::SetFullscreen(bool const value) {
-      auto res = SDL_SetWindowFullscreen(::Get(*this), value ? SDL_TRUE : SDL_FALSE);
-      CB_SDL_CHECKERRORS();
-      return res == 0;
-    }
-
-    void CWindow::SetGrab(bool const value) {
-      SDL_SetWindowGrab(::Get(*this), value ? SDL_TRUE : SDL_FALSE);
-      CB_SDL_CHECKERRORS();
-    }
-
-    bool CWindow::SetBrightness(float const value) {
-      auto res = SDL_SetWindowBrightness(::Get(*this), value);
+    bool Window::setFullscreen(bool const value) {
+      auto res = SDL_SetWindowFullscreen(::get(*this), value ? SDL_TRUE : SDL_FALSE);
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
 
-    bool CWindow::SetOpacity(float const value) {
-      auto res = SDL_SetWindowOpacity(::Get(*this), value);
+    void Window::setGrab(bool const value) {
+      SDL_SetWindowGrab(::get(*this), value ? SDL_TRUE : SDL_FALSE);
+      CB_SDL_CHECKERRORS();
+    }
+
+    bool Window::setBrightness(float const value) {
+      auto res = SDL_SetWindowBrightness(::get(*this), value);
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
 
-    int CWindow::GetDisplayIndex() const {
-      auto res = SDL_GetWindowDisplayIndex(::Get(*this));
+    bool Window::setOpacity(float const value) {
+      auto res = SDL_SetWindowOpacity(::get(*this), value);
+      CB_SDL_CHECKERRORS();
+      return res == 0;
+    }
+
+    int Window::getDisplayIndex() const {
+      auto res = SDL_GetWindowDisplayIndex(::get(*this));
       CB_SDL_CHECKERRORS();
       return res;
     }
 
-    CDisplayMode CWindow::GetDisplayMode() const {
+    DisplayMode Window::getDisplayMode() const {
       auto mode = SDL_DisplayMode();
-      SDL_GetWindowDisplayMode(::Get(*this), &mode);
+      SDL_GetWindowDisplayMode(::get(*this), &mode);
       CB_SDL_CHECKERRORS();
       return convert(mode);
     }
 
-    PixelFormat CWindow::GetPixelFormat() const {
-      auto format = SDL_GetWindowPixelFormat(::Get(*this));
+    PixelFormat Window::getPixelFormat() const {
+      auto format = SDL_GetWindowPixelFormat(::get(*this));
       CB_SDL_CHECKERRORS();
       return static_cast<PixelFormat>(format);
     }
 
-    WindowID CWindow::GetId() const {
-      auto res = SDL_GetWindowID(::Get(*this));
+    WindowID Window::getId() const {
+      auto res = SDL_GetWindowID(::get(*this));
       CB_SDL_CHECKERRORS();
       return res;
     }
 
-    WindowFlags CWindow::GetFlags() const {
-      auto flags = SDL_GetWindowFlags(::Get(*this));
+    WindowFlags Window::getFlags() const {
+      auto flags = SDL_GetWindowFlags(::get(*this));
       CB_SDL_CHECKERRORS();
       return static_cast<WindowFlag>(flags);
     }
 
-    string CWindow::GetTitle() const {
-      auto szTitle = SDL_GetWindowTitle(::Get(*this));
+    string Window::getTitle() const {
+      auto szTitle = SDL_GetWindowTitle(::get(*this));
       CB_SDL_CHECKERRORS();
       return fromUtf8(cb::utf8string(szTitle));
     }
 
-    glm::ivec2 CWindow::GetPosition() const {
+    glm::ivec2 Window::getPosition() const {
       auto result = glm::ivec2();
-      SDL_GetWindowPosition(::Get(*this), &result.x, &result.y);
+      SDL_GetWindowPosition(::get(*this), &result.x, &result.y);
       CB_SDL_CHECKERRORS();
       return result;
     }
 
-    glm::uvec2 CWindow::GetSize() const {
+    glm::uvec2 Window::getSize() const {
       auto result = glm::ivec2();
-      SDL_GetWindowSize(::Get(*this), &result.x, &result.y);
+      SDL_GetWindowSize(::get(*this), &result.x, &result.y);
       CB_SDL_CHECKERRORS();
       return glm::uvec2(result);
     }
 
-    glm::uvec2 CWindow::GetDrawableSize() const {
+    glm::uvec2 Window::getDrawableSize() const {
       auto result = glm::ivec2();
-      SDL_GL_GetDrawableSize(::Get(*this), &result.x, &result.y);
+      SDL_GL_GetDrawableSize(::get(*this), &result.x, &result.y);
       CB_SDL_CHECKERRORS();
       return glm::uvec2(result);
     }
 
-    glm::uvec2 CWindow::GetMinimumSize() const {
+    glm::uvec2 Window::getMinimumSize() const {
       auto result = glm::ivec2();
-      SDL_GetWindowMinimumSize(::Get(*this), &result.x, &result.y);
+      SDL_GetWindowMinimumSize(::get(*this), &result.x, &result.y);
       CB_SDL_CHECKERRORS();
       return glm::uvec2(result);
     }
 
-    glm::uvec2 CWindow::GetMaximumSize() const {
+    glm::uvec2 Window::getMaximumSize() const {
       auto result = glm::ivec2();
-      SDL_GetWindowMaximumSize(::Get(*this), &result.x, &result.y);
+      SDL_GetWindowMaximumSize(::get(*this), &result.x, &result.y);
       CB_SDL_CHECKERRORS();
       return glm::uvec2(result);
     }
 
-    CSurface CWindow::GetSurface() {
-      auto surface = SDL_GetWindowSurface(::Get(*this));
+    Surface Window::getSurface() {
+      auto surface = SDL_GetWindowSurface(::get(*this));
       CB_SDL_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    bool CWindow::GetGrab() const {
-      auto res = SDL_GetWindowGrab(::Get(*this));
+    bool Window::getGrab() const {
+      auto res = SDL_GetWindowGrab(::get(*this));
       CB_SDL_CHECKERRORS();
       return res == SDL_TRUE;
     }
 
-    float CWindow::GetBrightness() const {
-      auto res = SDL_GetWindowBrightness(::Get(*this));
+    float Window::getBrightness() const {
+      auto res = SDL_GetWindowBrightness(::get(*this));
       CB_SDL_CHECKERRORS();
       return res;
     }
 
-    float CWindow::GetOpacity() const {
+    float Window::getOpacity() const {
       auto result = -1.0f;
-      SDL_GetWindowOpacity(::Get(*this), &result);
+      SDL_GetWindowOpacity(::get(*this), &result);
       CB_SDL_CHECKERRORS();
       return result;
     }
 
-    void CWindow::Show() {
-      SDL_ShowWindow(::Get(*this));
+    void Window::show() {
+      SDL_ShowWindow(::get(*this));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::Hide() {
-      SDL_HideWindow(::Get(*this));
+    void Window::hide() {
+      SDL_HideWindow(::get(*this));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::Raise() {
-      SDL_RaiseWindow(::Get(*this));
+    void Window::raise() {
+      SDL_RaiseWindow(::get(*this));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::Minimize() {
-      SDL_MinimizeWindow(::Get(*this));
+    void Window::minimize() {
+      SDL_MinimizeWindow(::get(*this));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::Maximize() {
-      SDL_MaximizeWindow(::Get(*this));
+    void Window::maximize() {
+      SDL_MaximizeWindow(::get(*this));
       CB_SDL_CHECKERRORS();
     }
 
-    void CWindow::Restore() {
-      SDL_RestoreWindow(::Get(*this));
+    void Window::restore() {
+      SDL_RestoreWindow(::get(*this));
       CB_SDL_CHECKERRORS();
     }
 
-    bool CWindow::UpdateSurface() {
-      auto res = SDL_UpdateWindowSurface(::Get(*this));
+    bool Window::updateSurface() {
+      auto res = SDL_UpdateWindowSurface(::get(*this));
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
 
-    bool CWindow::UpdateSurfaceRects(const std::vector<CRect>& rects) {
-      auto res = SDL_UpdateWindowSurfaceRects(::Get(*this), 
+    bool Window::updateSurfaceRects(const std::vector<CRect>& rects) {
+      auto res = SDL_UpdateWindowSurfaceRects(::get(*this), 
                                               reinterpret_cast<const SDL_Rect*>(rects.data()), 
                                               static_cast<int>(rects.size()));
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
 
-    bool CWindow::SetInputFocus() {
-      auto res = SDL_SetWindowInputFocus(::Get(*this));
+    bool Window::setInputFocus() {
+      auto res = SDL_SetWindowInputFocus(::get(*this));
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
 
-    bool CWindow::SetModalFor(CWindow & parent) {
-      auto res = SDL_SetWindowModalFor(::Get(*this), ::Get(parent));
+    bool Window::setModalFor(Window & parent) {
+      auto res = SDL_SetWindowModalFor(::get(*this), ::get(parent));
       CB_SDL_CHECKERRORS();
       return res == 0;
     }
 
-    void CWindow::WarpMouse(glm::ivec2 pos) {
-      SDL_WarpMouseInWindow(::Get(*this), pos.x, pos.y);
+    void Window::warpMouse(glm::ivec2 pos) {
+      SDL_WarpMouseInWindow(::get(*this), pos.x, pos.y);
       CB_SDL_CHECKERRORS();
     }
 
-    void * CWindow::GetWindowNativeHandle() const {
+    void * Window::getWindowNativeHandle() const {
 #ifdef _WIN32
       SDL_SysWMinfo wmInfo;
       SDL_VERSION(&wmInfo.version);
-      SDL_GetWindowWMInfo(::Get(*this), &wmInfo);
+      SDL_GetWindowWMInfo(::get(*this), &wmInfo);
       return wmInfo.info.win.window;
 #else
       return nullptr;
 #endif
     }
 
-    CWindow CWindow::FromId(WindowID const Id) {
+    Window Window::fromId(WindowID const Id) {
       auto pWindow = SDL_GetWindowFromID(Id);
       CB_SDL_CHECKERRORS();
-      return CWindow(pWindow);
+      return Window(pWindow);
     }
 
-    CWindow CWindow::FromGrabbed() {
+    Window Window::fromGrabbed() {
       auto pWindow = SDL_GetGrabbedWindow();
       CB_SDL_CHECKERRORS();
-      return CWindow(pWindow);
+      return Window(pWindow);
     }
 
   }

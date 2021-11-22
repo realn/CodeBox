@@ -7,18 +7,17 @@ namespace cb {
   namespace sdl {
     enum class ScanCode;
     
+    cb::string getNameFromScanCode(ScanCode const code);
+    ScanCode getScanCodeFromName(cb::string const& name);
 
-    extern cb::string GetNameFromScanCode(ScanCode const code);
-    extern ScanCode GetScanCodeFromName(cb::string const& name);
+    bool hasClipboardText();
+    void setClipboardText(const cb::string& text);
+    cb::string getClipboardText();
 
-    extern bool HasClipboardText();
-    extern void SetClipboardText(const cb::string& text);
-    extern cb::string GetClipboardText();
+    void setModState(const KeyMods mods);
+    KeyMods getModState();
 
-    extern void SetModState(const KeyMods mods);
-    extern KeyMods GetModState();
-
-    extern ButtonFlags GetMouseModState(glm::ivec2& outPos = glm::ivec2());
-    extern ButtonFlags GetGlobalMouseModSate(glm::ivec2& outPod = glm::ivec2());
+    ButtonFlags getMouseModState(glm::ivec2& outPos = glm::ivec2());
+    ButtonFlags getGlobalMouseModSate(glm::ivec2& outPod = glm::ivec2());
   }
 }

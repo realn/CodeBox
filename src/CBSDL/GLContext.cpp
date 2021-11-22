@@ -4,39 +4,39 @@
 
 #include <exception>
 
-inline SDL_Window* Get(cb::sdl::CWindow& obj) {
-  return reinterpret_cast<SDL_Window*>(obj.Get());
+inline SDL_Window* get(cb::sdl::Window& obj) {
+  return reinterpret_cast<SDL_Window*>(obj.get());
 }
 
-inline SDL_Window* Get(cb::sdl::CWindow const& obj) {
-  return reinterpret_cast<SDL_Window*>(obj.Get());
+inline SDL_Window* get(cb::sdl::Window const& obj) {
+  return reinterpret_cast<SDL_Window*>(obj.get());
 }
 
 namespace cb {
   namespace sdl {
-    CGLContext::CGLContext(CWindow& window, GLAttributeMapT const & attributes) {
+    GLContext::GLContext(Window& window, GLAttributeMapT const & attributes) {
       for(auto& attrib : attributes) {
         SDL_GL_SetAttribute(static_cast<SDL_GLattr>(attrib.first), attrib.second);
         CB_SDL_CHECKERRORS();
       }
-      mContext = SDL_GL_CreateContext(::Get(window));
+      mContext = SDL_GL_CreateContext(::get(window));
       CB_SDL_CHECKERRORS();
     }
 
-    CGLContext::~CGLContext() {
+    GLContext::~GLContext() {
       if(mContext) {
         SDL_GL_DeleteContext(reinterpret_cast<SDL_GLContext>(mContext));
         mContext = nullptr;
       }
     }
 
-    void CGLContext::MakeCurrent(CWindow & window) {
-      SDL_GL_MakeCurrent(::Get(window), reinterpret_cast<SDL_GLContext>(mContext));
+    void GLContext::makeCurrent(Window & window) {
+      SDL_GL_MakeCurrent(::get(window), reinterpret_cast<SDL_GLContext>(mContext));
       CB_SDL_CHECKERRORS();
     }
 
-    void CGLContext::SwapWindow(CWindow & window) {
-      SDL_GL_SwapWindow(::Get(window));
+    void GLContext::swapWindow(Window & window) {
+      SDL_GL_SwapWindow(::get(window));
       CB_SDL_CHECKERRORS();
     }
   }

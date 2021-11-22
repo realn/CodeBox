@@ -6,7 +6,7 @@
 
 namespace cb {
   namespace sdl {
-    ENUM_FLAG(System) {
+    ENUM_FLAG(SystemFlag) {
       TIMER = 0x00000001u,
         AUDIO = 0x00000010u,
         VIDEO = 0x00000020u,  /**< SDL_INIT_VIDEO implies SDL_INIT_EVENTS */
@@ -19,14 +19,14 @@ namespace cb {
                       JOYSTICK | HAPTIC | GAMECONTROLLER )
     };
 
-    class CSystem {
+    class System {
     private:
-      System mFlags;
+      SystemFlags mFlags;
     public:
-      CSystem(System const system);
-      ~CSystem();
+      System(SystemFlags const system);
+      ~System();
 
-      void SetMainReady();
+      void setMainReady();
     };
   }
 }

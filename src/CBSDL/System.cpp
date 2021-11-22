@@ -6,8 +6,8 @@
 
 namespace cb {
   namespace sdl {
-    CSystem::CSystem(System const system) : mFlags(system) {
-      SetMainReady();
+    System::System(SystemFlags const system) : mFlags(system) {
+      setMainReady();
 
       SDL_InitSubSystem(static_cast<Uint32>(mFlags));
       CB_SDL_CHECKERRORS();
@@ -17,13 +17,13 @@ namespace cb {
       CB_TTF_CHECKERRORS();
     }
 
-    CSystem::~CSystem() {
+    System::~System() {
       TTF_Quit();
       IMG_Quit();
       SDL_QuitSubSystem(static_cast<Uint32>(mFlags));
     }
 
-    void CSystem::SetMainReady()
+    void System::setMainReady()
     {
       SDL_SetMainReady();
     }

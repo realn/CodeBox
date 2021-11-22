@@ -3,7 +3,7 @@
 
 namespace cb {
   namespace sdl {
-    CPerfTimer::CPerfTimer()
+    PerformanceTimer::PerformanceTimer()
       : mFrequency(0), mLastCount(0), mDelta(0)
     {
       mFrequency = SDL_GetPerformanceFrequency();
@@ -12,7 +12,7 @@ namespace cb {
       CB_SDL_CHECKERRORS();
     }
 
-    void CPerfTimer::Update() {
+    void PerformanceTimer::update() {
       auto thisCount = SDL_GetPerformanceCounter();
       auto diff = thisCount - mLastCount;
       auto delta = static_cast<double>(diff) / static_cast<double>(mFrequency);
@@ -20,7 +20,7 @@ namespace cb {
       mLastCount = thisCount;
     }
 
-    float CPerfTimer::GetTimeDelta() const {
+    float PerformanceTimer::getTimeDelta() const {
       return mDelta;
     }
   }

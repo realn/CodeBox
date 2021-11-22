@@ -10,74 +10,74 @@ namespace cb {
       Vertical,
     };
 
-    class CRWObj;
+    class RWObj;
 
-    class CSurface {
+    class Surface {
       void* mSurface;
 
     public:
-      CSurface(glm::uvec2 const size, unsigned const depth, PixelFormat const format);
-      explicit CSurface(void* surface) : mSurface(surface) {}
-      CSurface(CSurface const&) = delete;
-      CSurface(CSurface && other);
-      ~CSurface();
+      Surface(glm::uvec2 const size, unsigned const depth, PixelFormat const format);
+      explicit Surface(void* surface) : mSurface(surface) {}
+      Surface(Surface const&) = delete;
+      Surface(Surface && other);
+      ~Surface();
 
-      void operator=(CSurface const&) = delete;
-      void operator=(CSurface && other);
+      void operator=(Surface const&) = delete;
+      void operator=(Surface && other);
 
-      void SetPixels(std::vector<cb::byte> const& data);
+      void setPixels(std::vector<cb::byte> const& data);
 
-      glm::uvec2 GetSize() const;
-      unsigned GetDepth() const;
-      PixelFormat GetFormat() const;
-      cb::bytevector GetPixels() const;
+      glm::uvec2 getSize() const;
+      unsigned getDepth() const;
+      PixelFormat getFormat() const;
+      cb::bytevector getPixels() const;
 
-      void* Get() const { return mSurface; }
+      void* get() const { return mSurface; }
 
-      CSurface Copy() const;
-      CSurface Convert(PixelFormat const format) const;
+      Surface copy() const;
+      Surface convert(PixelFormat const format) const;
 
-      void Paste(glm::uvec2 const& dstPos, 
-                 CSurface const& source);
-      void Paste(glm::uvec2 const& dstPos, 
-                 CSurface const& source, 
+      void paste(glm::uvec2 const& dstPos, 
+                 Surface const& source);
+      void paste(glm::uvec2 const& dstPos, 
+                 Surface const& source, 
                  glm::uvec2 const& srcPos,
                  glm::uvec2 const& srcSize);
-      void PasteScaled(glm::uvec2 const& dstPos, 
+      void pasteScaled(glm::uvec2 const& dstPos, 
                        glm::uvec2 const& dstSize, 
-                       CSurface const& source);
-      void PasteScaled(glm::uvec2 const& dstPos,
+                       Surface const& source);
+      void pasteScaled(glm::uvec2 const& dstPos,
                        glm::uvec2 const& dstSize,
-                       CSurface const& source,
+                       Surface const& source,
                        glm::uvec2 const& srcPos,
                        glm::uvec2 const& srcSize);
-      void Flip(FlipDir const dir);
+      void flip(FlipDir const dir);
 
-      void Fill(glm::vec4 const& color);
-      void Fill(glm::u8vec4 const& color);
-      void Fill(glm::vec4 const& color, glm::uvec2 const& pos, glm::uvec2 const& size);
-      void Fill(glm::u8vec4 const& color, glm::uvec2 const& pos, glm::uvec2 const& size);
+      void fill(glm::vec4 const& color);
+      void fill(glm::u8vec4 const& color);
+      void fill(glm::vec4 const& color, glm::uvec2 const& pos, glm::uvec2 const& size);
+      void fill(glm::u8vec4 const& color, glm::uvec2 const& pos, glm::uvec2 const& size);
 
-      static CSurface LoadBMP(cb::string const& filepath);
-      static CSurface LoadBMP(CRWObj& rwObj);
-      static CSurface LoadPNG(cb::string const& filepath);
-      static CSurface LoadPNG(CRWObj& rwObj);
-      static CSurface LoadTGA(cb::string const& filepath);
-      static CSurface LoadTGA(CRWObj& rwObj);
-      static CSurface LoadJPG(cb::string const& filepath);
-      static CSurface LoadJPG(CRWObj& rwObj);
+      static Surface loadBMP(cb::string const& filepath);
+      static Surface loadBMP(RWObj& rwObj);
+      static Surface loadPNG(cb::string const& filepath);
+      static Surface loadPNG(RWObj& rwObj);
+      static Surface loadTGA(cb::string const& filepath);
+      static Surface loadTGA(RWObj& rwObj);
+      static Surface loadJPG(cb::string const& filepath);
+      static Surface loadJPG(RWObj& rwObj);
 
-      static CSurface Load(cb::string const& filepath);
-      static CSurface Load(CRWObj& rwObj);
+      static Surface load(cb::string const& filepath);
+      static Surface load(RWObj& rwObj);
 
-      bool SaveBMP(cb::string const& filepath) const;
-      bool SaveBMP(CRWObj& rwObj) const;
-      bool SavePNG(cb::string const& filepath) const;
-      bool SavePNG(CRWObj& rwObj) const;
+      bool saveBMP(cb::string const& filepath) const;
+      bool saveBMP(RWObj& rwObj) const;
+      bool savePNG(cb::string const& filepath) const;
+      bool savePNG(RWObj& rwObj) const;
 
     private:
-      void FlipHorizontal();
-      void FlipVertical();
+      void flipHorizontal();
+      void flipVertical();
     };
 
   }

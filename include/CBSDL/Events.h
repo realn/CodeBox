@@ -7,9 +7,9 @@
 
 namespace cb {
   namespace sdl {
-    class CEvent;
+    class Event;
 
-    class CWindowEvent {
+    class WindowEvent {
     private:
       WindowEventType mType;
       WindowID mWindowId;
@@ -17,16 +17,16 @@ namespace cb {
       s32 mData2;
 
     public:
-      CWindowEvent() : mType(WindowEventType::NONE), mWindowId(0), mData1(0), mData2(0) {}
-      explicit CWindowEvent(CEvent const& event);
+      WindowEvent() : mType(WindowEventType::NONE), mWindowId(0), mData1(0), mData2(0) {}
+      explicit WindowEvent(Event const& event);
 
-      WindowEventType GetType() const { return mType; }
-      WindowID GetWindowId() const { return mWindowId; }
-      s32 GetData1() const { return mData1; }
-      s32 GetData2() const { return mData2; }
+      WindowEventType getType() const { return mType; }
+      WindowID getWindowId() const { return mWindowId; }
+      s32 getData1() const { return mData1; }
+      s32 getData2() const { return mData2; }
     };
 
-    class CKeyboardEvent {
+    class KeyboardEvent {
     private:
       KeyState mType;
       WindowID mWindowId;
@@ -36,37 +36,37 @@ namespace cb {
       u32 mKeyRepeat;
 
     public:
-      CKeyboardEvent() : mType(KeyState::PRESSED), mWindowId(0), mScanCode(ScanCode::UNKNOWN), mKeyMod(KeyMod::NONE), mKeySymbol(0), mKeyRepeat(0) {}
-      explicit CKeyboardEvent(CEvent const& other);
+      KeyboardEvent() : mType(KeyState::PRESSED), mWindowId(0), mScanCode(ScanCode::UNKNOWN), mKeyMod(KeyMod::NONE), mKeySymbol(0), mKeyRepeat(0) {}
+      explicit KeyboardEvent(Event const& other);
 
-      KeyState GetType() const { return mType; }
-      WindowID GetWindowId() const { return mWindowId; }
-      ScanCode GetScanCode() const { return mScanCode; }
-      KeyMod GetKeyMod() const { return mKeyMod; }
-      cb::string::value_type GetKeySymbol() const { return mKeySymbol; }
-      u32 GetKeyRepeat() const { return mKeyRepeat; }
+      KeyState getType() const { return mType; }
+      WindowID getWindowId() const { return mWindowId; }
+      ScanCode getScanCode() const { return mScanCode; }
+      KeyMod getKeyMod() const { return mKeyMod; }
+      cb::string::value_type getKeySymbol() const { return mKeySymbol; }
+      u32 getKeyRepeat() const { return mKeyRepeat; }
     };
 
-    class CMouseButtonEvent {
+    class MouseButtonEvent {
     private:
       KeyState mType;
-      Button mButton;
+      button mButton;
       u32 mClicks;
       MouseID mMouseId;
       WindowID mWindowId;
 
     public:
-      CMouseButtonEvent() : mType(KeyState::PRESSED), mButton(Button::LEFT), mClicks(0), mMouseId(0), mWindowId(0) {}
-      explicit CMouseButtonEvent(CEvent const& other);
+      MouseButtonEvent() : mType(KeyState::PRESSED), mButton(button::LEFT), mClicks(0), mMouseId(0), mWindowId(0) {}
+      explicit MouseButtonEvent(Event const& other);
 
-      KeyState GetType() const { return mType; }
-      Button GetButton() const { return mButton; }
-      u32 GetClicks() const { return mClicks; }
-      MouseID GetMouseId() const { return mMouseId; }
-      WindowID GetWindowId() const { return mWindowId; }
+      KeyState getType() const { return mType; }
+      button getButton() const { return mButton; }
+      u32 getClicks() const { return mClicks; }
+      MouseID getMouseId() const { return mMouseId; }
+      WindowID getWindowId() const { return mWindowId; }
     };
 
-    class CMouseMotionEvent {
+    class MouseMotionEvent {
     private:
       glm::ivec2 mPosition;
       glm::ivec2 mRelative;
@@ -74,16 +74,16 @@ namespace cb {
       WindowID mWindowId;
 
     public:
-      CMouseMotionEvent() : mMouseId(0), mWindowId(0) {}
-      explicit CMouseMotionEvent(CEvent const& other);
+      MouseMotionEvent() : mMouseId(0), mWindowId(0) {}
+      explicit MouseMotionEvent(Event const& other);
 
-      glm::ivec2 GetPosition() const { return mPosition; }
-      glm::ivec2 GetRelative() const { return mRelative; }
-      MouseID GetMouseId() const { return mMouseId; }
-      WindowID GetWindowId() const { return mWindowId; }
+      glm::ivec2 getPosition() const { return mPosition; }
+      glm::ivec2 getRelative() const { return mRelative; }
+      MouseID getMouseId() const { return mMouseId; }
+      WindowID getWindowId() const { return mWindowId; }
     };
 
-    class CMouseWheelEvent {
+    class MouseWheelEvent {
     private:
       glm::ivec2 mScroll;
       bool mFlipped;
@@ -91,29 +91,29 @@ namespace cb {
       WindowID mWindowId;
 
     public:
-      CMouseWheelEvent() : mFlipped(false), mMouseId(0), mWindowId() {}
-      explicit CMouseWheelEvent(CEvent const& other);
+      MouseWheelEvent() : mFlipped(false), mMouseId(0), mWindowId() {}
+      explicit MouseWheelEvent(Event const& other);
 
-      glm::ivec2 GetScroll() const { return mScroll; }
-      bool IsFlipped() const { return mFlipped; }
-      MouseID GetMouseId() const { return mMouseId; }
-      WindowID GetWindowId() const { return mWindowId; }
+      glm::ivec2 getScroll() const { return mScroll; }
+      bool isFlipped() const { return mFlipped; }
+      MouseID getMouseId() const { return mMouseId; }
+      WindowID getWindowId() const { return mWindowId; }
     };
 
-    class CTextInputEvent {
+    class TextInputEvent {
     private:
       WindowID mWindowId;
       cb::string mText;
 
     public:
-      CTextInputEvent() : mWindowId(0) {}
-      explicit CTextInputEvent(CEvent const& other);
+      TextInputEvent() : mWindowId(0) {}
+      explicit TextInputEvent(Event const& other);
       
-      WindowID GetWindowId() const { return mWindowId; }
-      cb::string GetText() const { return mText; }
+      WindowID getWindowId() const { return mWindowId; }
+      cb::string getText() const { return mText; }
     };
 
-    class CTextEditingEvent {
+    class TextEditingEvent {
     private:
       WindowID mWindowId;
       u32 mEditPos;
@@ -121,37 +121,37 @@ namespace cb {
       cb::string mText;
 
     public:
-      CTextEditingEvent() : mWindowId(0), mEditPos(0), mEditLen(0) {}
-      explicit CTextEditingEvent(CEvent const& other);
+      TextEditingEvent() : mWindowId(0), mEditPos(0), mEditLen(0) {}
+      explicit TextEditingEvent(Event const& other);
 
-      WindowID GetWindowId() const { return mWindowId; }
-      u32 GetEditPos() const { return mEditPos; }
-      u32 GetEditLen() const { return mEditLen; }
-      cb::string GetText() const { return mText; }
+      WindowID getWindowId() const { return mWindowId; }
+      u32 getEditPos() const { return mEditPos; }
+      u32 getEditLen() const { return mEditLen; }
+      cb::string getText() const { return mText; }
     };
 
-    class CEvent {
+    class Event {
     private:
       static constexpr size_t DATA_SIZE = 56; // SDL_Event universal size
       byte mData[DATA_SIZE] = {0};
 
     public:
-      EventType GetType() const;
+      EventType getType() const;
 
-      byte* Get() { return mData; }
-      byte const* Get() const { return mData; }
+      byte* get() { return mData; }
+      byte const* get() const { return mData; }
 
-      CWindowEvent Window() const { return CWindowEvent(*this); }
-      CKeyboardEvent Key() const { return CKeyboardEvent(*this); }
-      CMouseButtonEvent Button() const { return CMouseButtonEvent(*this); }
-      CMouseMotionEvent Motion() const { return CMouseMotionEvent(*this); }
-      CMouseWheelEvent Wheel() const { return CMouseWheelEvent(*this); }
-      CTextEditingEvent Edit() const { return CTextEditingEvent(*this); }
-      CTextInputEvent Text() const { return CTextInputEvent(*this); }
+      WindowEvent window() const { return WindowEvent(*this); }
+      KeyboardEvent key() const { return KeyboardEvent(*this); }
+      MouseButtonEvent button() const { return MouseButtonEvent(*this); }
+      MouseMotionEvent motion() const { return MouseMotionEvent(*this); }
+      MouseWheelEvent wheel() const { return MouseWheelEvent(*this); }
+      TextEditingEvent edit() const { return TextEditingEvent(*this); }
+      TextInputEvent text() const { return TextInputEvent(*this); }
 
-      static bool Poll(CEvent& outEvent);
-      static CEvent WaitFor();
-      static CEvent WaitFor(std::chrono::milliseconds const& timeout);
+      static bool poll(Event& outEvent);
+      static Event waitFor();
+      static Event waitFor(std::chrono::milliseconds const& timeout);
     };
   }
 }

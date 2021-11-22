@@ -11,65 +11,65 @@ namespace cb {
     };
 
     enum class FileMode {
-      Read, // file must exist
-      Write,
+      read, // file must exist
+      write,
       Append,
       ReadWrite, // file must exist
       ReadWriteForce,
     };
 
-    class CRWObj {
+    class RWObj {
     private:
       void* mObj = nullptr;
 
     public:
-      CRWObj(CRWObj const&) = delete;
-      CRWObj(CRWObj&& other);
-      ~CRWObj();
+      RWObj(RWObj const&) = delete;
+      RWObj(RWObj&& other);
+      ~RWObj();
 
-      void* Get() const { return mObj; }
+      void* get() const { return mObj; }
 
       template<typename _Type>
-      void Read(_Type& obj) {
-        ReadPriv(reinterpret_cast<cb::byte*>(&obj), sizeof(_Type));
+      void read(_Type& obj) {
+        readPriv(reinterpret_cast<cb::byte*>(&obj), sizeof(_Type));
       }
       template<typename _Type>
-      void Read(std::vector<_Type>& data) {
-        ReadPriv(reinterpret_cast<cb::byte*>(data.data()), sizeof(_Type) * data.size());
+      void read(std::vector<_Type>& data) {
+        readPriv(reinterpret_cast<cb::byte*>(data.data()), sizeof(_Type) * data.size());
       }
       template<typename _Type, size_t _Size>
-      void Read(std::array<_Type, _Size>& data) {
-        ReadPriv(reinterpret_cast<cb::byte*>(data.data()), sizeof(_Type) * data.size());
+      void read(std::array<_Type, _Size>& data) {
+        readPriv(reinterpret_cast<cb::byte*>(data.data()), sizeof(_Type) * data.size());
       }
 
       template<typename _Type>
-      void Write(_Type const& obj) {
-        WritePriv(reinterpret_cast<const cb::byte*>(&obj), sizeof(_Type));
+      void write(_Type const& obj) {
+        writePriv(reinterpret_cast<const cb::byte*>(&obj), sizeof(_Type));
       }
       template<typename _Type>
-      void Write(std::vector<_Type> const& data) {
-        WritePriv(reinterpret_cast<const cb::byte*>(data.data()), sizeof(_Type) * data.size());
+      void write(std::vector<_Type> const& data) {
+        writePriv(reinterpret_cast<const cb::byte*>(data.data()), sizeof(_Type) * data.size());
       }
       template<typename _Type, size_t _Size>
-      void Write(std::array<_Type, _Size> const& data) {
-        WritePriv(reinterpret_cast<const cb::byte*>(data.data()), sizeof(_Type) * data.size());
+      void write(std::array<_Type, _Size> const& data) {
+        writePriv(reinterpret_cast<const cb::byte*>(data.data()), sizeof(_Type) * data.size());
       }
 
-      void SetPos(s64 const pos, SeekPos const whence = SeekPos::SET);
-      s64 GetPos() const;
-      s64 GetSize() const;
+      void setPos(s64 const pos, SeekPos const whence = SeekPos::SET);
+      s64 getPos() const;
+      s64 getSize() const;
 
-      void Close();
+      void close();
 
-      static CRWObj FromFile(cb::string const& filepath, FileMode const mode);
-      static CRWObj FromMemory(std::vector<cb::byte>& data);
-      static CRWObj FromConstMemory(std::vector<cb::byte> const& data);
+      static RWObj fromFile(cb::string const& filepath, FileMode const mode);
+      static RWObj fromMemory(std::vector<cb::byte>& data);
+      static RWObj fromConstMemory(std::vector<cb::byte> const& data);
 
     private:
-      explicit CRWObj(void* obj) : mObj(obj) {}
+      explicit RWObj(void* obj) : mObj(obj) {}
 
-      void ReadPriv(cb::byte* pData, size_t const size);
-      void WritePriv(const cb::byte* pData, size_t const size);
+      void readPriv(cb::byte* pData, size_t const size);
+      void writePriv(const cb::byte* pData, size_t const size);
     };
   }
 }

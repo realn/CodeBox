@@ -4,21 +4,21 @@
 
 namespace cb {
   namespace sdl {
-    class CPerfTimer {
+    class PerformanceTimer {
     private:
       u64 mFrequency;
       u64 mLastCount;
       float mDelta;
       
     public:
-      CPerfTimer();
+      PerformanceTimer();
 
-      void Update();
+      void update();
 
-      float GetTimeDelta() const;
+      float getTimeDelta() const;
 
-      u64 GetFrequency() const { return mFrequency; }
-      u64 GetLastCount() const { return mLastCount; }
+      u64 getFrequency() const { return mFrequency; }
+      u64 getLastCount() const { return mLastCount; }
     };
   }
 }

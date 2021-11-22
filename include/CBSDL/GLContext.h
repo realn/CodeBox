@@ -7,20 +7,20 @@
 
 namespace cb {
   namespace sdl {
-    class CWindow;
+    class Window;
 
     using GLAttributeMapT = std::map<GLAttribute, s32>;
 
-    class CGLContext {
+    class GLContext {
     private:
       void* mContext = nullptr;
 
     public:
-      CGLContext(CWindow& window, GLAttributeMapT const & attributes);
-      ~CGLContext();
+      GLContext(Window& window, GLAttributeMapT const & attributes);
+      ~GLContext();
 
-      void MakeCurrent(CWindow& window);
-      void SwapWindow(CWindow& window);
+      void makeCurrent(Window& window);
+      void swapWindow(Window& window);
     };
   }
 }

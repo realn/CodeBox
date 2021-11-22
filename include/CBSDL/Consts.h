@@ -512,7 +512,7 @@ namespace cb {
         RESERVED = 0x8000
     };
 
-    enum class Button {
+    enum class button {
       LEFT = 1,
       MIDDLE = 2,
       RIGHT = 3,
@@ -521,11 +521,11 @@ namespace cb {
     };
 
     ENUM_FLAG(ButtonFlag) {
-      LEFT = ShiftBit(Button::LEFT),
-        MIDDLE = ShiftBit(Button::MIDDLE),
-        RIGHT = ShiftBit(Button::RIGHT),
-        X1 = ShiftBit(Button::X1),
-        X2 = ShiftBit(Button::X2)
+      LEFT = shiftBit(button::LEFT),
+        MIDDLE = shiftBit(button::MIDDLE),
+        RIGHT = shiftBit(button::RIGHT),
+        X1 = shiftBit(button::X1),
+        X2 = shiftBit(button::X2)
     };
 
     enum class GLAttribute {

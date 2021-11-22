@@ -5,20 +5,20 @@
 #include <SDL_surface.h>
 #include <SDL_image.h>
 
-inline SDL_RWops* Get(cb::sdl::CRWObj& obj) {
-  return reinterpret_cast<SDL_RWops*>(obj.Get());
+inline SDL_RWops* get(cb::sdl::RWObj& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.get());
 }
 
-inline SDL_RWops* Get(cb::sdl::CRWObj const& obj) {
-  return reinterpret_cast<SDL_RWops*>(obj.Get());
+inline SDL_RWops* get(cb::sdl::RWObj const& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.get());
 }
 
-inline SDL_Surface* Get(cb::sdl::CSurface& surface) {
-  return reinterpret_cast<SDL_Surface*>(surface.Get());
+inline SDL_Surface* get(cb::sdl::Surface& surface) {
+  return reinterpret_cast<SDL_Surface*>(surface.get());
 }
 
-inline SDL_Surface* Get(cb::sdl::CSurface const& surface) {
-  return reinterpret_cast<SDL_Surface*>(surface.Get());
+inline SDL_Surface* get(cb::sdl::Surface const& surface) {
+  return reinterpret_cast<SDL_Surface*>(surface.get());
 }
 
 namespace cb {
@@ -32,138 +32,138 @@ namespace cb {
       }
     }
 
-    CSurface::CSurface(glm::uvec2 const size, unsigned const depth, PixelFormat const format)
+    Surface::Surface(glm::uvec2 const size, unsigned const depth, PixelFormat const format)
       : mSurface(nullptr) {
       mSurface = SDL_CreateRGBSurfaceWithFormat(0, size.x, size.y, depth,
                                                 static_cast<unsigned>(format));
       CB_SDL_CHECKERRORS();
     }
 
-    CSurface::CSurface(CSurface && other) : mSurface(nullptr) {
+    Surface::Surface(Surface && other) : mSurface(nullptr) {
       std::swap(mSurface, other.mSurface);
     }
 
-    CSurface::~CSurface() {
+    Surface::~Surface() {
       if(mSurface) {
-        SDL_FreeSurface(::Get(*this));
+        SDL_FreeSurface(::get(*this));
         mSurface = nullptr;
       }
     }
 
-    void CSurface::operator=(CSurface && other) {
+    void Surface::operator=(Surface && other) {
       std::swap(mSurface, other.mSurface);
     }
 
-    void CSurface::SetPixels(std::vector<cb::byte> const & data) {
-      if(data.size() != ::Get(*this)->w * ::Get(*this)->h * ::Get(*this)->format->BytesPerPixel) {
+    void Surface::setPixels(std::vector<cb::byte> const & data) {
+      if(data.size() != ::get(*this)->w * ::get(*this)->h * ::get(*this)->format->BytesPerPixel) {
         throw std::exception("Invalid data size to set to sdl surface.");
       }
 
-      SDL_LockSurface(::Get(*this));
-      auto pData = reinterpret_cast<cb::byte*>(::Get(*this)->pixels);
-      std::memcpy(::Get(*this)->pixels, data.data(), data.size());
-      SDL_UnlockSurface(::Get(*this));
+      SDL_LockSurface(::get(*this));
+      auto pData = reinterpret_cast<cb::byte*>(::get(*this)->pixels);
+      std::memcpy(::get(*this)->pixels, data.data(), data.size());
+      SDL_UnlockSurface(::get(*this));
     }
 
-    glm::uvec2 CSurface::GetSize() const {
-      return glm::uvec2(static_cast<unsigned>(::Get(*this)->w),
-                        static_cast<unsigned>(::Get(*this)->h));
+    glm::uvec2 Surface::getSize() const {
+      return glm::uvec2(static_cast<unsigned>(::get(*this)->w),
+                        static_cast<unsigned>(::get(*this)->h));
     }
 
-    unsigned CSurface::GetDepth() const {
-      return ::Get(*this)->format->BitsPerPixel;
+    unsigned Surface::getDepth() const {
+      return ::get(*this)->format->BitsPerPixel;
     }
 
-    PixelFormat CSurface::GetFormat() const {
-      return static_cast<PixelFormat>(::Get(*this)->format->format);
+    PixelFormat Surface::getFormat() const {
+      return static_cast<PixelFormat>(::get(*this)->format->format);
     }
 
-    cb::bytevector CSurface::GetPixels() const {
-      auto len = ::Get(*this)->w * ::Get(*this)->h * ::Get(*this)->format->BytesPerPixel;
+    cb::bytevector Surface::getPixels() const {
+      auto len = ::get(*this)->w * ::get(*this)->h * ::get(*this)->format->BytesPerPixel;
       auto result = cb::bytevector(len);
-      SDL_LockSurface(::Get(*this));
-      std::memcpy(result.data(), ::Get(*this)->pixels, len);
-      SDL_UnlockSurface(::Get(*this));
+      SDL_LockSurface(::get(*this));
+      std::memcpy(result.data(), ::get(*this)->pixels, len);
+      SDL_UnlockSurface(::get(*this));
       return result;
     }
 
-    CSurface CSurface::Copy() const {
-      SDL_LockSurface(::Get(*this));
+    Surface Surface::copy() const {
+      SDL_LockSurface(::get(*this));
       CB_SDL_CHECKERRORS();
       auto surface =
-        SDL_CreateRGBSurfaceWithFormatFrom(::Get(*this)->pixels,
-                                           ::Get(*this)->w,
-                                           ::Get(*this)->h,
-                                           ::Get(*this)->format->BitsPerPixel,
-                                           ::Get(*this)->pitch,
-                                           ::Get(*this)->format->format);
-      SDL_UnlockSurface(::Get(*this));
+        SDL_CreateRGBSurfaceWithFormatFrom(::get(*this)->pixels,
+                                           ::get(*this)->w,
+                                           ::get(*this)->h,
+                                           ::get(*this)->format->BitsPerPixel,
+                                           ::get(*this)->pitch,
+                                           ::get(*this)->format->format);
+      SDL_UnlockSurface(::get(*this));
       CB_SDL_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CSurface::Convert(PixelFormat const format) const {
-      auto surface = SDL_ConvertSurfaceFormat(::Get(*this), static_cast<Uint32>(format), 0);
+    Surface Surface::convert(PixelFormat const format) const {
+      auto surface = SDL_ConvertSurfaceFormat(::get(*this), static_cast<Uint32>(format), 0);
       CB_SDL_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    void CSurface::Paste(glm::uvec2 const & dstPos, CSurface const & source) {
+    void Surface::paste(glm::uvec2 const & dstPos, Surface const & source) {
       auto dstRect = toSdlRect(dstPos, glm::uvec2());
-      SDL_BlitSurface(::Get(source), nullptr, ::Get(*this), &dstRect);
+      SDL_BlitSurface(::get(source), nullptr, ::get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
-    void CSurface::Paste(glm::uvec2 const & dstPos, CSurface const & source, 
+    void Surface::paste(glm::uvec2 const & dstPos, Surface const & source, 
                          glm::uvec2 const & srcPos, glm::uvec2 const & srcSize) {
       auto dstRect = toSdlRect(dstPos, glm::uvec2());
       auto srcRect = toSdlRect(srcPos, srcSize);
-      SDL_BlitSurface(::Get(source), &srcRect, ::Get(*this), &dstRect);
+      SDL_BlitSurface(::get(source), &srcRect, ::get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
-    void CSurface::PasteScaled(glm::uvec2 const & dstPos, glm::uvec2 const & dstSize, 
-                               CSurface const & source) {
+    void Surface::pasteScaled(glm::uvec2 const & dstPos, glm::uvec2 const & dstSize, 
+                               Surface const & source) {
       auto dstRect = toSdlRect(dstPos, dstSize);
-      SDL_BlitScaled(::Get(source), nullptr, ::Get(*this), &dstRect);
+      SDL_BlitScaled(::get(source), nullptr, ::get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
-    void CSurface::PasteScaled(glm::uvec2 const & dstPos, glm::uvec2 const & dstSize, 
-                               CSurface const & source, 
+    void Surface::pasteScaled(glm::uvec2 const & dstPos, glm::uvec2 const & dstSize, 
+                               Surface const & source, 
                                glm::uvec2 const & srcPos, glm::uvec2 const & srcSize) {
       auto dstRect = toSdlRect(dstPos, dstSize);
       auto srcRect = toSdlRect(srcPos, srcSize);
-      SDL_BlitScaled(::Get(source), &srcRect, ::Get(*this), &dstRect);
+      SDL_BlitScaled(::get(source), &srcRect, ::get(*this), &dstRect);
       CB_SDL_CHECKERRORS();
     }
 
-    void CSurface::Flip(FlipDir const dir) {
+    void Surface::flip(FlipDir const dir) {
       switch(dir) {
-      case FlipDir::Horizontal: FlipHorizontal(); break;
-      case FlipDir::Vertical:   FlipVertical(); break;
+      case FlipDir::Horizontal: flipHorizontal(); break;
+      case FlipDir::Vertical:   flipVertical(); break;
       default:
         throw std::exception("Unknown sdl surface flip direction.");
       }
     }
 
-    void CSurface::Fill(glm::vec4 const & color) {
-      Fill(glm::u8vec4(color * 255.0f));
+    void Surface::fill(glm::vec4 const & color) {
+      fill(glm::u8vec4(color * 255.0f));
     }
 
-    void CSurface::Fill(glm::u8vec4 const & color) {
-      auto surf = ::Get(*this);
+    void Surface::fill(glm::u8vec4 const & color) {
+      auto surf = ::get(*this);
       auto col = SDL_MapRGBA(surf->format, color.r, color.g, color.b, color.a);
       SDL_FillRect(surf, nullptr, col);
       CB_SDL_CHECKERRORS();
     }
 
-    void CSurface::Fill(glm::vec4 const & color, glm::uvec2 const & pos, glm::uvec2 const & size) {
-      Fill(glm::u8vec4(color * 255.0f), pos, size);
+    void Surface::fill(glm::vec4 const & color, glm::uvec2 const & pos, glm::uvec2 const & size) {
+      fill(glm::u8vec4(color * 255.0f), pos, size);
     }
 
-    void CSurface::Fill(glm::u8vec4 const & color, glm::uvec2 const & pos, glm::uvec2 const & size) {
-      auto surf = ::Get(*this);
+    void Surface::fill(glm::u8vec4 const & color, glm::uvec2 const & pos, glm::uvec2 const & size) {
+      auto surf = ::get(*this);
       auto col = SDL_MapRGBA(surf->format, color.r, color.g, color.b, color.a);
       auto rect = SDL_Rect{
         static_cast<int>(pos.x), static_cast<int>(pos.y),
@@ -173,13 +173,13 @@ namespace cb {
       CB_SDL_CHECKERRORS();
     }
 
-    void CSurface::FlipHorizontal() {
-      SDL_LockSurface(::Get(*this));
-      auto pData = reinterpret_cast<cb::byte*>(::Get(*this)->pixels);
-      auto size = GetSize();
+    void Surface::flipHorizontal() {
+      SDL_LockSurface(::get(*this));
+      auto pData = reinterpret_cast<cb::byte*>(::get(*this)->pixels);
+      auto size = getSize();
       auto hwidth = size.x / 2;
-      auto pitch = unsigned(::Get(*this)->pitch);
-      auto bytes = unsigned(::Get(*this)->format->BytesPerPixel);
+      auto pitch = unsigned(::get(*this)->pitch);
+      auto bytes = unsigned(::get(*this)->format->BytesPerPixel);
       for(auto y = 0u; y < size.y; y++) {
         auto linebeg = y * pitch;
         auto lineend = (y + 1) * pitch - bytes;
@@ -193,15 +193,15 @@ namespace cb {
           }
         }
       }
-      SDL_UnlockSurface(::Get(*this));
+      SDL_UnlockSurface(::get(*this));
     }
 
-    void CSurface::FlipVertical() {
-      SDL_LockSurface(::Get(*this));
-      auto pData = reinterpret_cast<cb::byte*>(::Get(*this)->pixels);
-      auto size = GetSize();
-      auto pitch = unsigned(::Get(*this)->pitch);
-      auto bytes = unsigned(::Get(*this)->format->BytesPerPixel);
+    void Surface::flipVertical() {
+      SDL_LockSurface(::get(*this));
+      auto pData = reinterpret_cast<cb::byte*>(::get(*this)->pixels);
+      auto size = getSize();
+      auto pitch = unsigned(::get(*this)->pitch);
+      auto bytes = unsigned(::get(*this)->format->BytesPerPixel);
       for(auto y = 0u; y < size.y/2; y++) {
         auto lineidx1 = y * pitch;
         auto lineidx2 = (size.y - 1 - y) * pitch;
@@ -209,82 +209,82 @@ namespace cb {
           std::swap(pData[lineidx1 + x], pData[lineidx2 + x]);
         }
       }
-      SDL_UnlockSurface(::Get(*this));
+      SDL_UnlockSurface(::get(*this));
     }
 
-    CSurface CSurface::LoadBMP(cb::string const & filepath) {
-      auto file = CRWObj::FromFile(filepath, FileMode::Read);
-      return LoadBMP(file);
+    Surface Surface::loadBMP(cb::string const & filepath) {
+      auto file = RWObj::fromFile(filepath, FileMode::read);
+      return loadBMP(file);
     }
 
-    CSurface CSurface::LoadBMP(CRWObj & rwObj) {
-      auto surface = SDL_LoadBMP_RW(::Get(rwObj), 0);
+    Surface Surface::loadBMP(RWObj & rwObj) {
+      auto surface = SDL_LoadBMP_RW(::get(rwObj), 0);
       CB_SDL_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CSurface::LoadPNG(cb::string const & filepath) {
-      auto file = CRWObj::FromFile(filepath, FileMode::Read);
-      return LoadPNG(file);
+    Surface Surface::loadPNG(cb::string const & filepath) {
+      auto file = RWObj::fromFile(filepath, FileMode::read);
+      return loadPNG(file);
     }
 
-    CSurface CSurface::LoadPNG(CRWObj & rwObj) {
-      auto surface = IMG_LoadPNG_RW(::Get(rwObj));
+    Surface Surface::loadPNG(RWObj & rwObj) {
+      auto surface = IMG_LoadPNG_RW(::get(rwObj));
       CB_IMG_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CSurface::LoadTGA(cb::string const & filepath) {
-      auto file = CRWObj::FromFile(filepath, FileMode::Read);
-      return LoadTGA(file);
+    Surface Surface::loadTGA(cb::string const & filepath) {
+      auto file = RWObj::fromFile(filepath, FileMode::read);
+      return loadTGA(file);
     }
 
-    CSurface CSurface::LoadTGA(CRWObj & rwObj) {
-      auto surface = IMG_LoadTGA_RW(::Get(rwObj));
+    Surface Surface::loadTGA(RWObj & rwObj) {
+      auto surface = IMG_LoadTGA_RW(::get(rwObj));
       CB_IMG_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CSurface::LoadJPG(cb::string const & filepath) {
-      auto file = CRWObj::FromFile(filepath, FileMode::Read);
-      return LoadJPG(file);
+    Surface Surface::loadJPG(cb::string const & filepath) {
+      auto file = RWObj::fromFile(filepath, FileMode::read);
+      return loadJPG(file);
     }
 
-    CSurface CSurface::LoadJPG(CRWObj & rwObj) {
-      auto surface = IMG_LoadJPG_RW(::Get(rwObj));
+    Surface Surface::loadJPG(RWObj & rwObj) {
+      auto surface = IMG_LoadJPG_RW(::get(rwObj));
       CB_IMG_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CSurface::Load(cb::string const & filepath) {
-      auto file = CRWObj::FromFile(filepath, FileMode::Read);
-      return Load(file);
+    Surface Surface::load(cb::string const & filepath) {
+      auto file = RWObj::fromFile(filepath, FileMode::read);
+      return load(file);
     }
 
-    CSurface CSurface::Load(CRWObj & rwObj) {
-      auto surface = IMG_Load_RW(::Get(rwObj), 0);
+    Surface Surface::load(RWObj & rwObj) {
+      auto surface = IMG_Load_RW(::get(rwObj), 0);
       CB_IMG_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    bool CSurface::SaveBMP(cb::string const & filepath) const {
-      auto file = CRWObj::FromFile(filepath, FileMode::Write);
-      return SaveBMP(file);
+    bool Surface::saveBMP(cb::string const & filepath) const {
+      auto file = RWObj::fromFile(filepath, FileMode::write);
+      return saveBMP(file);
     }
 
-    bool CSurface::SaveBMP(CRWObj & rwObj) const {
-      auto result = SDL_SaveBMP_RW(::Get(*this), ::Get(rwObj), 0);
+    bool Surface::saveBMP(RWObj & rwObj) const {
+      auto result = SDL_SaveBMP_RW(::get(*this), ::get(rwObj), 0);
       CB_SDL_CHECKERRORS();
       return result == 0;
     }
 
-    bool CSurface::SavePNG(cb::string const & filepath) const {
-      auto file = CRWObj::FromFile(filepath, FileMode::Write);
-      return SavePNG(file);
+    bool Surface::savePNG(cb::string const & filepath) const {
+      auto file = RWObj::fromFile(filepath, FileMode::write);
+      return savePNG(file);
     }
 
-    bool CSurface::SavePNG(CRWObj & rwObj) const {
-      auto result = IMG_SavePNG_RW(::Get(*this), ::Get(rwObj), 0);
+    bool Surface::savePNG(RWObj & rwObj) const {
+      auto result = IMG_SavePNG_RW(::get(*this), ::get(rwObj), 0);
       CB_SDL_CHECKERRORS();
       return result == 0;
     }

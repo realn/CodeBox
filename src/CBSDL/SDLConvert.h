@@ -4,11 +4,11 @@
 
 namespace cb {
   namespace sdl {
-    class CDisplayMode;
+    class DisplayMode;
   }
 }
 
-extern SDL_DisplayMode convert(cb::sdl::CDisplayMode const& value);
-extern cb::sdl::CDisplayMode convert(SDL_DisplayMode const& value);
+extern SDL_DisplayMode convert(cb::sdl::DisplayMode const& value);
+extern cb::sdl::DisplayMode convert(SDL_DisplayMode const& value);
 
 

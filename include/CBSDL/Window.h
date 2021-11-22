@@ -8,80 +8,80 @@
 
 namespace cb {
   namespace sdl {
-    class CDisplayMode;
-    class CSurface;
+    class DisplayMode;
+    class Surface;
 
     struct CRect {
       glm::ivec2 pos;
       glm::ivec2 size;
     };
 
-    class CWindow {
+    class Window {
     private:
       void* mWindow = nullptr;
 
     public:
-      CWindow(const string& title,
+      Window(const string& title,
               const glm::ivec2& pos = PosUndefined,
               const glm::uvec2& size = glm::uvec2(100),
               const WindowFlag& flags = WindowFlag::None);
-      CWindow(CWindow const&) = delete;
-      CWindow(CWindow&& other);
-      explicit CWindow(void* window) : mWindow(window) {}
-      ~CWindow();
+      Window(Window const&) = delete;
+      Window(Window&& other);
+      explicit Window(void* window) : mWindow(window) {}
+      ~Window();
 
-      void* Get() const { return mWindow; };
+      void* get() const { return mWindow; };
 
-      bool SetDisplayMode(CDisplayMode const& mode);
-      void SetTitle(string const& title);
-      void SetPosition(glm::ivec2 const& pos);
-      void SetSize(glm::uvec2 const& size);
-      void SetMinimumSize(glm::uvec2 const& size);
-      void SetMaximumSize(glm::uvec2 const& size);
-      void SetBordered(bool const value);
-      void SetResizeable(bool const value);
-      bool SetFullscreen(bool const value);
-      void SetGrab(bool const value);
-      bool SetBrightness(float const value);
-      bool SetOpacity(float const value);
+      bool setDisplayMode(DisplayMode const& mode);
+      void setTitle(string const& title);
+      void setPosition(glm::ivec2 const& pos);
+      void setSize(glm::uvec2 const& size);
+      void setMinimumSize(glm::uvec2 const& size);
+      void setMaximumSize(glm::uvec2 const& size);
+      void setBordered(bool const value);
+      void setResizeable(bool const value);
+      bool setFullscreen(bool const value);
+      void setGrab(bool const value);
+      bool setBrightness(float const value);
+      bool setOpacity(float const value);
       
-      int GetDisplayIndex() const;
-      CDisplayMode GetDisplayMode() const;
-      PixelFormat GetPixelFormat() const;
-      WindowID GetId() const;
-      WindowFlags GetFlags() const;
-      string GetTitle() const;
-      glm::ivec2 GetPosition() const;
-      glm::uvec2 GetSize() const;
-      glm::uvec2 GetDrawableSize() const;
-      glm::uvec2 GetMinimumSize() const;
-      glm::uvec2 GetMaximumSize() const;
-      CSurface GetSurface();
-      bool GetGrab() const;
-      float GetBrightness() const;
-      float GetOpacity() const;
+      int getDisplayIndex() const;
+      DisplayMode getDisplayMode() const;
+      PixelFormat getPixelFormat() const;
+      WindowID getId() const;
+      WindowFlags getFlags() const;
+      string getTitle() const;
+      glm::ivec2 getPosition() const;
+      glm::uvec2 getSize() const;
+      glm::uvec2 getDrawableSize() const;
+      glm::uvec2 getMinimumSize() const;
+      glm::uvec2 getMaximumSize() const;
+      Surface getSurface();
+      bool getGrab() const;
+      float getBrightness() const;
+      float getOpacity() const;
 
-      void Show();
-      void Hide();
-      void Raise();
-      void Minimize();
-      void Maximize();
-      void Restore();
-      bool UpdateSurface();
-      bool UpdateSurfaceRects(const std::vector<CRect>& rects);
-      bool SetInputFocus();
-      bool SetModalFor(CWindow& parent);
-      void WarpMouse(glm::ivec2 pos);
+      void show();
+      void hide();
+      void raise();
+      void minimize();
+      void maximize();
+      void restore();
+      bool updateSurface();
+      bool updateSurfaceRects(const std::vector<CRect>& rects);
+      bool setInputFocus();
+      bool setModalFor(Window& parent);
+      void warpMouse(glm::ivec2 pos);
 
-      void operator=(CWindow const & other) = delete;
+      void operator=(Window const & other) = delete;
 
-      void* GetWindowNativeHandle() const;
+      void* getWindowNativeHandle() const;
 
       static glm::ivec2 const PosUndefined;
       static glm::ivec2 const PosCentered;
 
-      static CWindow FromId(WindowID const Id);
-      static CWindow FromGrabbed();
+      static Window fromId(WindowID const Id);
+      static Window fromGrabbed();
     };
   }
 }

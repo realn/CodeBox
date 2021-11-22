@@ -7,52 +7,52 @@
 
 namespace cb {
   namespace sdl {
-    cb::string GetNameFromScanCode(ScanCode const code) {
+    cb::string getNameFromScanCode(ScanCode const code) {
       auto szName = SDL_GetScancodeName(static_cast<SDL_Scancode>(code));
       CB_SDL_CHECKERRORS();
       return cb::fromUtf8(cb::utf8string(szName));
     }
 
-    ScanCode GetScanCodeFromName(cb::string const & name) {
+    ScanCode getScanCodeFromName(cb::string const & name) {
       auto code = SDL_GetScancodeFromName(cb::toUtf8(name).c_str());
       CB_SDL_CHECKERRORS();
       return static_cast<cb::sdl::ScanCode>(code);
     }
 
-    bool HasClipboardText() {
+    bool hasClipboardText() {
       return SDL_HasClipboardText() == SDL_TRUE;
     }
 
-    void SetClipboardText(const cb::string & text) {
+    void setClipboardText(const cb::string & text) {
       auto utf8text = cb::toUtf8(text);
       SDL_SetClipboardText(utf8text.c_str());
       CB_SDL_CHECKERRORS();
     }
 
-    cb::string GetClipboardText() {
+    cb::string getClipboardText() {
       auto utf8text = SDL_GetClipboardText();
       CB_SDL_CHECKERRORS();
       return cb::fromUtf8(utf8text);
     }
 
-    void SetModState(const KeyMods mods) {
-      SDL_SetModState(static_cast<SDL_Keymod>(mods.Get()));
+    void setModState(const KeyMods mods) {
+      SDL_SetModState(static_cast<SDL_Keymod>(mods.get()));
       CB_SDL_CHECKERRORS();
     }
 
-    KeyMods GetModState() {
+    KeyMods getModState() {
       auto mods = static_cast<KeyMod>(SDL_GetModState());
       CB_SDL_CHECKERRORS();
       return KeyMods(mods);
     }
 
-    ButtonFlags GetMouseModState(glm::ivec2 & outPos) {
+    ButtonFlags getMouseModState(glm::ivec2 & outPos) {
       auto state = SDL_GetMouseState(&outPos.x, &outPos.y);
       CB_SDL_CHECKERRORS();
       return static_cast<ButtonFlag>(state);
     }
 
-    ButtonFlags GetGlobalMouseModSate(glm::ivec2 & outPod) {
+    ButtonFlags getGlobalMouseModSate(glm::ivec2 & outPod) {
       auto state = SDL_GetGlobalMouseState(&outPod.x, &outPod.y);
       CB_SDL_CHECKERRORS();
       return static_cast<ButtonFlag>(state);

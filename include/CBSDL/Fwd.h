@@ -9,7 +9,7 @@ namespace cb {
     enum class KeyState;
     enum class ScanCode;
     enum class KeyMod;
-    enum class Button;
+    enum class button;
     enum class GLAttribute;
     enum class FontStyle;
     enum class SeekPos;
@@ -17,23 +17,23 @@ namespace cb {
     enum class FlipDir;
     enum class System;
 
-    class CCursor;
-    class CWindow;
-    class CSystem;
-    class CDisplayMode;
-    class CSurface;
-    class CRWObj;
-    class CGLContext;
-    class CEvent;
-    class CWindowEvent;
-    class CKeyboardEvent;
-    class CMouseButtonEvent;
-    class CMouseMotionEvent;
-    class CMouseWheelEvent;
-    class CTextInputEvent;
-    class CTextEditingEvent;
-    struct CGlyph;
-    class CFont;
-    class CPerfTimer;
+    class Cursor;
+    class Window;
+    class System;
+    class DisplayMode;
+    class Surface;
+    class RWObj;
+    class GLContext;
+    class Event;
+    class WindowEvent;
+    class KeyboardEvent;
+    class MouseButtonEvent;
+    class MouseMotionEvent;
+    class MouseWheelEvent;
+    class TextInputEvent;
+    class TextEditingEvent;
+    struct Glyph;
+    class Font;
+    class PerformanceTimer;
   }
 }

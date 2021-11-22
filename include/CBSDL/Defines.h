@@ -12,7 +12,7 @@ namespace cb {
     using MouseID = u32;
 
     template<typename _Type>
-    constexpr int ShiftBit(_Type value, int shiftAdj = -1) {
+    constexpr int shiftBit(_Type value, int shiftAdj = -1) {
       return 1 << (static_cast<int>(value) + shiftAdj);
     }
   }

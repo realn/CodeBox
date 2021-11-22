@@ -6,8 +6,8 @@
 
 namespace cb {
   namespace sdl {
-    class CRWObj;
-    class CSurface;
+    class RWObj;
+    class Surface;
 
     ENUM_FLAG(FontStyle) {
       NORMAL = 0x00,
@@ -17,50 +17,50 @@ namespace cb {
         STRIKETHROUGH = 0x08,
     };
 
-    struct CGlyph {
+    struct Glyph {
       glm::ivec2 min;
       glm::ivec2 max;
       int advance = 0;
     };
 
-    class CFont {
+    class Font {
     private:
       void* mFont;
 
     public:
-      CFont(cb::string const& filepath, unsigned const ptSize, unsigned const fontIndex = 0);
-      CFont(CRWObj& obj, unsigned const ptSize, unsigned const fontIndex = 0);
-      CFont(CFont const&) = delete;
-      CFont(CFont&& other);
-      ~CFont();
+      Font(cb::string const& filepath, unsigned const ptSize, unsigned const fontIndex = 0);
+      Font(RWObj& obj, unsigned const ptSize, unsigned const fontIndex = 0);
+      Font(Font const&) = delete;
+      Font(Font&& other);
+      ~Font();
 
-      void operator=(CFont const&) = delete;
-      void operator=(CFont&& other);
+      void operator=(Font const&) = delete;
+      void operator=(Font&& other);
 
-      void SetStyle(FontStyle const style);
-      void SetKerning(bool enabled);
+      void setStyle(FontStyle const style);
+      void setKerning(bool enabled);
 
-      FontStyle GetStyle() const;
-      bool GetKerning() const;
-      unsigned GetHeight() const;
-      int GetAscent() const;
-      int GetDescent() const;
-      int GetLineSkip() const;
-      unsigned GetNumberOfFaces() const;
-      bool IsFixedWidth() const;
-      cb::string GetName() const;
-      cb::string GetStyleName() const;
-      bool GlyphIsProvided(wchar_t const ch) const;
-      CGlyph GetGlyphMetrics(wchar_t const ch) const;
-      glm::uvec2 GetSize(cb::string const& text) const;
+      FontStyle getStyle() const;
+      bool getKerning() const;
+      unsigned getHeight() const;
+      int getAscent() const;
+      int getDescent() const;
+      int getLineSkip() const;
+      unsigned getNumberOfFaces() const;
+      bool isFixedWidth() const;
+      cb::string getName() const;
+      cb::string getStyleName() const;
+      bool glyphIsProvided(wchar_t const ch) const;
+      Glyph getGlyphMetrics(wchar_t const ch) const;
+      glm::uvec2 getSize(cb::string const& text) const;
 
-      CSurface RenderGlyphSolid(wchar_t const ch, glm::vec4 const& color) const;
-      CSurface RenderGlyphShaded(wchar_t const ch, glm::vec4 const& color, glm::vec4 const& bgColor) const;
-      CSurface RenderGlyphBlended(wchar_t const ch, glm::vec4 const& color) const;
+      Surface renderGlyphSolid(wchar_t const ch, glm::vec4 const& color) const;
+      Surface renderGlyphShaded(wchar_t const ch, glm::vec4 const& color, glm::vec4 const& bgColor) const;
+      Surface renderGlyphBlended(wchar_t const ch, glm::vec4 const& color) const;
 
-      CSurface RenderSolid(cb::string const& text, glm::u8vec4 const& color) const;
-      CSurface RenderShaded(cb::string const& text, glm::u8vec4 const& color, glm::vec4 const& bgColor) const;
-      CSurface RenderBlended(cb::string const& text, glm::u8vec4 const& color) const;
+      Surface renderSolid(cb::string const& text, glm::u8vec4 const& color) const;
+      Surface renderShaded(cb::string const& text, glm::u8vec4 const& color, glm::vec4 const& bgColor) const;
+      Surface renderBlended(cb::string const& text, glm::u8vec4 const& color) const;
     };
   }
 }

@@ -6,12 +6,12 @@
 
 #include <SDL_ttf.h>
 
-inline SDL_RWops* Get(cb::sdl::CRWObj& obj) {
-  return reinterpret_cast<SDL_RWops*>(obj.Get());
+inline SDL_RWops* get(cb::sdl::RWObj& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.get());
 }
 
-inline SDL_RWops* Get(cb::sdl::CRWObj const& obj) {
-  return reinterpret_cast<SDL_RWops*>(obj.Get());
+inline SDL_RWops* get(cb::sdl::RWObj const& obj) {
+  return reinterpret_cast<SDL_RWops*>(obj.get());
 }
 
 
@@ -34,7 +34,7 @@ namespace cb {
       }
     }
 
-    CFont::CFont(cb::string const & filepath, unsigned const ptSize, unsigned const fontIndex) 
+    Font::Font(cb::string const & filepath, unsigned const ptSize, unsigned const fontIndex) 
       : mFont(nullptr)
     {
       auto szFilepath = toUtf8(filepath);
@@ -42,117 +42,117 @@ namespace cb {
       CB_TTF_CHECKERRORS();
     }
 
-    CFont::CFont(CRWObj & obj, unsigned const ptSize, unsigned const fontIndex)
+    Font::Font(RWObj & obj, unsigned const ptSize, unsigned const fontIndex)
       : mFont(nullptr)
     {
-      mFont = TTF_OpenFontIndexRW(::Get(obj), 0, static_cast<int>(ptSize), static_cast<long>(fontIndex));
+      mFont = TTF_OpenFontIndexRW(::get(obj), 0, static_cast<int>(ptSize), static_cast<long>(fontIndex));
       CB_TTF_CHECKERRORS();
     }
 
-    CFont::CFont(CFont && other) :
+    Font::Font(Font && other) :
       mFont(nullptr)
     {
       std::swap(mFont, other.mFont);
     }
 
-    CFont::~CFont() {
+    Font::~Font() {
       if(mFont) {
         TTF_CloseFont(static_cast<TTF_Font*>(mFont));
         mFont = nullptr;
       }
     }
 
-    void CFont::operator=(CFont && other) {
+    void Font::operator=(Font && other) {
       std::swap(mFont, other.mFont);
     }
 
-    void CFont::SetStyle(FontStyle const style) {
+    void Font::setStyle(FontStyle const style) {
       TTF_SetFontStyle(getFont(mFont), static_cast<int>(style));
       CB_TTF_CHECKERRORS();
     }
 
-    void CFont::SetKerning(bool enabled) {
+    void Font::setKerning(bool enabled) {
       TTF_SetFontKerning(getFont(mFont), enabled ? 1 : 0);
       CB_TTF_CHECKERRORS();
     }
 
-    FontStyle CFont::GetStyle() const {
+    FontStyle Font::getStyle() const {
       auto res = TTF_GetFontStyle(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return static_cast<FontStyle>(res);
     }
 
-    bool CFont::GetKerning() const {
+    bool Font::getKerning() const {
       auto res = TTF_GetFontKerning(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return res != 0;
     }
 
-    unsigned CFont::GetHeight() const {
+    unsigned Font::getHeight() const {
       auto res = TTF_FontHeight(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return static_cast<unsigned>(res);
     }
 
-    int CFont::GetAscent() const {
+    int Font::getAscent() const {
       auto res = TTF_FontAscent(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return res;
     }
 
-    int CFont::GetDescent() const {
+    int Font::getDescent() const {
       auto res = TTF_FontDescent(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return res;
     }
 
-    int CFont::GetLineSkip() const {
+    int Font::getLineSkip() const {
       auto res = TTF_FontLineSkip(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return res;
     }
 
-    unsigned CFont::GetNumberOfFaces() const {
+    unsigned Font::getNumberOfFaces() const {
       auto res = TTF_FontFaces(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return static_cast<long>(res);
     }
 
-    bool CFont::IsFixedWidth() const {
+    bool Font::isFixedWidth() const {
       auto res = TTF_FontFaceIsFixedWidth(getFont(mFont));
       CB_TTF_CHECKERRORS();
       return res != 0;
     }
 
-    cb::string CFont::GetName() const {
+    cb::string Font::getName() const {
       auto fontName = TTF_FontFaceFamilyName(getFont(mFont));
       CB_TTF_CHECKERRORS();
       auto szFontName = utf8string(fontName);
       return fromUtf8(szFontName);
     }
 
-    cb::string CFont::GetStyleName() const {
+    cb::string Font::getStyleName() const {
       auto styleName = TTF_FontFaceStyleName(getFont(mFont));
       CB_TTF_CHECKERRORS();
       auto szStyleName = utf8string(styleName);
       return fromUtf8(szStyleName);
     }
 
-    bool CFont::GlyphIsProvided(wchar_t const ch) const {
+    bool Font::glyphIsProvided(wchar_t const ch) const {
       auto res = TTF_GlyphIsProvided(getFont(mFont), static_cast<Uint16>(ch));
       CB_TTF_CHECKERRORS();
       return res != 0;
     }
 
-    CGlyph CFont::GetGlyphMetrics(wchar_t const ch) const {
-      auto res = CGlyph();
+    Glyph Font::getGlyphMetrics(wchar_t const ch) const {
+      auto res = Glyph();
       TTF_GlyphMetrics(getFont(mFont), static_cast<Uint16>(ch),
                        &res.min.x, &res.max.x, &res.min.y, &res.max.y, &res.advance);
       CB_TTF_CHECKERRORS();
       return res;
     }
 
-    glm::uvec2 CFont::GetSize(cb::string const & text) const {
+    glm::uvec2 Font::getSize(cb::string const & text) const {
       int x, y;
       TTF_SizeUNICODE(getFont(mFont), 
                       reinterpret_cast<const Uint16*>(text.c_str()), &x, &y);
@@ -160,49 +160,49 @@ namespace cb {
       return glm::uvec2(static_cast<unsigned>(x), static_cast<unsigned>(y));
     }
 
-    CSurface CFont::RenderGlyphSolid(wchar_t const ch, glm::vec4 const & color) const {
+    Surface Font::renderGlyphSolid(wchar_t const ch, glm::vec4 const & color) const {
       auto surface = TTF_RenderGlyph_Solid(getFont(mFont), static_cast<Uint16>(ch),
                                            toColor(color));
       CB_TTF_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CFont::RenderGlyphShaded(wchar_t const ch, glm::vec4 const & color, glm::vec4 const & bgColor) const {
+    Surface Font::renderGlyphShaded(wchar_t const ch, glm::vec4 const & color, glm::vec4 const & bgColor) const {
       auto surface = TTF_RenderGlyph_Shaded(getFont(mFont), static_cast<Uint16>(ch),
                                            toColor(color), toColor(bgColor));
       CB_TTF_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CFont::RenderGlyphBlended(wchar_t const ch, glm::vec4 const & color) const {
+    Surface Font::renderGlyphBlended(wchar_t const ch, glm::vec4 const & color) const {
       auto surface = TTF_RenderGlyph_Blended(getFont(mFont), static_cast<Uint16>(ch),
                                            toColor(color));
       CB_TTF_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CFont::RenderSolid(cb::string const & text, glm::u8vec4 const & color) const {
+    Surface Font::renderSolid(cb::string const & text, glm::u8vec4 const & color) const {
       auto surface = TTF_RenderUNICODE_Solid(getFont(mFont), 
                                              reinterpret_cast<const Uint16*>(text.c_str()), 
                                              toColor(color));
       CB_TTF_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CFont::RenderShaded(cb::string const & text, glm::u8vec4 const & color, glm::vec4 const & bgColor) const {
+    Surface Font::renderShaded(cb::string const & text, glm::u8vec4 const & color, glm::vec4 const & bgColor) const {
       auto surface = TTF_RenderUNICODE_Shaded(getFont(mFont),
                                              reinterpret_cast<const Uint16*>(text.c_str()),
                                              toColor(color), toColor(bgColor));
       CB_TTF_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
-    CSurface CFont::RenderBlended(cb::string const & text, glm::u8vec4 const & color) const {
+    Surface Font::renderBlended(cb::string const & text, glm::u8vec4 const & color) const {
       auto surface = TTF_RenderUNICODE_Blended(getFont(mFont),
                                              reinterpret_cast<const Uint16*>(text.c_str()),
                                              toColor(color));
       CB_TTF_CHECKERRORS();
-      return CSurface(surface);
+      return Surface(surface);
     }
 
   }

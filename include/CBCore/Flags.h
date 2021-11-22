@@ -43,7 +43,7 @@ namespace cb {
       return static_cast<_Enum>(mValue);
     }
 
-    inline _Enum Get() const {
+    inline _Enum get() const {
       return static_cast<_Enum>(mValue);
     }
   };
