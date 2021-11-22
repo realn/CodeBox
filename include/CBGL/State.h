@@ -83,16 +83,16 @@ namespace cb {
 
     using statemap = std::map<State, bool>;
 
-    extern void setStateEnabled(State const state, bool enabled);
-    inline void setStateEnabled(statemap const& states) { for(auto& item : states) { setStateEnabled(item.first, item.second); } }
-    extern void setState(CBlendState const& state);
-    extern void setState(CCullState const& state);
-    extern void setState(CDepthState const& state);
+    void setStateEnabled(State const state, bool enabled);
+    void setStateEnabled(statemap const& states) { for(auto& item : states) { setStateEnabled(item.first, item.second); } }
+    void setState(CBlendState const& state);
+    void setState(CCullState const& state);
+    void setState(CDepthState const& state);
 
-    extern bool isStateEnabled(State const state);
-    extern CBlendState getBlendState();
-    extern CCullState getCullState();
-    extern CDepthState getDepthState();
+    bool isStateEnabled(State const state);
+    CBlendState getBlendState();
+    CCullState getCullState();
+    CDepthState getDepthState();
 
     class CStateGuard {
     private:

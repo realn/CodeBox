@@ -5,8 +5,7 @@
 namespace cb {
   namespace gl {
     CShader::CShader(ShaderType const type) 
-      : mId(0)
-      , mType(type)
+      : mType(type)
     {
       mId = glCreateShader(static_cast<GLenum>(mType));
       CB_GL_CHECKERRORS();
@@ -15,16 +14,10 @@ namespace cb {
     CShader::CShader(ShaderType const type, cb::string const & source)
       : CShader(type)
     {
-      Compile(source);
+      compile(source);
     }
 
-    CShader::CShader(CShader && other)
-      : mId(0)
-      , mType(ShaderType::VERTEX)
-    {
-      std::swap(mId, other.mId);
-      std::swap(mType, other.mType);
-    }
+    CShader::CShader(CShader&&) = default;
 
     CShader::~CShader() {
       if(mId) {
@@ -33,12 +26,9 @@ namespace cb {
       }
     }
 
-    void CShader::operator=(CShader && other) {
-      std::swap(mId, other.mId);
-      std::swap(mType, other.mType);
-    }
+    CShader& CShader::operator=(CShader&& other) = default;
 
-    void CShader::LoadSource(cb::string const & source) {
+    void CShader::loadSource(cb::string const & source) {
       auto sourceVec = cb::toUtf8(source);
       auto szSource = reinterpret_cast<GLchar const*>(sourceVec.data());
 
@@ -46,25 +36,25 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    bool CShader::Compile() {
+    bool CShader::compile() {
       glCompileShader(mId);
       CB_GL_CHECKERRORS();
-      return IsCompiled();
+      return isCompiled();
     }
 
-    bool CShader::Compile(cb::string const & source) {
-      LoadSource(source);
-      return Compile();
+    bool CShader::compile(cb::string const & source) {
+      loadSource(source);
+      return compile();
     }
 
-    bool CShader::IsCompiled() const {
+    bool CShader::isCompiled() const {
       auto status = 0;
       glGetShaderiv(mId, GL_COMPILE_STATUS, &status);
       CB_GL_CHECKERRORS();
       return status == GL_TRUE;
     }
 
-    cb::string CShader::GetCompileLog() const {
+    cb::string CShader::getCompileLog() const {
       auto len = 0;
       glGetShaderiv(mId, GL_INFO_LOG_LENGTH, &len);
       CB_GL_CHECKERRORS();

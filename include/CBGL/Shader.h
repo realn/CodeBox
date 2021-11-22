@@ -11,26 +11,26 @@ namespace cb {
 
     class CShader {
     private:
-      OGLObjId mId;
+      OGLObjId mId = 0;
       ShaderType mType;
 
     public:
       CShader(ShaderType const type);
       CShader(ShaderType const type, cb::string const& source);
       CShader(CShader const&) = delete;
-      CShader(CShader && other);
+      CShader(CShader &&);
       ~CShader();
 
-      OGLObjId GetId() const { return mId; }
+      OGLObjId getId() const { return mId; }
 
-      void operator=(CShader const&) = delete;
-      void operator=(CShader && other);
+      CShader& operator=(CShader const&) = delete;
+      CShader& operator=(CShader &&);
 
-      void LoadSource(cb::string const& source);
-      bool Compile();
-      bool Compile(cb::string const& source);
-      bool IsCompiled() const;
-      cb::string GetCompileLog() const;
+      void loadSource(cb::string const& source);
+      bool compile();
+      bool compile(cb::string const& source);
+      bool isCompiled() const;
+      cb::string getCompileLog() const;
     };
   }
 }

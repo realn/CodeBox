@@ -19,19 +19,19 @@ namespace cb {
       glm::uvec2 Size;
     };
 
-    extern void clearColor(glm::vec4 const& value);
-    extern void clearDepth(float const& value);
-    extern void clearStencil(int const& value);
-    extern void clear(ClearBuffer const& flags);
-    extern void finish();
-    extern void flush();
+    void clearColor(glm::vec4 const& value);
+    void clearDepth(float const& value);
+    void clearStencil(int const& value);
+    void clear(ClearBuffer const& flags);
+    void finish();
+    void flush();
 
-    extern void setViewport(const CViewport& viewport);
-    extern CViewport getViewport();
+    void setViewport(const CViewport& viewport);
+    CViewport getViewport();
 
-    extern void setScissorRect(const CViewport& rect);
-    extern CViewport getScissorRect();
-    extern void setScissorTest(bool enabled);
-    extern bool isScissorTestEnabled();
+    void setScissorRect(const CViewport& rect);
+    CViewport getScissorRect();
+    void setScissorTest(bool enabled);
+    bool isScissorTestEnabled();
   }
 }

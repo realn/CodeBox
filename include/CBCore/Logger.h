@@ -18,9 +18,10 @@ namespace cb {
 
     StreamMap streamMap;
 
-    static std::weak_ptr<Logger> instance;
+    static std::shared_ptr<Logger> instance;
 
   public:
+    Logger();
     ~Logger();
 
     void addStream(std::shared_ptr<ostream> stream);
@@ -31,8 +32,8 @@ namespace cb {
     void logMsg(LogLvl const level, string const& msg);
     void endLog(string const& msg = string());
 
-    static void setInstance(std::shared_ptr<Logger> logger);
     static std::shared_ptr<Logger> getInstance();
+    static void destroyInstance();
   };
 }
 

@@ -11,7 +11,7 @@ namespace cb {
 
     class CProgram {
     private:
-      OGLObjId mId;
+      OGLObjId mId = 0;
 
     public:
       CProgram();
@@ -19,44 +19,44 @@ namespace cb {
                std::map<unsigned, cb::string> const& inLocations = {},
                std::map<unsigned, cb::string> const& outLocations = {});
       CProgram(CProgram const&) = delete;
-      CProgram(CProgram && other);
+      CProgram(CProgram &&);
       ~CProgram();
 
-      void operator=(CProgram const&) = delete;
-      void operator=(CProgram && other);
+      CProgram& operator=(CProgram const&) = delete;
+      CProgram& operator=(CProgram &&);
 
-      void Attach(CShader const& shader);
-      void Attach(std::initializer_list<CShader> const& shaders);
-      void Attach(std::vector<CShader> const& shaders);
-      bool Link();
-      bool IsLinked() const;
-      bool IsValid() const;
+      void attach(CShader const& shader);
+      void attach(std::initializer_list<CShader> const& shaders);
+      void attach(std::vector<CShader> const& shaders);
+      bool link();
+      bool isLinked() const;
+      bool isValid() const;
 
-      cb::string GetLinkLog() const;
+      cb::string getLinkLog() const;
 
-      void SetInLocation(unsigned const index, cb::string const& name);
-      void SetInLocation(std::map<unsigned, cb::string> const& locations);
-      void SetOutLocation(unsigned const index, cb::string const& name);
-      void SetOutLocation(std::map<unsigned, cb::string> const& locations);
-      AttributeId GetInLocation(const cb::string& name) const;
+      void setInLocation(unsigned const index, cb::string const& name);
+      void setInLocation(std::map<unsigned, cb::string> const& locations);
+      void setOutLocation(unsigned const index, cb::string const& name);
+      void setOutLocation(std::map<unsigned, cb::string> const& locations);
+      AttributeId getInLocation(const cb::string& name) const;
 
-      UniformId GetUniformId(cb::string const& name) const;
-      void SetUniform(UniformId const id, int const& value);
-      void SetUniform(UniformId const id, unsigned const& value);
-      void SetUniform(UniformId const id, float const& value);
-      void SetUniform(UniformId const id, glm::vec2 const& value);
-      void SetUniform(UniformId const id, glm::vec3 const& value);
-      void SetUniform(UniformId const id, glm::vec4 const& value);
-      void SetUniform(UniformId const id, glm::mat4 const& value);
+      UniformId getUniformId(cb::string const& name) const;
+      void setUniform(UniformId const id, int const& value);
+      void setUniform(UniformId const id, unsigned const& value);
+      void setUniform(UniformId const id, float const& value);
+      void setUniform(UniformId const id, glm::vec2 const& value);
+      void setUniform(UniformId const id, glm::vec3 const& value);
+      void setUniform(UniformId const id, glm::vec4 const& value);
+      void setUniform(UniformId const id, glm::mat4 const& value);
 
       template<typename _Type>
-      void SetUniform(cb::string const& name, _Type const& value) {
-        auto id = GetUniformId(name);
-        SetUniform(id, value);
+      void setUniform(cb::string const& name, _Type const& value) {
+        auto id = getUniformId(name);
+        setUniform(id, value);
       }
 
-      void Bind() const;
-      static void UnBind();
+      void bind() const;
+      static void unBind();
     };
   }
 }

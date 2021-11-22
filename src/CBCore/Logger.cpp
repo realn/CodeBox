@@ -4,7 +4,13 @@
 #include <CBCore/PlainTextLogFormat.h>
 
 namespace cb {
-  std::weak_ptr<Logger> Logger::instance;
+  std::shared_ptr<Logger> Logger::instance;
+
+  Logger::Logger()
+  {
+    auto streamPtr = std::shared_ptr<ostream>({ &std::wcout, [](ostream*) {} });
+    addStream(streamPtr);
+  }
 
   Logger::~Logger() = default;
 
@@ -48,16 +54,15 @@ namespace cb {
     }
   }
 
-  void Logger::setInstance(std::shared_ptr<Logger> logger) {
-    instance = logger;
+  std::shared_ptr<Logger> Logger::getInstance() {
+    if (!instance) {
+      instance = std::make_shared<Logger>();
+    }
+    return instance;
   }
 
-  std::shared_ptr<Logger> Logger::getInstance() {
-    auto logger = instance.lock();
-    if (!logger) {
-      logger = std::make_shared<Logger>();
-      instance = logger;
-    }
-    return logger;
+  void Logger::destroyInstance()
+  {
+    instance.reset();
   }
 }

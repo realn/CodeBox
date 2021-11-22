@@ -35,13 +35,13 @@ namespace cb {
         , mNormalized(normalized)
       {}
 
-      unsigned GetIndex() const { return mIndex; }
-      DataType GetType() const { return mType; }
-      unsigned GetNumber() const { return mNumber; }
-      unsigned GetStride() const { return mStride; }
-      unsigned GetOffset() const { return mOffset; }
-      unsigned GetDivisor() const { return mDivisor; }
-      bool GetNormalized() const { return mNormalized; }
+      unsigned getIndex() const { return mIndex; }
+      DataType getType() const { return mType; }
+      unsigned getNumber() const { return mNumber; }
+      unsigned getStride() const { return mStride; }
+      unsigned getOffset() const { return mOffset; }
+      unsigned getDivisor() const { return mDivisor; }
+      bool getNormalized() const { return mNormalized; }
     };
 
     class CVertexDefinition {
@@ -52,8 +52,8 @@ namespace cb {
       CVertexDefinition(std::vector<CVertexSource> const& sources);
       CVertexDefinition(std::initializer_list<CVertexSource> const& sources);
 
-      void Bind() const;
-      void UnBind() const;
+      void bind() const;
+      void unBind() const;
     };
   }
 }

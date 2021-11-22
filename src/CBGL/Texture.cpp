@@ -3,6 +3,27 @@
 
 namespace cb {
   namespace gl {
+    namespace {
+      unsigned getMinFilter(TextureFilter const minFilter, TextureFilter const mipFilter) {
+        if (minFilter == TextureFilter::NEAREST) {
+          if (mipFilter == TextureFilter::NEAREST) {
+            return GL_NEAREST_MIPMAP_NEAREST;
+          }
+          else {
+            return GL_NEAREST_MIPMAP_LINEAR;
+          }
+        }
+        else {
+          if (mipFilter == TextureFilter::NEAREST) {
+            return GL_LINEAR_MIPMAP_NEAREST;
+          }
+          else {
+            return GL_LINEAR_MIPMAP_LINEAR;
+          }
+        }
+      }
+    }
+
     CTexture::CTexture(glm::uvec2 const & size, TextureFormat const format) 
       : mId(0) 
       , mSize(size)
@@ -14,8 +35,8 @@ namespace cb {
       CB_GL_CHECKERRORS();
       glBindTexture(GL_TEXTURE_2D, 0);
 
-      SetFilter(TextureFilter::LINEAR, TextureFilter::LINEAR, TextureFilter::LINEAR);
-      SetWrap(TextureWrap::CLAMP_TO_EDGE, TextureWrap::CLAMP_TO_EDGE);
+      setFilter(TextureFilter::LINEAR, TextureFilter::LINEAR, TextureFilter::LINEAR);
+      setWrap(TextureWrap::CLAMP_TO_EDGE, TextureWrap::CLAMP_TO_EDGE);
     }
 
     CTexture::CTexture(CTexture && other) 
@@ -37,21 +58,21 @@ namespace cb {
       std::swap(mSize, other.mSize);
     }
 
-    void CTexture::SetFilter(TextureFilter const minFilter, 
+    void CTexture::setFilter(TextureFilter const minFilter, 
                              TextureFilter const magFilter, 
                              TextureFilter const mipmapFilter) {
-      auto gtex = bind(*this);
-      SetParamPriv(GL_TEXTURE_MIN_FILTER, GetMinFilter(minFilter, mipmapFilter));
-      SetParamPriv(GL_TEXTURE_MAG_FILTER, static_cast<unsigned>(magFilter));
+      auto gtex = gl::bind(*this);
+      setParamPriv(GL_TEXTURE_MIN_FILTER, getMinFilter(minFilter, mipmapFilter));
+      setParamPriv(GL_TEXTURE_MAG_FILTER, static_cast<unsigned>(magFilter));
     }
 
-    void CTexture::SetWrap(TextureWrap const wrapS, TextureWrap wrapT) {
-      auto gtex = bind(*this);
-      SetParamPriv(GL_TEXTURE_WRAP_S, static_cast<unsigned>(wrapS));
-      SetParamPriv(GL_TEXTURE_WRAP_T, static_cast<unsigned>(wrapT));
+    void CTexture::setWrap(TextureWrap const wrapS, TextureWrap wrapT) {
+      auto gtex = gl::bind(*this);
+      setParamPriv(GL_TEXTURE_WRAP_S, static_cast<unsigned>(wrapS));
+      setParamPriv(GL_TEXTURE_WRAP_T, static_cast<unsigned>(wrapT));
     }
 
-    void CTexture::Bind(unsigned const unit) const {
+    void CTexture::bind(unsigned const unit) const {
       glActiveTexture(GL_TEXTURE0 + unit);
       CB_GL_CHECKERRORS();
       glEnable(GL_TEXTURE_2D);
@@ -60,7 +81,7 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void CTexture::UnBind(unsigned const unit) const {
+    void CTexture::unBind(unsigned const unit) const {
       glActiveTexture(GL_TEXTURE0 + unit);
       CB_GL_CHECKERRORS();
       glBindTexture(GL_TEXTURE_2D, 0);
@@ -70,40 +91,16 @@ namespace cb {
       glActiveTexture(GL_TEXTURE0);
     }
 
-    void CTexture::SetDataRaw(InputFormat const inputFormat, DataType const inputType, void const * pData) {
-      auto gtex = bind(*this);
+    void CTexture::setDataRaw(InputFormat const inputFormat, DataType const inputType, void const * pData) {
+      auto gtex = gl::bind(*this);
       glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mSize.x, mSize.y, static_cast<GLenum>(inputFormat), static_cast<GLenum>(inputType), pData);
       CB_GL_CHECKERRORS();
       glGenerateMipmap(GL_TEXTURE_2D);
       CB_GL_CHECKERRORS();
     }
 
-    void CTexture::SetParamPriv(unsigned param, unsigned value) {
+    void CTexture::setParamPriv(unsigned param, unsigned value) {
       glTexParameteri(GL_TEXTURE_2D, param, value);
-      CB_GL_CHECKERRORS();
-    }
-
-    unsigned CTexture::GetMinFilter(TextureFilter const minFilter, TextureFilter const mipFilter) {
-      if(minFilter == TextureFilter::NEAREST) {
-        if(mipFilter == TextureFilter::NEAREST) {
-          return GL_NEAREST_MIPMAP_NEAREST;
-        }
-        else {
-          return GL_NEAREST_MIPMAP_LINEAR;
-        }
-      }
-      else {
-        if(mipFilter == TextureFilter::NEAREST) {
-          return GL_LINEAR_MIPMAP_NEAREST;
-        }
-        else {
-          return GL_LINEAR_MIPMAP_LINEAR;
-        }
-      }
-    }
-
-    void setTextureUnit(unsigned unit) {
-      glActiveTexture(GL_TEXTURE0 + unit);
       CB_GL_CHECKERRORS();
     }
   }

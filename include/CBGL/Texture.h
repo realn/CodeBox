@@ -84,32 +84,31 @@ namespace cb {
       void operator=(CTexture && other);
 
       template<typename _Type>
-      void SetData(InputFormat const inputFormat, std::vector<_Type> const& data) {
-        SetDataRaw(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
+      void setData(InputFormat const inputFormat, std::vector<_Type> const& data) {
+        setDataRaw(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
       }
       template<typename _Type, size_t _TypeSize>
-      void SetData(InputFormat const inputFormat, std::array<_Type, _TypeSize> const& data) {
-        SetDataRaw(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
+      void setData(InputFormat const inputFormat, std::array<_Type, _TypeSize> const& data) {
+        setDataRaw(inputFormat, getDataType<_Type>(), reinterpret_cast<void const*>(data.data()));
       }
       template<typename _Type>
-      void SetData(InputFormat const inputFormat, std::initializer_list<_Type> const& data) {
+      void setData(InputFormat const inputFormat, std::initializer_list<_Type> const& data) {
         auto vecdata = std::vector<_Type>(data);
-        SetData(inputFormat, vecdata);
+        setData(inputFormat, vecdata);
       }
 
-      void SetFilter(TextureFilter const minFilter,
+      void setFilter(TextureFilter const minFilter,
                      TextureFilter const magFilter,
                      TextureFilter const mipmapFilter);
-      void SetWrap(TextureWrap const wrapS, TextureWrap wrapT);
+      void setWrap(TextureWrap const wrapS, TextureWrap wrapT);
 
-      void Bind(unsigned const unit = 0) const;
-      void UnBind(unsigned const unit = 0) const;
+      void bind(unsigned const unit = 0) const;
+      void unBind(unsigned const unit = 0) const;
 
-      void SetDataRaw(InputFormat const inputFormat, DataType const inputType, void const* pData);
+      void setDataRaw(InputFormat const inputFormat, DataType const inputType, void const* pData);
 
     private:
-      void SetParamPriv(unsigned param, unsigned value);
-      static unsigned GetMinFilter(TextureFilter const minFilter, TextureFilter const mipFilter);
+      void setParamPriv(unsigned param, unsigned value);
     };
   }
 }

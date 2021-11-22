@@ -3,22 +3,22 @@
 
 namespace cb {
   namespace gl {
-    void clearColor(glm::vec4 const & color) {
+    void clearColor(glm::vec4 const& color) {
       glClearColor(color.r, color.g, color.b, color.a);
       CB_GL_CHECKERRORS();
     }
 
-    void clearDepth(float const & value) {
+    void clearDepth(float const& value) {
       glClearDepth(value);
       CB_GL_CHECKERRORS();
     }
 
-    void clearStencil(int const & value) {
+    void clearStencil(int const& value) {
       glClearStencil(value);
       CB_GL_CHECKERRORS();
     }
 
-    void clear(ClearBuffer const & flags) {
+    void clear(ClearBuffer const& flags) {
       glClear(static_cast<GLbitfield>(flags));
       CB_GL_CHECKERRORS();
     }
@@ -33,7 +33,7 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void setViewport(const CViewport & viewport) {
+    void setViewport(const CViewport& viewport) {
       glViewport(viewport.Pos.x, viewport.Pos.y, viewport.Size.x, viewport.Size.y);
       CB_GL_CHECKERRORS();
     }
@@ -42,13 +42,13 @@ namespace cb {
       GLint viewport[4];
       glGetIntegerv(GL_VIEWPORT, viewport);
       CB_GL_CHECKERRORS();
-      return CViewport{ 
-        {viewport[0], viewport[1]}, 
-        {static_cast<cb::u32>(viewport[2]), static_cast<cb::u32>(viewport[3]) } 
+      return CViewport{
+        {viewport[0], viewport[1]},
+        {static_cast<cb::u32>(viewport[2]), static_cast<cb::u32>(viewport[3]) }
       };
     }
 
-    void setScissorRect(const CViewport & rect) {
+    void setScissorRect(const CViewport& rect) {
       glScissor(rect.Pos.x, rect.Pos.y, rect.Size.x, rect.Size.y);
     }
 

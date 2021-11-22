@@ -23,19 +23,19 @@ namespace cb {
         mBind(mObj);
       }
       CBindGuard(CBindGuard<_Type, _BindFunc, _UnBindFunc> const&) = delete;
-      CBindGuard(CBindGuard<_Type, _BindFunc, _UnBindFunc>&& other)
-        : mObj(other.mObj), mBind(other.mBind), mUnBind(other.mUnBind) {
-        other.mObj = nullptr;
-      }
+      CBindGuard(CBindGuard<_Type, _BindFunc, _UnBindFunc>&&) = default;
       ~CBindGuard() {
         if(mObj) mUnBind(mObj);
       }
+
+      CBindGuard<_Type, _BindFunc, _UnBindFunc>& operator=(CBindGuard<_Type, _BindFunc, _UnBindFunc> const&) = delete;
+      CBindGuard<_Type, _BindFunc, _UnBindFunc>& operator=(CBindGuard<_Type, _BindFunc, _UnBindFunc>&&) = default;
     };
 
     template<typename _Type, typename ... _Args>
     auto bind(_Type const& obj, _Args ... args) {
-      auto bindFunc = [args...](_Type const* obj)->void{ obj->Bind(args...); };
-      auto unBindFunc = [args...](_Type const* obj)->void{ obj->UnBind(args...); };
+      auto bindFunc = [args...](_Type const* obj)->void{ obj->bind(args...); };
+      auto unBindFunc = [args...](_Type const* obj)->void{ obj->unBind(args...); };
       return CBindGuard<_Type, decltype(bindFunc), decltype(unBindFunc)>(obj, bindFunc, unBindFunc);
     }
   }

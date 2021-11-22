@@ -11,22 +11,22 @@ namespace cb {
       : mSources(sources)
     {}
 
-    void CVertexDefinition::Bind() const {
+    void CVertexDefinition::bind() const {
       for(auto& source : mSources) {
-        glVertexAttribPointer(source.GetIndex(),
-                              source.GetNumber(),
-                              static_cast<GLenum>(source.GetType()),
-                              source.GetNormalized() ? GL_TRUE : GL_FALSE,
-                              source.GetStride(),
-                              reinterpret_cast<const void*>(static_cast<size_t>(source.GetOffset())));
-        glEnableVertexAttribArray(source.GetIndex());
-        glVertexAttribDivisor(source.GetIndex(), source.GetDivisor());
+        glVertexAttribPointer(source.getIndex(),
+                              source.getNumber(),
+                              static_cast<GLenum>(source.getType()),
+                              source.getNormalized() ? GL_TRUE : GL_FALSE,
+                              source.getStride(),
+                              reinterpret_cast<const void*>(static_cast<size_t>(source.getOffset())));
+        glEnableVertexAttribArray(source.getIndex());
+        glVertexAttribDivisor(source.getIndex(), source.getDivisor());
       }
     }
 
-    void CVertexDefinition::UnBind() const {
+    void CVertexDefinition::unBind() const {
       for(auto& source : mSources) {
-        glDisableVertexAttribArray(source.GetIndex());
+        glDisableVertexAttribArray(source.getIndex());
       }
     }
   }
