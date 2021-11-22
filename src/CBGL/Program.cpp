@@ -5,15 +5,15 @@
 
 namespace cb {
   namespace gl {
-    CProgram::CProgram() {
+    Program::Program() {
       mId = glCreateProgram();
       CB_GL_CHECKERRORS();
     }
 
-    CProgram::CProgram(std::initializer_list<CShader> const& shaders,
+    Program::Program(std::initializer_list<Shader> const& shaders,
       std::map<unsigned, cb::string> const& inLocations,
       std::map<unsigned, cb::string> const& outLocations)
-      : CProgram()
+      : Program()
     {
       attach(shaders);
       setInLocation(inLocations);
@@ -21,55 +21,55 @@ namespace cb {
       link();
     }
 
-    CProgram::CProgram(CProgram&&) = default;
+    Program::Program(Program&&) = default;
 
-    CProgram::~CProgram() {
+    Program::~Program() {
       if (mId) {
         glDeleteProgram(mId);
         mId = 0;
       }
     }
 
-    CProgram& CProgram::operator=(CProgram&&) = default;
+    Program& Program::operator=(Program&&) = default;
 
-    void CProgram::attach(CShader const& shader) {
+    void Program::attach(Shader const& shader) {
       glAttachShader(mId, shader.getId());
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::attach(std::initializer_list<CShader> const& shaders) {
+    void Program::attach(std::initializer_list<Shader> const& shaders) {
       for (auto& shader : shaders) {
         attach(shader);
       }
     }
 
-    void CProgram::attach(std::vector<CShader> const& shaders) {
+    void Program::attach(std::vector<Shader> const& shaders) {
       for (auto& shader : shaders) {
         attach(shader);
       }
     }
 
-    bool CProgram::link() {
+    bool Program::link() {
       glLinkProgram(mId);
       CB_GL_CHECKERRORS();
       return isLinked();
     }
 
-    bool CProgram::isLinked() const {
+    bool Program::isLinked() const {
       auto status = 0;
       glGetProgramiv(mId, GL_LINK_STATUS, &status);
       CB_GL_CHECKERRORS();
       return status == GL_TRUE;
     }
 
-    bool CProgram::isValid() const {
+    bool Program::isValid() const {
       auto status = 0;
       glGetProgramiv(mId, GL_VALIDATE_STATUS, &status);
       CB_GL_CHECKERRORS();
       return status == GL_TRUE;
     }
 
-    cb::string CProgram::getLinkLog() const {
+    cb::string Program::getLinkLog() const {
       auto len = 0;
       glGetProgramiv(mId, GL_INFO_LOG_LENGTH, &len);
       CB_GL_CHECKERRORS();
@@ -85,31 +85,31 @@ namespace cb {
       return cb::fromUtf8(log);
     }
 
-    void CProgram::setInLocation(unsigned const index, cb::string const& name) {
+    void Program::setInLocation(unsigned const index, cb::string const& name) {
       auto vecName = cb::toUtf8(name);
       glBindAttribLocation(mId, index, vecName.data());
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setInLocation(std::map<unsigned, cb::string> const& locations) {
+    void Program::setInLocation(std::map<unsigned, cb::string> const& locations) {
       for (auto& item : locations) {
         setInLocation(item.first, item.second);
       }
     }
 
-    void CProgram::setOutLocation(unsigned const index, cb::string const& name) {
+    void Program::setOutLocation(unsigned const index, cb::string const& name) {
       auto vecName = cb::toUtf8(name);
       glBindFragDataLocation(mId, index, vecName.data());
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setOutLocation(std::map<unsigned, cb::string> const& locations) {
+    void Program::setOutLocation(std::map<unsigned, cb::string> const& locations) {
       for (auto& item : locations) {
         setOutLocation(item.first, item.second);
       }
     }
 
-    AttributeId CProgram::getInLocation(const cb::string& name) const {
+    AttributeId Program::getInLocation(const cb::string& name) const {
       auto vecName = cb::toUtf8(name);
       auto id = glGetAttribLocation(mId, vecName.data());
       CB_GL_CHECKERRORS();
@@ -119,7 +119,7 @@ namespace cb {
       return static_cast<AttributeId>(id);
     }
 
-    UniformId CProgram::getUniformId(cb::string const& name) const {
+    UniformId Program::getUniformId(cb::string const& name) const {
       auto vecName = cb::toUtf8(name);
       auto id = glGetUniformLocation(mId, vecName.data());
       CB_GL_CHECKERRORS();
@@ -129,47 +129,47 @@ namespace cb {
       return static_cast<UniformId>(id);
     }
 
-    void CProgram::setUniform(UniformId const id, int const& value) {
+    void Program::setUniform(UniformId const id, int const& value) {
       glUniform1i(id, value);
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setUniform(UniformId const id, unsigned const& value) {
+    void Program::setUniform(UniformId const id, unsigned const& value) {
       glUniform1ui(id, value);
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setUniform(UniformId const id, float const& value) {
+    void Program::setUniform(UniformId const id, float const& value) {
       glUniform1fv(id, 1, &value);
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setUniform(UniformId const id, glm::vec2 const& value) {
+    void Program::setUniform(UniformId const id, glm::vec2 const& value) {
       glUniform2fv(id, 1, glm::value_ptr(value));
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setUniform(UniformId const id, glm::vec3 const& value) {
+    void Program::setUniform(UniformId const id, glm::vec3 const& value) {
       glUniform3fv(id, 1, glm::value_ptr(value));
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setUniform(UniformId const id, glm::vec4 const& value) {
+    void Program::setUniform(UniformId const id, glm::vec4 const& value) {
       glUniform4fv(id, 1, glm::value_ptr(value));
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::setUniform(UniformId const id, glm::mat4 const& value) {
+    void Program::setUniform(UniformId const id, glm::mat4 const& value) {
       glUniformMatrix4fv(id, 1, GL_FALSE, glm::value_ptr(value));
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::bind() const {
+    void Program::bind() const {
       glUseProgram(mId);
       CB_GL_CHECKERRORS();
     }
 
-    void CProgram::unBind() {
+    void Program::unBind() {
       glUseProgram(0);
       CB_GL_CHECKERRORS();
     }

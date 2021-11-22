@@ -3,7 +3,7 @@
 
 namespace cb {
   namespace gl {
-    CBuffer::CBuffer(BufferTarget const & target) 
+    Buffer::Buffer(BufferTarget const & target) 
       : mId(0)
       , mTarget(target)
     {
@@ -11,28 +11,28 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    CBuffer::CBuffer(CBuffer&&) = default;
+    Buffer::Buffer(Buffer&&) = default;
 
-    CBuffer::~CBuffer() {
+    Buffer::~Buffer() {
       if(mId) {
         glDeleteBuffers(1, static_cast<GLuint*>(&mId));
         mId = 0;
       }
     }
 
-    CBuffer& CBuffer::operator=(CBuffer&&) = default;
+    Buffer& Buffer::operator=(Buffer&&) = default;
 
-    void CBuffer::bind() const {
+    void Buffer::bind() const {
       glBindBuffer(static_cast<GLenum>(mTarget), mId);
       CB_GL_CHECKERRORS();
     }
 
-    void CBuffer::unBind() const {
+    void Buffer::unBind() const {
       glBindBuffer(static_cast<GLenum>(mTarget), 0);
       CB_GL_CHECKERRORS();
     }
 
-    void CBuffer::setDataRaw(void const * pData, std::size_t const & size, BufferUsage const & usage) {
+    void Buffer::setDataRaw(void const * pData, std::size_t const & size, BufferUsage const & usage) {
       auto gbuf = gl::bind(*this);
       glBufferData(static_cast<GLenum>(mTarget),
                    static_cast<GLsizeiptr>(size),
@@ -41,7 +41,7 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void CBuffer::setSubDataRaw(std::size_t const & offset, void const * pData, std::size_t const & size) {
+    void Buffer::setSubDataRaw(std::size_t const & offset, void const * pData, std::size_t const & size) {
       auto gbuf = gl::bind(*this);
       glBufferSubData(static_cast<GLenum>(mTarget),
                       static_cast<GLintptr>(offset),

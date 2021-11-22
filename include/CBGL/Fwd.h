@@ -21,15 +21,15 @@ namespace cb {
     enum class DepthFunc;
     enum class State;
 
-    struct CBlendState;
-    struct CCullState;
-    struct CDepthState;
+    struct BlendState;
+    struct CullState;
+    struct DepthState;
 
-    class CBuffer;
-    class CShader;
-    class CProgram;
-    class CTexture;
-    class CVertexSource;
-    class CVertexDefinition;
+    class Buffer;
+    class Shader;
+    class Program;
+    class Texture;
+    class VertexSource;
+    class VertexDefinition;
   }
 }

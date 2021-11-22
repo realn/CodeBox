@@ -43,8 +43,8 @@ int main(char* argv[], int argc) {
   });
   cb::gl::initextensions();
 
-  auto buffer = cb::gl::CBuffer();
-  auto indices = cb::gl::CBuffer(cb::gl::BufferTarget::ELEMENT_ARRAY);
+  auto buffer = cb::gl::Buffer();
+  auto indices = cb::gl::Buffer(cb::gl::BufferTarget::ELEMENT_ARRAY);
   {
     auto vbuf = cb::gl::bind(buffer);
     buffer.SetData(std::vector<CVertex>{
@@ -60,7 +60,7 @@ int main(char* argv[], int argc) {
     indices.SetData(data);
   }
 
-  auto program = cb::gl::CProgram{
+  auto program = cb::gl::Program{
     {
       {cb::gl::ShaderType::VERTEX, cb::readtextfileutf8(L"shader_v.glsl")},
       {cb::gl::ShaderType::FRAGMENT, cb::readtextfileutf8(L"shader_f.glsl")},
@@ -75,12 +75,12 @@ int main(char* argv[], int argc) {
     throw std::exception("Shader program link failed.");
   }
 
-  auto vdef = cb::gl::CVertexDefinition{
+  auto vdef = cb::gl::VertexDefinition{
     {0, cb::gl::DataType::FLOAT, 3, sizeof(CVertex)},
     {1, cb::gl::DataType::FLOAT, 2, sizeof(CVertex), sizeof(glm::vec3)},
   };
 
-  auto texture = cb::gl::CTexture({128,128}, cb::gl::TextureFormat::RGBA8);
+  auto texture = cb::gl::Texture({128,128}, cb::gl::TextureFormat::RGBA8);
   {
     auto font = cb::sdl::CFont(L"Instruction.otf", 96);
 

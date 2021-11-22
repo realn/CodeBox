@@ -69,19 +69,19 @@ namespace cb {
       MIRRORED_REPEAT = 0x8370,
     };
 
-    class CTexture {
+    class Texture {
     private:
       OGLObjId mId;
       glm::uvec2 mSize;
 
     public:
-      CTexture(glm::uvec2 const& size, TextureFormat const format);
-      CTexture(CTexture const&) = delete;
-      CTexture(CTexture && other);
-      ~CTexture();
+      Texture(glm::uvec2 const& size, TextureFormat const format);
+      Texture(Texture const&) = delete;
+      Texture(Texture && other);
+      ~Texture();
 
-      void operator=(CTexture const&) = delete;
-      void operator=(CTexture && other);
+      void operator=(Texture const&) = delete;
+      void operator=(Texture && other);
 
       template<typename _Type>
       void setData(InputFormat const inputFormat, std::vector<_Type> const& data) {

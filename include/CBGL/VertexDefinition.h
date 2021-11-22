@@ -7,7 +7,7 @@
 
 namespace cb {
   namespace gl {
-    class CVertexSource {
+    class VertexSource {
     private:
       unsigned mIndex;
       DataType mType;
@@ -18,7 +18,7 @@ namespace cb {
       bool mNormalized;
 
     public:
-      CVertexSource(unsigned const index,
+      VertexSource(unsigned const index,
                     DataType const type,
                     unsigned const number,
                     unsigned const stride,
@@ -44,13 +44,13 @@ namespace cb {
       bool getNormalized() const { return mNormalized; }
     };
 
-    class CVertexDefinition {
+    class VertexDefinition {
     private:
-      std::vector<CVertexSource> mSources;
+      std::vector<VertexSource> mSources;
 
     public:
-      CVertexDefinition(std::vector<CVertexSource> const& sources);
-      CVertexDefinition(std::initializer_list<CVertexSource> const& sources);
+      VertexDefinition(std::vector<VertexSource> const& sources);
+      VertexDefinition(std::initializer_list<VertexSource> const& sources);
 
       void bind() const;
       void unBind() const;

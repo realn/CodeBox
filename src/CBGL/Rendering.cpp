@@ -33,30 +33,30 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void setViewport(const CViewport& viewport) {
+    void setViewport(const Viewport& viewport) {
       glViewport(viewport.Pos.x, viewport.Pos.y, viewport.Size.x, viewport.Size.y);
       CB_GL_CHECKERRORS();
     }
 
-    CViewport getViewport() {
+    Viewport getViewport() {
       GLint viewport[4];
       glGetIntegerv(GL_VIEWPORT, viewport);
       CB_GL_CHECKERRORS();
-      return CViewport{
+      return Viewport{
         {viewport[0], viewport[1]},
         {static_cast<cb::u32>(viewport[2]), static_cast<cb::u32>(viewport[3]) }
       };
     }
 
-    void setScissorRect(const CViewport& rect) {
+    void setScissorRect(const Viewport& rect) {
       glScissor(rect.Pos.x, rect.Pos.y, rect.Size.x, rect.Size.y);
     }
 
-    CViewport getScissorRect() {
+    Viewport getScissorRect() {
       GLint viewport[4];
       glGetIntegerv(GL_SCISSOR_BOX, viewport);
       CB_GL_CHECKERRORS();
-      return CViewport{
+      return Viewport{
         {viewport[0], viewport[1]},
         {static_cast<cb::u32>(viewport[2]), static_cast<cb::u32>(viewport[3]) }
       };

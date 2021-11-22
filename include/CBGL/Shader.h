@@ -9,22 +9,22 @@ namespace cb {
       VERTEX = 0x8B31,
     };
 
-    class CShader {
+    class Shader {
     private:
       OGLObjId mId = 0;
       ShaderType mType;
 
     public:
-      CShader(ShaderType const type);
-      CShader(ShaderType const type, cb::string const& source);
-      CShader(CShader const&) = delete;
-      CShader(CShader &&);
-      ~CShader();
+      Shader(ShaderType const type);
+      Shader(ShaderType const type, cb::string const& source);
+      Shader(Shader const&) = delete;
+      Shader(Shader &&);
+      ~Shader();
 
       OGLObjId getId() const { return mId; }
 
-      CShader& operator=(CShader const&) = delete;
-      CShader& operator=(CShader &&);
+      Shader& operator=(Shader const&) = delete;
+      Shader& operator=(Shader &&);
 
       void loadSource(cb::string const& source);
       bool compile();

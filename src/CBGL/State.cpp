@@ -19,7 +19,7 @@ namespace cb {
       }
     }
 
-    void setState(CBlendState const & state) {
+    void setState(BlendState const & state) {
       glBlendFunc(
         static_cast<GLenum>(state.SrcFactor),
         static_cast<GLenum>(state.DstFactor)
@@ -42,14 +42,14 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void setState(CCullState const & state) {
+    void setState(CullState const & state) {
       glCullFace(static_cast<GLenum>(state.Face));
       CB_GL_CHECKERRORS();
       glFrontFace(static_cast<GLenum>(state.Front));
       CB_GL_CHECKERRORS();
     }
 
-    void setState(CDepthState const & state) {
+    void setState(DepthState const & state) {
       glDepthFunc(static_cast<GLenum>(state.Func));
       CB_GL_CHECKERRORS();
       glDepthMask(toGLBool(state.Mask));
@@ -64,7 +64,7 @@ namespace cb {
       return result == GL_TRUE;
     }
 
-    CBlendState getBlendState() {
+    BlendState getBlendState() {
       GLint src, dst, rgb, alp;
       glm::vec4 color;
       glm::tvec4<GLboolean> mask;
@@ -82,7 +82,7 @@ namespace cb {
       glGetBooleanv(GL_COLOR_WRITEMASK, glm::value_ptr(mask));
       CB_GL_CHECKERRORS();
 
-      return CBlendState{
+      return BlendState{
         static_cast<BlendFactor>(src),
         static_cast<BlendFactor>(dst),
         static_cast<BlendFunc>(rgb),
@@ -96,7 +96,7 @@ namespace cb {
       };
     }
 
-    CCullState getCullState() {
+    CullState getCullState() {
       GLint face, front;
 
       glGetIntegerv(GL_CULL_FACE_MODE, &face);
@@ -104,13 +104,13 @@ namespace cb {
       glGetIntegerv(GL_FRONT_FACE, &front);
       CB_GL_CHECKERRORS();
 
-      return CCullState{
+      return CullState{
         static_cast<CullFace>(face),
         static_cast<FrontFace>(front)
       };
     }
 
-    CDepthState getDepthState() {
+    DepthState getDepthState() {
       GLint func;
       GLboolean mask;
       glm::vec2 range;
@@ -122,7 +122,7 @@ namespace cb {
       glGetFloatv(GL_DEPTH_RANGE, glm::value_ptr(range));
       CB_GL_CHECKERRORS();
 
-      return CDepthState{
+      return DepthState{
         static_cast<DepthFunc>(func),
         mask == GL_TRUE,
         range.x, range.y

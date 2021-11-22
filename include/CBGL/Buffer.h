@@ -32,19 +32,19 @@ namespace cb {
       TRIANGLES = 0x0004,
     };
 
-    class CBuffer {
+    class Buffer {
     private:
       OGLObjId mId;
       BufferTarget mTarget;
 
     public:
-      CBuffer(BufferTarget const& target = BufferTarget::ARRAY);
-      CBuffer(CBuffer const&) = delete;
-      CBuffer(CBuffer&&);
-      ~CBuffer();
+      Buffer(BufferTarget const& target = BufferTarget::ARRAY);
+      Buffer(Buffer const&) = delete;
+      Buffer(Buffer&&);
+      ~Buffer();
 
-      CBuffer& operator=(CBuffer const&) = delete;
-      CBuffer& operator=(CBuffer&&);
+      Buffer& operator=(Buffer const&) = delete;
+      Buffer& operator=(Buffer&&);
 
       void bind() const;
       void unBind() const;

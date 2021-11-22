@@ -7,27 +7,27 @@
 
 namespace cb {
   namespace gl {
-    class CShader;
+    class Shader;
 
-    class CProgram {
+    class Program {
     private:
       OGLObjId mId = 0;
 
     public:
-      CProgram();
-      CProgram(std::initializer_list<CShader> const& shaders,
+      Program();
+      Program(std::initializer_list<Shader> const& shaders,
                std::map<unsigned, cb::string> const& inLocations = {},
                std::map<unsigned, cb::string> const& outLocations = {});
-      CProgram(CProgram const&) = delete;
-      CProgram(CProgram &&);
-      ~CProgram();
+      Program(Program const&) = delete;
+      Program(Program &&);
+      ~Program();
 
-      CProgram& operator=(CProgram const&) = delete;
-      CProgram& operator=(CProgram &&);
+      Program& operator=(Program const&) = delete;
+      Program& operator=(Program &&);
 
-      void attach(CShader const& shader);
-      void attach(std::initializer_list<CShader> const& shaders);
-      void attach(std::vector<CShader> const& shaders);
+      void attach(Shader const& shader);
+      void attach(std::initializer_list<Shader> const& shaders);
+      void attach(std::vector<Shader> const& shaders);
       bool link();
       bool isLinked() const;
       bool isValid() const;

@@ -4,31 +4,31 @@
 
 namespace cb {
   namespace gl {
-    CShader::CShader(ShaderType const type) 
+    Shader::Shader(ShaderType const type) 
       : mType(type)
     {
       mId = glCreateShader(static_cast<GLenum>(mType));
       CB_GL_CHECKERRORS();
     }
 
-    CShader::CShader(ShaderType const type, cb::string const & source)
-      : CShader(type)
+    Shader::Shader(ShaderType const type, cb::string const & source)
+      : Shader(type)
     {
       compile(source);
     }
 
-    CShader::CShader(CShader&&) = default;
+    Shader::Shader(Shader&&) = default;
 
-    CShader::~CShader() {
+    Shader::~Shader() {
       if(mId) {
         glDeleteShader(mId);
         mId = 0;
       }
     }
 
-    CShader& CShader::operator=(CShader&& other) = default;
+    Shader& Shader::operator=(Shader&& other) = default;
 
-    void CShader::loadSource(cb::string const & source) {
+    void Shader::loadSource(cb::string const & source) {
       auto sourceVec = cb::toUtf8(source);
       auto szSource = reinterpret_cast<GLchar const*>(sourceVec.data());
 
@@ -36,25 +36,25 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    bool CShader::compile() {
+    bool Shader::compile() {
       glCompileShader(mId);
       CB_GL_CHECKERRORS();
       return isCompiled();
     }
 
-    bool CShader::compile(cb::string const & source) {
+    bool Shader::compile(cb::string const & source) {
       loadSource(source);
       return compile();
     }
 
-    bool CShader::isCompiled() const {
+    bool Shader::isCompiled() const {
       auto status = 0;
       glGetShaderiv(mId, GL_COMPILE_STATUS, &status);
       CB_GL_CHECKERRORS();
       return status == GL_TRUE;
     }
 
-    cb::string CShader::getCompileLog() const {
+    cb::string Shader::getCompileLog() const {
       auto len = 0;
       glGetShaderiv(mId, GL_INFO_LOG_LENGTH, &len);
       CB_GL_CHECKERRORS();

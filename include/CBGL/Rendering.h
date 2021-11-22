@@ -14,7 +14,7 @@ namespace cb {
         STENCIL = 0x00000400,
     };
 
-    struct CViewport {
+    struct Viewport {
       glm::ivec2 Pos;
       glm::uvec2 Size;
     };
@@ -26,11 +26,11 @@ namespace cb {
     void finish();
     void flush();
 
-    void setViewport(const CViewport& viewport);
-    CViewport getViewport();
+    void setViewport(const Viewport& viewport);
+    Viewport getViewport();
 
-    void setScissorRect(const CViewport& rect);
-    CViewport getScissorRect();
+    void setScissorRect(const Viewport& rect);
+    Viewport getScissorRect();
     void setScissorTest(bool enabled);
     bool isScissorTestEnabled();
   }

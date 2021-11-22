@@ -479,7 +479,7 @@ namespace cb {
       AC_BOOKMARKS = 274,
       BRIGHTNESSDOWN = 275,
       BRIGHTNESSUP = 276,
-      DISPLAYSWITCH = 277, 
+      DISPLAYSWITCH = 277,
       KBDILLUMTOGGLE = 278,
       KBDILLUMDOWN = 279,
       KBDILLUMUP = 280,
@@ -522,10 +522,10 @@ namespace cb {
 
     ENUM_FLAG(ButtonFlag) {
       LEFT = ShiftBit(Button::LEFT),
-      MIDDLE = ShiftBit(Button::MIDDLE),
-      RIGHT = ShiftBit(Button::RIGHT),
-      X1 = ShiftBit(Button::X1),
-      X2 = ShiftBit(Button::X2)
+        MIDDLE = ShiftBit(Button::MIDDLE),
+        RIGHT = ShiftBit(Button::RIGHT),
+        X1 = ShiftBit(Button::X1),
+        X2 = ShiftBit(Button::X2)
     };
 
     enum class GLAttribute {

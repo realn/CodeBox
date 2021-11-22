@@ -60,7 +60,7 @@ namespace cb {
       CULL_FACE = 0x0B44,
     };
 
-    struct CBlendState {
+    struct BlendState {
       BlendFactor SrcFactor = BlendFactor::ONE;
       BlendFactor DstFactor = BlendFactor::ZERO;
       BlendFunc ColorFunc = BlendFunc::ADD;
@@ -69,12 +69,12 @@ namespace cb {
       glm::bvec4 ColorMask = glm::bvec4(true);
     };
 
-    struct CCullState {
+    struct CullState {
       CullFace Face = CullFace::BACK;
       FrontFace Front = FrontFace::CCW;
     };
 
-    struct CDepthState {
+    struct DepthState {
       DepthFunc Func = DepthFunc::LESS;
       bool Mask = true;
       float RangeNear = 0.0f;
@@ -85,37 +85,37 @@ namespace cb {
 
     void setStateEnabled(State const state, bool enabled);
     void setStateEnabled(statemap const& states) { for(auto& item : states) { setStateEnabled(item.first, item.second); } }
-    void setState(CBlendState const& state);
-    void setState(CCullState const& state);
-    void setState(CDepthState const& state);
+    void setState(BlendState const& state);
+    void setState(CullState const& state);
+    void setState(DepthState const& state);
 
     bool isStateEnabled(State const state);
-    CBlendState getBlendState();
-    CCullState getCullState();
-    CDepthState getDepthState();
+    BlendState getBlendState();
+    CullState getCullState();
+    DepthState getDepthState();
 
-    class CStateGuard {
+    class StateGuard {
     private:
       statemap mStates;
     public:
-      CStateGuard(statemap const& states) : mStates(states) {}
-      CStateGuard(CStateGuard&& other) = default;
-      CStateGuard(CStateGuard const& other) = delete;
-      ~CStateGuard() { setStateEnabled(mStates); }
+      StateGuard(statemap const& states) : mStates(states) {}
+      StateGuard(StateGuard&& other) = default;
+      StateGuard(StateGuard const& other) = delete;
+      ~StateGuard() { setStateEnabled(mStates); }
 
-      void operator=(CStateGuard&& other) { std::swap(mStates, other.mStates); }
-      void operator=(CStateGuard const& other) = delete;
+      void operator=(StateGuard&& other) { std::swap(mStates, other.mStates); }
+      void operator=(StateGuard const& other) = delete;
     };
 
-    inline CStateGuard bindStateEnabled(State const state, bool const enabled) {
+    inline StateGuard bindStateEnabled(State const state, bool const enabled) {
       setStateEnabled(state, enabled);
-      return CStateGuard({{state, !enabled}});
+      return StateGuard({{state, !enabled}});
     }
-    inline CStateGuard bindStateEnabled(statemap const& states) {
+    inline StateGuard bindStateEnabled(statemap const& states) {
       setStateEnabled(states);
       auto nstates = states;
       for(auto& item : nstates) { item.second = !item.second; }
-      return CStateGuard(nstates);
+      return StateGuard(nstates);
     }
   }
 }

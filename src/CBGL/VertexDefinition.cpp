@@ -3,15 +3,15 @@
 
 namespace cb {
   namespace gl {
-    CVertexDefinition::CVertexDefinition(std::vector<CVertexSource> const & sources) 
+    VertexDefinition::VertexDefinition(std::vector<VertexSource> const & sources) 
       : mSources(sources)
     {}
 
-    CVertexDefinition::CVertexDefinition(std::initializer_list<CVertexSource> const & sources) 
+    VertexDefinition::VertexDefinition(std::initializer_list<VertexSource> const & sources) 
       : mSources(sources)
     {}
 
-    void CVertexDefinition::bind() const {
+    void VertexDefinition::bind() const {
       for(auto& source : mSources) {
         glVertexAttribPointer(source.getIndex(),
                               source.getNumber(),
@@ -24,7 +24,7 @@ namespace cb {
       }
     }
 
-    void CVertexDefinition::unBind() const {
+    void VertexDefinition::unBind() const {
       for(auto& source : mSources) {
         glDisableVertexAttribArray(source.getIndex());
       }
