@@ -84,7 +84,7 @@ namespace cb {
     using statemap = std::map<State, bool>;
 
     void setStateEnabled(State const state, bool enabled);
-    void setStateEnabled(statemap const& states) { for(auto& item : states) { setStateEnabled(item.first, item.second); } }
+    void setStateEnabled(statemap const& states) { for (auto& item : states) { setStateEnabled(item.first, item.second); } }
     void setState(BlendState const& state);
     void setState(CullState const& state);
     void setState(DepthState const& state);
@@ -109,12 +109,12 @@ namespace cb {
 
     inline StateGuard bindStateEnabled(State const state, bool const enabled) {
       setStateEnabled(state, enabled);
-      return StateGuard({{state, !enabled}});
+      return StateGuard({ {state, !enabled} });
     }
     inline StateGuard bindStateEnabled(statemap const& states) {
       setStateEnabled(states);
       auto nstates = states;
-      for(auto& item : nstates) { item.second = !item.second; }
+      for (auto& item : nstates) { item.second = !item.second; }
       return StateGuard(nstates);
     }
   }

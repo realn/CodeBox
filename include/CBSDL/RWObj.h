@@ -24,8 +24,11 @@ namespace cb {
 
     public:
       RWObj(RWObj const&) = delete;
-      RWObj(RWObj&& other);
+      RWObj(RWObj&&) = default;
       ~RWObj();
+
+      RWObj& operator=(RWObj const&) = delete;
+      RWObj& operator=(RWObj&&) = default;
 
       void* get() const { return mObj; }
 

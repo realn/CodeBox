@@ -24,10 +24,9 @@ namespace cb {
       }
     }
 
-    Texture::Texture(glm::uvec2 const & size, TextureFormat const format) 
-      : mId(0) 
-      , mSize(size)
-    {
+    Texture::Texture(glm::uvec2 const& size, TextureFormat const format)
+      : mId(0)
+      , mSize(size) {
       glGenTextures(1, &mId);
 
       glBindTexture(GL_TEXTURE_2D, mId);
@@ -39,28 +38,16 @@ namespace cb {
       setWrap(TextureWrap::CLAMP_TO_EDGE, TextureWrap::CLAMP_TO_EDGE);
     }
 
-    Texture::Texture(Texture && other) 
-      : mId(0)
-    {
-      std::swap(mId, other.mId);
-      std::swap(mSize, other.mSize);
-    }
-
     Texture::~Texture() {
-      if(mId) {
+      if (mId) {
         glDeleteTextures(1, &mId);
         mId = 0;
       }
     }
 
-    void Texture::operator=(Texture && other) {
-      std::swap(mId, other.mId);
-      std::swap(mSize, other.mSize);
-    }
-
-    void Texture::setFilter(TextureFilter const minFilter, 
-                             TextureFilter const magFilter, 
-                             TextureFilter const mipmapFilter) {
+    void Texture::setFilter(TextureFilter const minFilter,
+                            TextureFilter const magFilter,
+                            TextureFilter const mipmapFilter) {
       auto gtex = gl::bind(*this);
       setParamPriv(GL_TEXTURE_MIN_FILTER, getMinFilter(minFilter, mipmapFilter));
       setParamPriv(GL_TEXTURE_MAG_FILTER, static_cast<unsigned>(magFilter));
@@ -91,7 +78,7 @@ namespace cb {
       glActiveTexture(GL_TEXTURE0);
     }
 
-    void Texture::setDataRaw(InputFormat const inputFormat, DataType const inputType, void const * pData) {
+    void Texture::setDataRaw(InputFormat const inputFormat, DataType const inputType, void const* pData) {
       auto gtex = gl::bind(*this);
       glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mSize.x, mSize.y, static_cast<GLenum>(inputFormat), static_cast<GLenum>(inputType), pData);
       CB_GL_CHECKERRORS();

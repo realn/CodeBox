@@ -244,7 +244,7 @@ namespace cb {
       auto obj = _ObjType();
       auto key = _AttrType();
       auto xml = XmlSerialize<_ObjType>(*pNode, obj, mWrite);
-      if (!xml.GetAttribute(keyName, key)) {
+      if (!xml.getAttribute(keyName, key)) {
         return false;
       }
       if (!xml.read()) {
@@ -264,7 +264,7 @@ namespace cb {
     for (auto& item : list) {
       auto node = XmlNode(elemName);
       auto xml = XmlSerialize<_ObjType>(node, item.second, mWrite);
-      if (!xml.SetAttribute(keyName, item.first)) {
+      if (!xml.setAttribute(keyName, item.first)) {
         return false;
       }
       if (!xml.write()) {

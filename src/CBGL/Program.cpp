@@ -11,17 +11,14 @@ namespace cb {
     }
 
     Program::Program(std::initializer_list<Shader> const& shaders,
-      std::map<unsigned, cb::string> const& inLocations,
-      std::map<unsigned, cb::string> const& outLocations)
-      : Program()
-    {
+                     std::map<unsigned, cb::string> const& inLocations,
+                     std::map<unsigned, cb::string> const& outLocations)
+      : Program() {
       attach(shaders);
       setInLocation(inLocations);
       setOutLocation(outLocations);
       link();
     }
-
-    Program::Program(Program&&) = default;
 
     Program::~Program() {
       if (mId) {
@@ -29,8 +26,6 @@ namespace cb {
         mId = 0;
       }
     }
-
-    Program& Program::operator=(Program&&) = default;
 
     void Program::attach(Shader const& shader) {
       glAttachShader(mId, shader.getId());

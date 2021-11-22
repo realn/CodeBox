@@ -25,7 +25,7 @@ namespace cb {
       BindGuard(BindGuard<_Type, _BindFunc, _UnBindFunc> const&) = delete;
       BindGuard(BindGuard<_Type, _BindFunc, _UnBindFunc>&&) = default;
       ~BindGuard() {
-        if(mObj) mUnBind(mObj);
+        if (mObj) mUnBind(mObj);
       }
 
       BindGuard<_Type, _BindFunc, _UnBindFunc>& operator=(BindGuard<_Type, _BindFunc, _UnBindFunc> const&) = delete;

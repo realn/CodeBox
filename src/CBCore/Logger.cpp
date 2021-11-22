@@ -6,8 +6,7 @@
 namespace cb {
   std::shared_ptr<Logger> Logger::instance;
 
-  Logger::Logger()
-  {
+  Logger::Logger() {
     auto streamPtr = std::shared_ptr<ostream>({ &std::wcout, [](ostream*) {} });
     addStream(streamPtr);
   }
@@ -21,7 +20,7 @@ namespace cb {
   }
 
   void Logger::addStream(std::shared_ptr<ostream> pStream,
-    std::unique_ptr<ILogFormatter> pFormat) {
+                         std::unique_ptr<ILogFormatter> pFormat) {
     if (pStream) {
       if (pFormat) {
         streamMap[pStream] = std::move(pFormat);
@@ -61,8 +60,7 @@ namespace cb {
     return instance;
   }
 
-  void Logger::destroyInstance()
-  {
+  void Logger::destroyInstance() {
     instance.reset();
   }
 }

@@ -3,16 +3,16 @@
 
 namespace cb {
   namespace gl {
-    VertexDefinition::VertexDefinition(std::vector<VertexSource> const & sources) 
-      : mSources(sources)
-    {}
+    VertexDefinition::VertexDefinition(std::vector<VertexSource> const& sources)
+      : mSources(sources) {
+    }
 
-    VertexDefinition::VertexDefinition(std::initializer_list<VertexSource> const & sources) 
-      : mSources(sources)
-    {}
+    VertexDefinition::VertexDefinition(std::initializer_list<VertexSource> const& sources)
+      : mSources(sources) {
+    }
 
     void VertexDefinition::bind() const {
-      for(auto& source : mSources) {
+      for (auto& source : mSources) {
         glVertexAttribPointer(source.getIndex(),
                               source.getNumber(),
                               static_cast<GLenum>(source.getType()),
@@ -25,7 +25,7 @@ namespace cb {
     }
 
     void VertexDefinition::unBind() const {
-      for(auto& source : mSources) {
+      for (auto& source : mSources) {
         glDisableVertexAttribArray(source.getIndex());
       }
     }

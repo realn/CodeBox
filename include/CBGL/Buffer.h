@@ -40,11 +40,11 @@ namespace cb {
     public:
       Buffer(BufferTarget const& target = BufferTarget::ARRAY);
       Buffer(Buffer const&) = delete;
-      Buffer(Buffer&&);
+      Buffer(Buffer&&) = default;
       ~Buffer();
 
       Buffer& operator=(Buffer const&) = delete;
-      Buffer& operator=(Buffer&&);
+      Buffer& operator=(Buffer&&) = default;
 
       void bind() const;
       void unBind() const;
@@ -82,45 +82,45 @@ namespace cb {
     };
 
     void drawArrays(PrimitiveType const primType,
-      unsigned const indNum,
-      int const indFirst = 0);
+                    unsigned const indNum,
+                    int const indFirst = 0);
     void drawArraysInstanced(PrimitiveType const primType,
-      unsigned const indNum,
-      unsigned const primNum,
-      int const indFirst = 0);
+                             unsigned const indNum,
+                             unsigned const primNum,
+                             int const indFirst = 0);
     void drawElements(PrimitiveType const primType,
-      unsigned const indNum,
-      DataType const indType = DataType::UNSIGNED_SHORT,
-      unsigned const indOffset = 0);
+                      unsigned const indNum,
+                      DataType const indType = DataType::UNSIGNED_SHORT,
+                      unsigned const indOffset = 0);
     void drawElementsInstanced(PrimitiveType const primType,
-      unsigned const indNum,
-      unsigned const primNum,
-      DataType const indType = DataType::UNSIGNED_SHORT,
-      unsigned const indOffset = 0);
+                               unsigned const indNum,
+                               unsigned const primNum,
+                               DataType const indType = DataType::UNSIGNED_SHORT,
+                               unsigned const indOffset = 0);
     void drawElementsVec(PrimitiveType const primType,
-      unsigned const indNum,
-      DataType const indType,
-      const void* pIndData);
+                         unsigned const indNum,
+                         DataType const indType,
+                         const void* pIndData);
     void drawElementsVecInstanced(PrimitiveType const primType,
-      unsigned const indNum,
-      unsigned const primNum,
-      DataType const indType,
-      const void* pIndData);
+                                  unsigned const indNum,
+                                  unsigned const primNum,
+                                  DataType const indType,
+                                  const void* pIndData);
 
     template<typename _Type>
     void drawElements(PrimitiveType const primType, std::vector<_Type> const& indices, unsigned const indIndex = 0) {
       drawElementsVec(primType,
-        static_cast<unsigned>(indices.size()) - indIndex,
-        getDataType<_Type>(),
-        reinterpret_cast<const void*>(indices.data() + static_cast<size_t>(indIndex)));
+                      static_cast<unsigned>(indices.size()) - indIndex,
+                      getDataType<_Type>(),
+                      reinterpret_cast<const void*>(indices.data() + static_cast<size_t>(indIndex)));
     }
     template<typename _Type>
     void drawElementsInstanced(PrimitiveType const primType, unsigned const primNum, std::vector<_Type> const& indices, unsigned const indIndex = 0) {
       drawElementsVecInstanced(primType,
-        static_cast<unsigned>(indices.size()) - indIndex,
-        primNum,
-        getDataType<_Type>(),
-        reinterpret_cast<const void*>(indices.data() + static_cast<size_t>(indIndex)));
+                               static_cast<unsigned>(indices.size()) - indIndex,
+                               primNum,
+                               getDataType<_Type>(),
+                               reinterpret_cast<const void*>(indices.data() + static_cast<size_t>(indIndex)));
     }
   }
 }

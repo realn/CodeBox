@@ -10,7 +10,8 @@ namespace cb {
   public:
     flags() : mValue(_Type(0)) {}
     flags(const _Enum flag)
-      : mValue(static_cast<_Type>(flag)) {}
+      : mValue(static_cast<_Type>(flag)) {
+    }
 
     inline void operator=(const _Enum flag) { mValue = static_cast<_Type>(flag); }
 

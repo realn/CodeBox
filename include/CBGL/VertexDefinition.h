@@ -19,21 +19,21 @@ namespace cb {
 
     public:
       VertexSource(unsigned const index,
-                    DataType const type,
-                    unsigned const number,
-                    unsigned const stride,
-                    unsigned const offset = 0,
-                    unsigned const divisor = 0,
-                    bool normalized = false
-        )
+                   DataType const type,
+                   unsigned const number,
+                   unsigned const stride,
+                   unsigned const offset = 0,
+                   unsigned const divisor = 0,
+                   bool normalized = false
+      )
         : mIndex(index)
         , mType(type)
         , mNumber(number)
         , mStride(stride)
-        , mOffset(offset) 
+        , mOffset(offset)
         , mDivisor(divisor)
-        , mNormalized(normalized)
-      {}
+        , mNormalized(normalized) {
+      }
 
       unsigned getIndex() const { return mIndex; }
       DataType getType() const { return mType; }

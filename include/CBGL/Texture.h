@@ -77,11 +77,11 @@ namespace cb {
     public:
       Texture(glm::uvec2 const& size, TextureFormat const format);
       Texture(Texture const&) = delete;
-      Texture(Texture && other);
+      Texture(Texture&&) = default;
       ~Texture();
 
-      void operator=(Texture const&) = delete;
-      void operator=(Texture && other);
+      Texture& operator=(Texture const&) = delete;
+      Texture& operator=(Texture&&) = default;
 
       template<typename _Type>
       void setData(InputFormat const inputFormat, std::vector<_Type> const& data) {

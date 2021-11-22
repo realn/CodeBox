@@ -4,23 +4,21 @@
 
 namespace cb {
   namespace gl {
-    Shader::Shader(ShaderType const type) 
-      : mType(type)
-    {
+    Shader::Shader(ShaderType const type)
+      : mType(type) {
       mId = glCreateShader(static_cast<GLenum>(mType));
       CB_GL_CHECKERRORS();
     }
 
-    Shader::Shader(ShaderType const type, cb::string const & source)
-      : Shader(type)
-    {
+    Shader::Shader(ShaderType const type, cb::string const& source)
+      : Shader(type) {
       compile(source);
     }
 
     Shader::Shader(Shader&&) = default;
 
     Shader::~Shader() {
-      if(mId) {
+      if (mId) {
         glDeleteShader(mId);
         mId = 0;
       }
@@ -28,7 +26,7 @@ namespace cb {
 
     Shader& Shader::operator=(Shader&& other) = default;
 
-    void Shader::loadSource(cb::string const & source) {
+    void Shader::loadSource(cb::string const& source) {
       auto sourceVec = cb::toUtf8(source);
       auto szSource = reinterpret_cast<GLchar const*>(sourceVec.data());
 
@@ -42,7 +40,7 @@ namespace cb {
       return isCompiled();
     }
 
-    bool Shader::compile(cb::string const & source) {
+    bool Shader::compile(cb::string const& source) {
       loadSource(source);
       return compile();
     }
@@ -58,7 +56,7 @@ namespace cb {
       auto len = 0;
       glGetShaderiv(mId, GL_INFO_LOG_LENGTH, &len);
       CB_GL_CHECKERRORS();
-      if(len <= 0) {
+      if (len <= 0) {
         return cb::string();
       }
 

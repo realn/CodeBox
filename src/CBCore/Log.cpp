@@ -6,13 +6,13 @@
 namespace cb {
   void log(LogLvl const level, string const& msg) {
     auto pLog = Logger::getInstance();
-    if(pLog) {
+    if (pLog) {
       pLog->logMsg(level, msg);
     }
   }
 
   namespace detail {
-    void log(LogLvl const level, string const & fmt, strvector & arglist) {
+    void log(LogLvl const level, string const& fmt, strvector& arglist) {
       cb::log(level, cb::varReplace(fmt, arglist));
     }
   }

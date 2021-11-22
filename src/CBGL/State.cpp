@@ -9,7 +9,7 @@ namespace cb {
       }
     }
     void setStateEnabled(State const state, bool enabled) {
-      if(enabled) {
+      if (enabled) {
         glEnable(static_cast<GLenum>(state));
         CB_GL_CHECKERRORS();
       }
@@ -19,7 +19,7 @@ namespace cb {
       }
     }
 
-    void setState(BlendState const & state) {
+    void setState(BlendState const& state) {
       glBlendFunc(
         static_cast<GLenum>(state.SrcFactor),
         static_cast<GLenum>(state.DstFactor)
@@ -42,14 +42,14 @@ namespace cb {
       CB_GL_CHECKERRORS();
     }
 
-    void setState(CullState const & state) {
+    void setState(CullState const& state) {
       glCullFace(static_cast<GLenum>(state.Face));
       CB_GL_CHECKERRORS();
       glFrontFace(static_cast<GLenum>(state.Front));
       CB_GL_CHECKERRORS();
     }
 
-    void setState(DepthState const & state) {
+    void setState(DepthState const& state) {
       glDepthFunc(static_cast<GLenum>(state.Func));
       CB_GL_CHECKERRORS();
       glDepthMask(toGLBool(state.Mask));
@@ -87,10 +87,10 @@ namespace cb {
         static_cast<BlendFactor>(dst),
         static_cast<BlendFunc>(rgb),
         static_cast<BlendFunc>(alp),
-        color, 
+        color,
         glm::bvec4(
-          mask.r == GL_TRUE, 
-          mask.g == GL_TRUE, 
+          mask.r == GL_TRUE,
+          mask.g == GL_TRUE,
           mask.b == GL_TRUE,
           mask.a == GL_TRUE)
       };

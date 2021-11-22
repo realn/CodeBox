@@ -12,11 +12,6 @@ inline SDL_RWops* get(cb::sdl::RWObj const& obj) {
 
 namespace cb {
   namespace sdl {
-    RWObj::RWObj(RWObj && other)
-      : mObj(nullptr) {
-      std::swap(mObj, other.mObj);
-    }
-
     RWObj::~RWObj() {
       close();
     }
@@ -39,26 +34,26 @@ namespace cb {
     }
 
     void RWObj::close() {
-      if(mObj) {
+      if (mObj) {
         SDL_RWclose(::get(*this));
         mObj = nullptr;
       }
     }
 
-    void RWObj::readPriv(cb::byte * pData, size_t const size) {
+    void RWObj::readPriv(cb::byte* pData, size_t const size) {
       SDL_RWread(::get(*this), pData, size, 1);
       CB_SDL_CHECKERRORS();
     }
 
-    void RWObj::writePriv(const cb::byte * pData, size_t const size) {
+    void RWObj::writePriv(const cb::byte* pData, size_t const size) {
       SDL_RWwrite(::get(*this), pData, size, 1);
       CB_SDL_CHECKERRORS();
     }
 
-    RWObj RWObj::fromFile(cb::string const & filepath, FileMode const mode) {
+    RWObj RWObj::fromFile(cb::string const& filepath, FileMode const mode) {
       auto szFilePath = toUtf8(filepath);
       auto szMode = "";
-      switch(mode) {
+      switch (mode) {
       case FileMode::read:  szMode = "rb";  break;
       case FileMode::write: szMode = "wb";  break;
       case FileMode::Append: szMode = "ab"; break;
@@ -78,7 +73,7 @@ namespace cb {
       return RWObj(obj);
     }
 
-    RWObj RWObj::fromConstMemory(std::vector<cb::byte> const & data) {
+    RWObj RWObj::fromConstMemory(std::vector<cb::byte> const& data) {
       auto obj = SDL_RWFromConstMem(data.data(), static_cast<int>(data.size()));
       CB_SDL_CHECKERRORS();
       return RWObj(obj);

@@ -5,7 +5,7 @@
 namespace cb {
   // string checking
 
-  size_t count(string const & text, string const & what);
+  size_t count(string const& text, string const& what);
 
   bool subcmp(string const& text, string const& what, size_t const pos = 0);
 

@@ -18,13 +18,13 @@ namespace cb {
       Shader(ShaderType const type);
       Shader(ShaderType const type, cb::string const& source);
       Shader(Shader const&) = delete;
-      Shader(Shader &&);
+      Shader(Shader&&);
       ~Shader();
 
       OGLObjId getId() const { return mId; }
 
       Shader& operator=(Shader const&) = delete;
-      Shader& operator=(Shader &&);
+      Shader& operator=(Shader&&);
 
       void loadSource(cb::string const& source);
       bool compile();

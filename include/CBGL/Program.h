@@ -16,14 +16,14 @@ namespace cb {
     public:
       Program();
       Program(std::initializer_list<Shader> const& shaders,
-               std::map<unsigned, cb::string> const& inLocations = {},
-               std::map<unsigned, cb::string> const& outLocations = {});
+              std::map<unsigned, cb::string> const& inLocations = {},
+              std::map<unsigned, cb::string> const& outLocations = {});
       Program(Program const&) = delete;
-      Program(Program &&);
+      Program(Program&&) = default;
       ~Program();
 
       Program& operator=(Program const&) = delete;
-      Program& operator=(Program &&);
+      Program& operator=(Program&&) = default;
 
       void attach(Shader const& shader);
       void attach(std::initializer_list<Shader> const& shaders);

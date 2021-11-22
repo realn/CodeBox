@@ -4,6 +4,6 @@
 
 namespace cb {
   namespace gl {
-    extern void initextensions();
+    void initextensions();
   }
 }
