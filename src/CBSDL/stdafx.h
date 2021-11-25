@@ -7,11 +7,12 @@
 
 #include <glm/glm.hpp>
 
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 
 #include <CBCore/Defines.h>
 
-extern void CB_SDL_CHECKERRORS();
-extern void CB_IMG_CHECKERRORS();
-extern void CB_TTF_CHECKERRORS();
+void CB_SDL_CHECKERRORS();
+void CB_IMG_CHECKERRORS();
+void CB_TTF_CHECKERRORS();
 

@@ -22,11 +22,11 @@ namespace cb {
 
     public:
       Window(const string& title,
-              const glm::ivec2& pos = PosUndefined,
-              const glm::uvec2& size = glm::uvec2(100),
-              const WindowFlag& flags = WindowFlag::None);
+             const glm::ivec2& pos = PosUndefined,
+             const glm::uvec2& size = glm::uvec2(100),
+             const WindowFlag& flags = WindowFlag::None);
       Window(Window const&) = delete;
-      Window(Window&& other);
+      Window(Window&& other) = default;
       explicit Window(void* window) : mWindow(window) {}
       ~Window();
 
@@ -44,7 +44,7 @@ namespace cb {
       void setGrab(bool const value);
       bool setBrightness(float const value);
       bool setOpacity(float const value);
-      
+
       int getDisplayIndex() const;
       DisplayMode getDisplayMode() const;
       PixelFormat getPixelFormat() const;
@@ -73,7 +73,8 @@ namespace cb {
       bool setModalFor(Window& parent);
       void warpMouse(glm::ivec2 pos);
 
-      void operator=(Window const & other) = delete;
+      Window& operator=(Window const& other) = delete;
+      Window& operator=(Window&&) = default;
 
       void* getWindowNativeHandle() const;
 

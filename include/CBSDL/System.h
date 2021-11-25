@@ -7,7 +7,7 @@
 namespace cb {
   namespace sdl {
     ENUM_FLAG(SystemFlag) {
-      TIMER = 0x00000001u,
+        TIMER = 0x00000001u,
         AUDIO = 0x00000010u,
         VIDEO = 0x00000020u,  /**< SDL_INIT_VIDEO implies SDL_INIT_EVENTS */
         JOYSTICK = 0x00000200u,  /**< SDL_INIT_JOYSTICK implies SDL_INIT_EVENTS */

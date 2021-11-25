@@ -11,12 +11,15 @@ namespace cb {
 
     using GLAttributeMapT = std::map<GLAttribute, s32>;
 
+    // use BEFORE WINDOW CREATION
+    void setContextCreationAttributes(GLAttributeMapT const& attributes);
+
     class GLContext {
     private:
       void* mContext = nullptr;
 
     public:
-      GLContext(Window& window, GLAttributeMapT const & attributes);
+      GLContext(Window& window);
       ~GLContext();
 
       void makeCurrent(Window& window);

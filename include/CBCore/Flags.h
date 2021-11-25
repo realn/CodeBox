@@ -32,6 +32,11 @@ namespace cb {
     inline operator bool() const {
       return mValue > _Type(0);
     }
+
+    inline operator _Type() const {
+      return mValue;
+    }
+
     inline bool operator!() const {
       return mValue == _Type(0);
     }

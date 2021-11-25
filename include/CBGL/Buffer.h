@@ -51,30 +51,30 @@ namespace cb {
 
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void setData(std::vector<_Type, _TypeAlloc> const& data, BufferUsage const& usage = BufferUsage::STATIC_DRAW) {
-        SetDataRaw(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
+        setDataRaw(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
       }
       template<typename _Type, size_t _TypeSize>
       void setData(std::array<_Type, _TypeSize> const& data, BufferUsage const& usage = BufferUsage::STATIC_DRAW) {
-        SetDataRaw(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
+        setDataRaw(reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type), usage);
       }
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void setData(std::initializer_list<_Type> const& data, BufferUsage const& usage = BufferUsage::STATIC_DRAW) {
         std::vector<_Type, _TypeAlloc> datavec(data);
-        SetData(datavec, usage);
+        setData(datavec, usage);
       }
 
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void setSubData(std::vector<_Type, _TypeAlloc> const& data, size_t const offset = 0) {
-        SetSubDataRaw(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
+        setSubDataRaw(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
       }
       template<typename _Type, size_t _TypeSize>
       void setSubData(std::array<_Type, _TypeSize> const& data, size_t const offset = 0) {
-        SetSubDataRaw(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
+        setSubDataRaw(offset, reinterpret_cast<void const*>(data.data()), data.size() * sizeof(_Type));
       }
       template<typename _Type, typename _TypeAlloc = std::allocator<_Type>>
       void setSubData(std::initializer_list<_Type> const& data, size_t const offset = 0) {
         std::vector<_Type, _TypeAlloc> datavec(data);
-        SetSubData(datavec, offset);
+        setSubData(datavec, offset);
       }
 
       void setDataRaw(void const* pData, std::size_t const& size, BufferUsage const& usage);

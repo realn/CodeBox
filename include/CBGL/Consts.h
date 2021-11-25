@@ -2,6 +2,10 @@
 
 #include <memory>
 
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+
 namespace cb {
   namespace gl {
     enum class DataType {
@@ -19,7 +23,7 @@ namespace cb {
     };
 
     template<typename _Type>
-    DataType getDataType() { static_assert(false); }
+    constexpr DataType getDataType() { static_assert(false); }
 
     template<>
     constexpr DataType getDataType<float>() { return DataType::FLOAT; }
@@ -42,5 +46,26 @@ namespace cb {
     template<>
     constexpr DataType getDataType<unsigned short>() { return DataType::UNSIGNED_SHORT; }
 
+    template<>
+    constexpr DataType getDataType<glm::vec2>() { return DataType::FLOAT; }
+
+    template<>
+    constexpr DataType getDataType<glm::vec3>() { return DataType::FLOAT; }
+
+    template<>
+    constexpr DataType getDataType<glm::vec4>() { return DataType::FLOAT; }
+
+    
+    template<class _Type>
+    constexpr u32 getDataTypeSize() { return 1; }
+
+    template<>
+    constexpr u32 getDataTypeSize<glm::vec2>() { return 2; }
+
+    template<>
+    constexpr u32 getDataTypeSize<glm::vec3>() { return 3; }
+
+    template<>
+    constexpr u32 getDataTypeSize<glm::vec4>() { return 4; }
   }
 }

@@ -9,12 +9,18 @@ namespace cb {
     System::System(SystemFlags const system) : mFlags(system) {
       setMainReady();
 
-      SDL_InitSubSystem(static_cast<Uint32>(mFlags));
-      CB_SDL_CHECKERRORS();
-      IMG_Init(0);
-      CB_IMG_CHECKERRORS();
-      TTF_Init();
-      CB_TTF_CHECKERRORS();
+      if (SDL_InitSubSystem(static_cast<Uint32>(mFlags)) != 0) {
+        CB_SDL_CHECKERRORS();
+        throw std::exception("Failed to initialize sdl subsystem.");
+      }
+      if (!IMG_Init(0) == 0) {
+        CB_IMG_CHECKERRORS();
+        throw std::exception("Failed to initialize sdl img subsystem.");
+      }
+      if (TTF_Init() != 0) {
+        CB_TTF_CHECKERRORS();
+        throw std::exception("Failed to initialize sdl ttf subsystem.");
+      }
     }
 
     System::~System() {

@@ -11,6 +11,9 @@ namespace cb {
       : mSources(sources) {
     }
 
+    VertexDefinition::VertexDefinition(VertexSourceList const& sourceList) : VertexDefinition(sourceList.getSources()) {
+    }
+
     void VertexDefinition::bind() const {
       for (auto& source : mSources) {
         glVertexAttribPointer(source.getIndex(),
@@ -28,6 +31,20 @@ namespace cb {
       for (auto& source : mSources) {
         glDisableVertexAttribArray(source.getIndex());
       }
+    }
+
+    u32 VertexSourceList::getOffset() {
+      u32 offset = 0;
+      for (auto& source : sources)
+        offset += source.getStride();
+      return offset;
+    }
+
+    void VertexSourceList::add(u32 index, DataType type, u32 number, u32 stride, u32 divisor, bool normalized) {
+      sources.push_back(VertexSource(index, type, number, stride, getOffset(), divisor, normalized));
+    }
+    void VertexSourceList::addWithOffset(u32 index, DataType type, u32 number, u32 stride, u32 offset, u32 divisor, bool normalized) {
+      sources.push_back(VertexSource(index, type, number, stride, offset, divisor, normalized));
     }
   }
 }

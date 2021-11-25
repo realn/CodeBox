@@ -36,10 +36,6 @@ namespace cb {
       CB_SDL_CHECKERRORS();
     }
 
-    Window::Window(Window && other) {
-      std::swap(mWindow, other.mWindow);
-    }
-
     Window::~Window() {
       if(mWindow) {
         SDL_DestroyWindow(::get(*this));
