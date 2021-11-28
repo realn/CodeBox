@@ -17,7 +17,8 @@ namespace cb {
     void setModState(const KeyMods mods);
     KeyMods getModState();
 
-    ButtonFlags getMouseModState(glm::ivec2& outPos = glm::ivec2());
-    ButtonFlags getGlobalMouseModSate(glm::ivec2& outPod = glm::ivec2());
+    ButtonFlags getMouseState(glm::ivec2& outRelFocusPos = glm::ivec2());
+    ButtonFlags getGlobalMouseState(glm::ivec2& outGlobalPos = glm::ivec2());
+    ButtonFlags getRelativeMouseState(glm::ivec2& outRelativePos = glm::ivec2());
   }
 }
