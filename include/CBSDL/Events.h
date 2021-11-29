@@ -149,8 +149,11 @@ namespace cb {
       TextEditingEvent edit() const { return TextEditingEvent(*this); }
       TextInputEvent text() const { return TextInputEvent(*this); }
 
+      // Returns true if there is a pending event or false if there are none available.
       static bool poll(Event& outEvent);
+      // Waits for any event
       static Event waitFor();
+      // Waits for any event for 'timeout' time
       static Event waitFor(std::chrono::milliseconds const& timeout);
     };
   }

@@ -60,6 +60,20 @@ namespace cb {
       CULL_FACE = 0x0B44,
     };
 
+    enum class HintTarget {
+      FRAGMENT_SHADER_DERIVATIVE = 0x8B8B,
+      LINE_SMOOTH = 0x0C52,
+      POINT_SMOOTH = 0x0C51,
+      POLYGON_SMOOTH = 0x0C53,
+      TEXTURE_COMPRESSION = 0x84EF,
+    };
+
+    enum class HintMode {
+      NICEST = 0x1102,
+      FASTEST = 0x1101,
+      DONT_CARE = 0x1100,
+    };
+
     struct BlendState {
       BlendFactor SrcFactor = BlendFactor::ONE;
       BlendFactor DstFactor = BlendFactor::ZERO;
@@ -67,6 +81,11 @@ namespace cb {
       BlendFunc AlphaFunc = BlendFunc::ADD;
       glm::vec4 ConstColor = glm::vec4(1.0f);
       glm::bvec4 ColorMask = glm::bvec4(true);
+
+      void setFunc(BlendFactor srcFactor, BlendFactor dstFactor) {
+        SrcFactor = srcFactor;
+        DstFactor = dstFactor;
+      }
     };
 
     struct CullState {
@@ -84,7 +103,7 @@ namespace cb {
     using statemap = std::map<State, bool>;
 
     void setStateEnabled(State const state, bool enabled);
-    void setStateEnabled(statemap const& states) { for (auto& item : states) { setStateEnabled(item.first, item.second); } }
+    void setStateEnabled(statemap const& states);
     void setState(BlendState const& state);
     void setState(CullState const& state);
     void setState(DepthState const& state);
@@ -93,6 +112,8 @@ namespace cb {
     BlendState getBlendState();
     CullState getCullState();
     DepthState getDepthState();
+
+    void setHint(HintTarget target, HintMode mode);
 
     class StateGuard {
     private:
@@ -103,8 +124,8 @@ namespace cb {
       StateGuard(StateGuard const& other) = delete;
       ~StateGuard() { setStateEnabled(mStates); }
 
-      void operator=(StateGuard&& other) { std::swap(mStates, other.mStates); }
-      void operator=(StateGuard const& other) = delete;
+      StateGuard& operator=(StateGuard&& other) = default;
+      StateGuard& operator=(StateGuard const& other) = delete;
     };
 
     inline StateGuard bindStateEnabled(State const state, bool const enabled) {

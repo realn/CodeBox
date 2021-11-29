@@ -19,6 +19,8 @@ namespace cb {
       }
     }
 
+    void setStateEnabled(statemap const& states) { for (auto& item : states) { setStateEnabled(item.first, item.second); } }
+
     void setState(BlendState const& state) {
       glBlendFunc(
         static_cast<GLenum>(state.SrcFactor),
@@ -127,6 +129,10 @@ namespace cb {
         mask == GL_TRUE,
         range.x, range.y
       };
+    }
+
+    void setHint(HintTarget target, HintMode mode) {
+      glHint(static_cast<GLenum>(target), static_cast<GLenum>(mode));
     }
   }
 }

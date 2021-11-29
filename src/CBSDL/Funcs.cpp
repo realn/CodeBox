@@ -60,7 +60,7 @@ namespace cb {
       return static_cast<ButtonFlag>(state);
     }
     ButtonFlags getRelativeMouseState(glm::ivec2& outRelativePos) {
-      auto state = SDL_GetGlobalMouseState(&outRelativePos.x, &outRelativePos.y);
+      auto state = SDL_GetRelativeMouseState(&outRelativePos.x, &outRelativePos.y);
       return static_cast<ButtonFlag>(state);
     }
   }
