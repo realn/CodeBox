@@ -2,6 +2,8 @@
 
 #include <chrono>
 
+#include <glm/vec2.hpp>
+
 #include "Defines.h"
 #include "Consts.h"
 

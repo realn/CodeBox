@@ -5,12 +5,16 @@
 namespace cb {
   template<typename _Enum, typename _Type = uint32_t, typename = std::is_enum<_Enum>>
   class flags {
-    _Type mValue;
+    _Type mValue = _Type(0);
 
   public:
-    flags() : mValue(_Type(0)) {}
+    flags() = default;
     flags(const _Enum flag)
       : mValue(static_cast<_Type>(flag)) {
+    }
+    flags(const std::initializer_list<_Type>& list) {
+      for (const auto& item : list)
+        *this |= item;
     }
 
     inline void operator=(const _Enum flag) { mValue = static_cast<_Type>(flag); }

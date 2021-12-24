@@ -42,6 +42,8 @@ namespace cb {
                   toGLBool(state.ColorMask.b),
                   toGLBool(state.ColorMask.a));
       CB_GL_CHECKERRORS();
+
+      setStateEnabled(State::BLEND, state.enabled);
     }
 
     void setState(CullState const& state) {
@@ -49,6 +51,8 @@ namespace cb {
       CB_GL_CHECKERRORS();
       glFrontFace(static_cast<GLenum>(state.Front));
       CB_GL_CHECKERRORS();
+
+      setStateEnabled(State::CULL_FACE, state.enabled);
     }
 
     void setState(DepthState const& state) {
@@ -58,6 +62,8 @@ namespace cb {
       CB_GL_CHECKERRORS();
       glDepthRange(state.RangeNear, state.RangeFar);
       CB_GL_CHECKERRORS();
+
+      setStateEnabled(State::DEPTH_TEST, state.enabled);
     }
 
     bool isStateEnabled(State const state) {
@@ -70,6 +76,8 @@ namespace cb {
       GLint src, dst, rgb, alp;
       glm::vec4 color;
       glm::tvec4<GLboolean> mask;
+
+      auto enabled = isStateEnabled(State::BLEND);
 
       glGetIntegerv(GL_BLEND_SRC, &src);
       CB_GL_CHECKERRORS();
@@ -85,6 +93,7 @@ namespace cb {
       CB_GL_CHECKERRORS();
 
       return BlendState{
+        enabled,
         static_cast<BlendFactor>(src),
         static_cast<BlendFactor>(dst),
         static_cast<BlendFunc>(rgb),
@@ -101,12 +110,15 @@ namespace cb {
     CullState getCullState() {
       GLint face, front;
 
+      auto enabled = isStateEnabled(State::CULL_FACE);
+
       glGetIntegerv(GL_CULL_FACE_MODE, &face);
       CB_GL_CHECKERRORS();
       glGetIntegerv(GL_FRONT_FACE, &front);
       CB_GL_CHECKERRORS();
 
       return CullState{
+        enabled,
         static_cast<CullFace>(face),
         static_cast<FrontFace>(front)
       };
@@ -117,6 +129,8 @@ namespace cb {
       GLboolean mask;
       glm::vec2 range;
 
+      auto enabled = isStateEnabled(State::CULL_FACE);
+
       glGetIntegerv(GL_DEPTH_FUNC, &func);
       CB_GL_CHECKERRORS();
       glGetBooleanv(GL_DEPTH_WRITEMASK, &mask);
@@ -125,6 +139,7 @@ namespace cb {
       CB_GL_CHECKERRORS();
 
       return DepthState{
+        enabled,
         static_cast<DepthFunc>(func),
         mask == GL_TRUE,
         range.x, range.y

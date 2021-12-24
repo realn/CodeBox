@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <set>
 #include <algorithm>
 
 namespace cb {
@@ -24,6 +25,7 @@ namespace cb {
 
   using strvector = std::vector<string>;
   using strmap = std::map<string, string>;
+  using strset = std::set<string>;
 
   using byte = unsigned char;
   using bytevector = std::vector<byte>;

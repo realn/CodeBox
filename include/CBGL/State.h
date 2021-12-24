@@ -75,6 +75,7 @@ namespace cb {
     };
 
     struct BlendState {
+      bool enabled = false;
       BlendFactor SrcFactor = BlendFactor::ONE;
       BlendFactor DstFactor = BlendFactor::ZERO;
       BlendFunc ColorFunc = BlendFunc::ADD;
@@ -89,15 +90,22 @@ namespace cb {
     };
 
     struct CullState {
+      bool enabled = false;
       CullFace Face = CullFace::BACK;
       FrontFace Front = FrontFace::CCW;
     };
 
     struct DepthState {
+      bool enabled = false;
       DepthFunc Func = DepthFunc::LESS;
       bool Mask = true;
       float RangeNear = 0.0f;
       float RangeFar = 1.0f;
+
+      void setRange(float near = 0.0f, float far = 1.0f) {
+        RangeNear = near;
+        RangeFar = far;
+      }
     };
 
     using statemap = std::map<State, bool>;

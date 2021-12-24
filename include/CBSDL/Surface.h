@@ -25,6 +25,9 @@ namespace cb {
       void operator=(Surface const&) = delete;
       void operator=(Surface && other);
 
+      operator bool() const { return mSurface != nullptr; }
+      bool operator!() const { return mSurface == nullptr; }
+
       void setPixels(std::vector<cb::byte> const& data);
 
       glm::uvec2 getSize() const;
