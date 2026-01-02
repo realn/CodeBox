@@ -1,0 +1,3 @@
+[submodule "external/utf-cpp"]
+	path = external/utf-cpp
+	url = https://github.com/nemtrif/utfcpp.git
