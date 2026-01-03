@@ -13,8 +13,7 @@ import :util.functions;
 namespace realn::cb {
     // string checking
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-        requires is_a_string<string_type, char_type>
+    export template<class string_type = std::u8string>
     std::size_t count(string_type const &text, string_type const &what) {
         auto result = std::size_t{0};
         for (auto pos = text.find(what, 0);
@@ -25,22 +24,22 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class string_type, class char_type>
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     bool sub_compare(string_type const &text, string_type const &what, std::size_t const pos) {
         return text.compare(pos, what.length(), what) == 0;
     }
 
-    export template<class char_type, class string_type, class string_container_type>
-        requires is_a_string_type<string_type, char_type> && has_value_type<string_type, string_container_type>
+    export template<class string_type, class string_container_type>
+        requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     bool sub_compare(string_type const &text, string_container_type const &list, size_t const pos) {
         return std::ranges::any_of(list, [&](const auto &item) {
             return sub_compare(text, item, pos);
         });
     }
 
-    export template<class string_type, class char_type>
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type>
+        requires is_a_string_type<string_type>
     bool reverse_sub_compare(string_type const &text, string_type const &what, size_t const reverse_offset) {
         if (reverse_offset > text.length()) {
             return false;
@@ -48,8 +47,8 @@ namespace realn::cb {
         return sub_compare(text, what, text.length() - reverse_offset);
     }
 
-    export template<class string_type, class char_type>
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type>
+        requires is_a_string_type<string_type>
     bool sub_reverse_compare(string_type const &text, string_type const &what, size_t const offset) {
         if (offset < what.length()) {
             return false;
@@ -58,9 +57,9 @@ namespace realn::cb {
     }
 
 
-    export template<class char_type, class string_type, class string_container_type, class string_iterator_type =
+    export template<class string_type, class string_container_type, class string_iterator_type =
         decltype(std::function{std::find<string_container_type>})::result_type>
-        requires is_a_string_type<string_type, char_type> && has_value_type<string_type, string_container_type>
+        requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     string_iterator_type sub_find(string_type const &text, string_container_type const &list,
                                   size_t const pos) {
         return std::ranges::find_if(list, [&](const auto &item) {
@@ -70,8 +69,8 @@ namespace realn::cb {
 
     // string manipulation
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     string_type sub_string_by_pos(string_type const &text, size_t const pos, size_t const end_pos = string_type::npos) {
         if (pos == string_type::npos || pos >= text.length()) {
             return {};
@@ -82,8 +81,8 @@ namespace realn::cb {
         return text.substr(pos, end_pos - pos);
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     string_type replace(string_type const &text, string_type const &what, string_type const &with) {
         if (what.empty() || text.empty()) {
             return text;
@@ -104,9 +103,9 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type>, class string_container_type =
+    export template<class string_type = std::u8string, class string_container_type =
         std::unordered_map<string_type, string_type> >
-        requires is_a_string_type<string_type, char_type> && has_value_pair_type<string_type, string_type,
+        requires is_a_string_type<string_type> && has_value_pair_type<string_type, string_type,
                      string_container_type>
     string_type replace(string_type const &text, const string_container_type &list) {
         auto result = text;
@@ -116,8 +115,8 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     string_type replace_by_char(string_type const &text, string_type const &what, string_type const &with) {
         auto result = string_type{};
         for (auto i = size_t{0}; i < text.length();) {
@@ -132,9 +131,9 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type>, class string_container_type =
+    export template<class string_type = std::u8string, class string_container_type =
         std::unordered_map<string_type, string_type> >
-        requires is_a_string_type<string_type, char_type> && has_value_pair_type<string_type, string_type,
+        requires is_a_string_type<string_type> && has_value_pair_type<string_type, string_type,
                      string_container_type>
     string_type replace_by_char(string_type const &text, string_container_type const &list) {
         auto result = string_type{};
@@ -154,9 +153,9 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type>, class string_container_type =
+    export template<class string_type = std::u8string, class string_container_type =
         std::vector<string_type> >
-        requires is_a_string_type<string_type, char_type> && has_value_type<string_type, string_container_type>
+        requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     string_type join(string_container_type const &list, string_type const &glue) {
         auto result = string_type{};
         for (auto it = list.begin(); it != list.end();) {
@@ -169,9 +168,9 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type>, class string_container_type =
+    export template<class string_type = std::u8string, class string_container_type =
         std::vector<string_type> >
-        requires is_a_string_type<string_type, char_type> && has_value_type<string_type, string_container_type>
+        requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     string_container_type split(string_type const &text, string_type const &knife, bool const skipEmpty = false) {
         auto result = string_container_type{};
         if (knife.empty()) {
@@ -195,9 +194,9 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type>, class string_container_type =
+    export template<class string_type = std::u8string, class string_container_type =
         std::vector<string_type> >
-        requires is_a_string_type<string_type, char_type> && has_value_type<string_type, string_container_type>
+        requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     string_container_type split(string_type const &text, string_container_type const &knifes, bool const skipEmpty) {
         auto result = string_container_type{};
         if (knifes.empty()) {
@@ -222,8 +221,8 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     size_t string_pos_reverse(string_type const &text, size_t const reverse_offset) {
         if (text.empty() || reverse_offset + 1 > text.length()) {
             return string_type::npos;
@@ -231,8 +230,8 @@ namespace realn::cb {
         return text.length() - (1 + reverse_offset);
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     bool ends_with(string_type const &text, string_type const &with) {
         if (with.length() > text.length()) {
             return false;
@@ -240,9 +239,9 @@ namespace realn::cb {
         return text.compare(text.length() - with.length(), with.length(), with) == 0;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type>, class string_container_type =
+    export template<class string_type = std::u8string, class string_container_type =
         std::vector<string_type> >
-        requires is_a_string_type<string_type, char_type> && has_value_type<string_type, string_container_type>
+        requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     size_t string_find_first_of(string_type const &text, string_container_type const &list, size_t const offset,
                                 typename string_container_type::iterator &outIt) {
         size_t result = string_type::npos;
@@ -263,8 +262,8 @@ namespace realn::cb {
         return result;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-        requires is_a_string_type<string_type, char_type>
+    export template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     string_type repeat(string_type const &text, size_t const times) {
         if (times == 0)
             return {};
@@ -298,9 +297,9 @@ namespace realn::cb {
                  std::u32string{utf32_format_brace_right};
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type>, class string_container_type =
+    export template<class string_type = std::u8string, class string_container_type =
         std::vector<string_type> >
-        requires is_a_string_type<string_type, char_type> && has_value_type<string_type, string_container_type>
+        requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     auto variable_replace(string_type const &format, string_container_type const &list) {
         if (format.empty()) {
             return {};

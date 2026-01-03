@@ -11,7 +11,7 @@ add_library(cbcore SHARED)
 target_include_directories(cbcore PRIVATE ${CODEBOX_ROOT_DIR}/external/)
 
 target_sources(
-    cbcore PRIVATE
+    cbcore PUBLIC
     FILE_SET CXX_MODULES
     FILES
     module.core.cpp

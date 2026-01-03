@@ -60,20 +60,28 @@ namespace realn::cb {
     constexpr auto utf32_format_brace_left = U"{"sv;
     constexpr auto utf32_format_brace_right = U"}"sv;
 
-    enum class to_string_conv_type {
+    export enum class to_string_conv_type {
         LOWER = 0,
         CAPITALIZED = 1,
         HIGHER = 2,
     };
 
-    template<class string_t, class char_t>
-    concept is_a_string = std::is_base_of_v<std::basic_string<char_t>, string_t>;
+    template<class string_type>
+    concept is_a_string =
+            std::is_base_of_v<std::string, string_type> ||
+            std::is_base_of_v<std::u8string, string_type> ||
+            std::is_base_of_v<std::u16string, string_type> ||
+            std::is_base_of_v<std::u32string, string_type>;
 
-    template<class string_view_t, class char_t>
-    concept is_a_string_view = std::is_base_of_v<std::basic_string_view<char_t>, string_view_t>;
+    template<class string_view_type>
+    concept is_a_string_view =
+            std::is_base_of_v<std::string_view, string_view_type> ||
+            std::is_base_of_v<std::u8string_view, string_view_type> ||
+            std::is_base_of_v<std::u16string_view, string_view_type> ||
+            std::is_base_of_v<std::u32string_view, string_view_type>;
 
-    template<class string_type_t, class char_t>
-    concept is_a_string_type = is_a_string<string_type_t, char_t> || is_a_string_view<string_type_t, char_t>;
+    template<class string_type>
+    concept is_a_string_type = is_a_string<string_type> || is_a_string_view<string_type>;
 
     export std::u8string utf_convert_to_u8(const std::u16string &text) {
         return utf8::utf16tou8(text);
@@ -127,7 +135,8 @@ namespace realn::cb {
     }
 
     export constexpr std::u8string_view bool_to_utf8(const bool value,
-                                                     const to_string_conv_type type = to_string_conv_type::LOWER) {
+                                                     const to_string_conv_type type = to_string_conv_type::LOWER)
+        noexcept {
         switch (type) {
             case to_string_conv_type::CAPITALIZED:
                 return value ? utf8_bool_true_cap : utf8_bool_false_cap;
@@ -140,7 +149,8 @@ namespace realn::cb {
     }
 
     export constexpr std::u16string_view bool_to_utf16(const bool value,
-                                                       const to_string_conv_type type = to_string_conv_type::LOWER) {
+                                                       const to_string_conv_type type = to_string_conv_type::LOWER)
+        noexcept {
         switch (type) {
             case to_string_conv_type::CAPITALIZED:
                 return value ? utf16_bool_true_cap : utf16_bool_false_cap;
@@ -153,7 +163,8 @@ namespace realn::cb {
     }
 
     export constexpr std::u32string_view bool_to_utf32(const bool value,
-                                                       const to_string_conv_type type = to_string_conv_type::LOWER) {
+                                                       const to_string_conv_type type = to_string_conv_type::LOWER)
+        noexcept {
         switch (type) {
             case to_string_conv_type::CAPITALIZED:
                 return value ? utf32_bool_true_cap : utf32_bool_false_cap;
@@ -165,73 +176,83 @@ namespace realn::cb {
         }
     }
 
-    template<class char_t, class string_t = std::basic_string<char_t> >
-        requires is_a_string_type<string_t, char_t>
+    template<class string_type = std::u8string>
+        requires is_a_string_type<string_type>
     constexpr auto bool_to_multi_string(const bool value, const to_string_conv_type type = to_string_conv_type::LOWER)
     = delete;
 
     template<>
-    constexpr auto bool_to_multi_string<char, std::string>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::string>(const bool value, const to_string_conv_type type) {
         return bool_to_string(value, type);
     }
 
     template<>
-    constexpr auto bool_to_multi_string<char, std::string_view>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::string_view>(const bool value, const to_string_conv_type type) {
         return bool_to_string(value, type);
     }
 
     template<>
-    constexpr auto bool_to_multi_string<char8_t, std::u8string>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::u8string>(const bool value, const to_string_conv_type type) {
         return bool_to_utf8(value, type);
     }
 
     template<>
-    constexpr auto bool_to_multi_string<char8_t, std::u8string_view>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::u8string_view>(const bool value, const to_string_conv_type type) {
         return bool_to_utf8(value, type);
     }
 
     template<>
-    constexpr auto bool_to_multi_string<char16_t, std::u16string>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::u16string>(const bool value, const to_string_conv_type type) {
         return bool_to_utf16(value, type);
     }
 
     template<>
-    constexpr auto bool_to_multi_string<char16_t,
-        std::u16string_view>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::u16string_view>(const bool value, const to_string_conv_type type) {
         return bool_to_utf16(value, type);
     }
 
     template<>
-    constexpr auto bool_to_multi_string<char32_t, std::u32string>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::u32string>(const bool value, const to_string_conv_type type) {
         return bool_to_utf32(value, type);
     }
 
     template<>
-    constexpr auto bool_to_multi_string<char32_t,
-        std::u32string_view>(const bool value, const to_string_conv_type type) {
+    constexpr auto bool_to_multi_string<std::u32string_view>(const bool value, const to_string_conv_type type) {
         return bool_to_utf32(value, type);
     }
 
-    export template<class char_t, class string_t = std::basic_string<char_t> >
-        requires std::is_base_of_v<string_t, std::basic_string<char_t> >
-    bool string_to_bool(const string_t &text, bool *result = nullptr) {
-        if (text == bool_to_multi_string<char_t, string_t>(true, to_string_conv_type::LOWER) ||
-            text == bool_to_multi_string<char_t, string_t>(true, to_string_conv_type::CAPITALIZED) ||
-            text == bool_to_multi_string<char_t, string_t>(true, to_string_conv_type::HIGHER)) {
+    export template<class string_type = std::u8string>
+        requires is_a_string<string_type>
+    bool string_to_bool(const string_type &text, bool *result) noexcept {
+        if (text == bool_to_multi_string<string_type>(true, to_string_conv_type::LOWER) ||
+            text == bool_to_multi_string<string_type>(true, to_string_conv_type::CAPITALIZED) ||
+            text == bool_to_multi_string<string_type>(true, to_string_conv_type::HIGHER)) {
             set_if_valid(result, true);
             return true;
         }
-        if (text == bool_to_multi_string<char_t, string_t>(false, to_string_conv_type::LOWER) ||
-            text == bool_to_multi_string<char_t, string_t>(false, to_string_conv_type::CAPITALIZED) ||
-            text == bool_to_multi_string<char_t, string_t>(false, to_string_conv_type::HIGHER)) {
+        if (text == bool_to_multi_string<string_type>(false, to_string_conv_type::LOWER) ||
+            text == bool_to_multi_string<string_type>(false, to_string_conv_type::CAPITALIZED) ||
+            text == bool_to_multi_string<string_type>(false, to_string_conv_type::HIGHER)) {
             set_if_valid(result, false);
             return true;
         }
         return false;
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-    string_type::size_type utf_length(const string_type &text) {
+    export template<class string_type = std::u8string>
+    bool string_to_bool(const string_type &text) noexcept(false) {
+        bool value = false;
+        if (!string_to_bool<string_type>(text, &value)) {
+            throw std::runtime_error("bad string to bool conversion");
+        }
+        return value;
+    }
+
+    export std::string::size_type utf_length(const std::string &text) {
+        return utf8::distance(text.begin(), text.end());
+    }
+
+    export std::u8string::size_type utf_length(const std::u8string &text) {
         return utf8::distance(text.begin(), text.end());
     }
 
@@ -246,27 +267,35 @@ namespace realn::cb {
         );
     }
 
-    bool starts_with_bom(const std::string &s) {
-        return starts_with_bom(s.begin(), s.end());
+    export bool starts_with_utf8_bom(const std::string &text) {
+        return starts_with_bom(text.begin(), text.end());
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-    bool starts_with_utf_bom(const string_type &text) {
-        return starts_with_bom(text);
+    export bool starts_with_utf8_bom(const std::u8string &text) {
+        return starts_with_bom(text.begin(), text.end());
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-    bool is_valid_utf_string(const string_type &text) {
+    export bool is_valid_utf8_string(const std::string &text) {
         return utf8::is_valid(text);
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-    auto replace_invalid_utf(const string_type &text, const char_type value) {
+    export bool is_valid_utf8_string(const std::u8string &text) {
+        return utf8::is_valid(text);
+    }
+
+    export std::string replace_invalid_utf8(const std::string &text, const std::string::value_type value) {
         return utf8::replace_invalid(text, value);
     }
 
-    export template<class char_type, class string_type = std::basic_string<char_type> >
-    auto replace_invalid_utf(const string_type &text) {
+    export std::u8string replace_invalid_utf8(const std::u8string &text, const std::u8string::value_type value) {
+        return utf8::replace_invalid(text, value);
+    }
+
+    export std::string replace_invalid_utf8(const std::string &text) {
+        return utf8::replace_invalid(text);
+    }
+
+    export std::u8string replace_invalid_utf8(const std::u8string &text) {
         return utf8::replace_invalid(text);
     }
 }
