@@ -121,6 +121,10 @@ namespace realn::cb {
         return {text.begin(), text.end()};
     }
 
+    export std::string cast_u8_to_string(const std::u8string &text) {
+        return {text.begin(), text.end()};
+    }
+
     export constexpr std::string_view bool_to_string(const bool value,
                                                      const to_string_conv_type type = to_string_conv_type::LOWER) {
         switch (type) {

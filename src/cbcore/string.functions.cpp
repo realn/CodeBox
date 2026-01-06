@@ -3,6 +3,7 @@ module;
 #include <algorithm>
 #include <functional>
 #include <ranges>
+#include <set>
 #include <string>
 
 export module realn.codebox.core:string.functions;
@@ -40,7 +41,7 @@ namespace realn::cb {
 
     export template<class string_type>
         requires is_a_string_type<string_type>
-    bool reverse_sub_compare(string_type const &text, string_type const &what, size_t const reverse_offset) {
+    bool sub_compare_from_back(string_type const &text, string_type const &what, size_t const reverse_offset) {
         if (reverse_offset > text.length()) {
             return false;
         }
@@ -49,22 +50,23 @@ namespace realn::cb {
 
     export template<class string_type>
         requires is_a_string_type<string_type>
-    bool sub_reverse_compare(string_type const &text, string_type const &what, size_t const offset) {
+    bool sub_compare_from_word_back(string_type const &text, string_type const &what, size_t const offset) {
         if (offset < what.length()) {
             return false;
         }
         return text.compare(offset - what.length(), what.length(), what) == 0;
     }
 
-
-    export template<class string_type, class string_container_type, class string_iterator_type =
-        decltype(std::function{std::find<string_container_type>})::result_type>
+    export template<class string_type = std::u8string, class string_container_type = std::set<string_type> >
         requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
-    string_iterator_type sub_find(string_type const &text, string_container_type const &list,
-                                  size_t const pos) {
-        return std::ranges::find_if(list, [&](const auto &item) {
-            return sub_compare(text, item, pos);
-        });
+    auto sub_find(string_type const &text, string_container_type const &list,
+                  const typename string_type::size_type from_pos = 0) {
+        for (auto pos = from_pos; pos < text.length(); ++pos) {
+            if (sub_compare(text, list, pos)) {
+                return pos;
+            }
+        }
+        return string_type::npos;
     }
 
     // string manipulation

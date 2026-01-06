@@ -5,6 +5,7 @@
 #include <vector>
 #include <set>
 #include <unordered_set>
+#include <list>
 
 #include <gtest/gtest.h>
 
@@ -15,6 +16,7 @@ TEST(cbcore_strings, conversion) {
 
     //simple cast
     EXPECT_EQ(realn::cb::cast_string_to_u8("some text"), std::u8string{u8"some text"});
+    EXPECT_EQ(realn::cb::cast_u8_to_string(u8"some text"), std::string{"some text"});
 
     //simple conversion
     EXPECT_EQ(realn::cb::utf_convert_to_u8(u"some text"), std::u8string{u8"some text"});
@@ -262,103 +264,245 @@ TEST(cbcore_strings, count) {
     EXPECT_EQ(cb::count(u8"tststststs"s, u8"tsts"s), 2);
 }
 
+template<class string_type>
+void test_sub_compare(const string_type &test_text, const string_type &test_what1, const string_type &test_what2,
+                      const std::size_t correct_pos1, const std::size_t correct_pos2) {
+    using namespace realn;
+    const auto test_what_vector = std::vector{test_what1, test_what2};
+    const auto test_what_set = std::set{test_what1, test_what2};
+    const auto test_what_uset = std::unordered_set{test_what1, test_what2};
+
+    const auto correct_positions_multi = std::unordered_set{
+        correct_pos1, correct_pos2
+    };
+
+    for (auto pos = std::size_t{0}; pos < test_text.length(); pos++) {
+        SCOPED_TRACE(std::format("Current Pos: {}", pos));
+        if (correct_pos1 == pos) {
+            EXPECT_TRUE(cb::sub_compare(test_text, test_what1, pos));
+        } else {
+            EXPECT_FALSE(cb::sub_compare(test_text, test_what1, pos));
+        }
+        if (correct_positions_multi.contains(pos)) {
+            EXPECT_TRUE(cb::sub_compare(test_text, test_what_vector, pos));
+            EXPECT_TRUE(cb::sub_compare(test_text, test_what_set, pos));
+            EXPECT_TRUE(cb::sub_compare(test_text, test_what_uset, pos));
+        } else {
+            EXPECT_FALSE(cb::sub_compare(test_text, test_what_vector, pos));
+            EXPECT_FALSE(cb::sub_compare(test_text, test_what_set, pos));
+            EXPECT_FALSE(cb::sub_compare(test_text, test_what_uset, pos));
+        }
+    }
+}
+
 TEST(cbcore_strings, subcompare) {
+    using namespace std::string_literals;
+
+    {
+        SCOPED_TRACE("while sub_compare - str testing.");
+        test_sub_compare("źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                         "ścieka"s, "dżdżownicy"s, 16, 36);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare - utf8 testing.");
+        test_sub_compare(u8"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                         u8"ścieka"s, u8"dżdżownicy"s, 16, 36);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare - utf16 testing.");
+        test_sub_compare(u"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                         u"ścieka"s, u"dżdżownicy"s, 13, 30);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare - utf32 testing.");
+        test_sub_compare(U"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                         U"ścieka"s, U"dżdżownicy"s, 13, 30);
+    }
+}
+
+template<class string_type>
+void test_sub_compare_from_back(const string_type &test_text, const string_type &test_what1,
+                                const std::size_t correct_pos1) {
+    using namespace realn;
+
+    for (auto pos = std::size_t{0}; pos < test_text.length(); pos++) {
+        SCOPED_TRACE(std::format("Current Pos: {}", pos));
+        if (correct_pos1 == pos) {
+            EXPECT_TRUE(cb::sub_compare_from_back(test_text, test_what1, pos));
+        } else {
+            EXPECT_FALSE(cb::sub_compare_from_back(test_text, test_what1, pos));
+        }
+    }
+}
+
+TEST(cbcore_strings, subcompare_from_back) {
+    using namespace std::string_literals;
+
+    {
+        SCOPED_TRACE("while sub_compare_from_back - str testing.");
+        test_sub_compare_from_back("źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                   "ścieka"s, 39);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare_from_back - utf8 testing.");
+        test_sub_compare_from_back(u8"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                   u8"ścieka"s, 39);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare_from_back - utf16 testing.");
+        test_sub_compare_from_back(u"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                   u"ścieka"s, 33);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare_from_back - utf32 testing.");
+        test_sub_compare_from_back(U"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                   U"ścieka"s, 33);
+    }
+}
+
+template<class string_type>
+void test_sub_compare_from_word_back(const string_type &test_text, const string_type &test_what1,
+                                     const std::size_t correct_pos1) {
+    using namespace realn;
+
+    for (auto pos = std::size_t{0}; pos < test_text.length(); pos++) {
+        SCOPED_TRACE(std::format("Current Pos: {}", pos));
+        if (correct_pos1 == pos) {
+            EXPECT_TRUE(cb::sub_compare_from_word_back(test_text, test_what1, pos));
+        } else {
+            EXPECT_FALSE(cb::sub_compare_from_word_back(test_text, test_what1, pos));
+        }
+    }
+}
+
+TEST(cbcore_strings, subcompare_from_word_back) {
+    using namespace std::string_literals;
+
+    {
+        SCOPED_TRACE("while sub_compare_from_word_back - str testing.");
+        test_sub_compare_from_word_back("źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                        "ścieka"s, 23);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare_from_word_back - utf8 testing.");
+        test_sub_compare_from_word_back(u8"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                        u8"ścieka"s, 23);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare_from_word_back - utf16 testing.");
+        test_sub_compare_from_word_back(u"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                        u"ścieka"s, 19);
+    }
+
+    {
+        SCOPED_TRACE("while sub_compare_from_word_back - utf32 testing.");
+        test_sub_compare_from_word_back(U"źdźbło trawy ścieka w szczękę dżdżownicy równo"s,
+                                        U"ścieka"s, 19);
+    }
+}
+
+template<class string_type, class string_container_type>
+void test_sub_find_container(const std::string &test_name, const string_type &test_text,
+                             const string_container_type &test_list) {
+    using namespace realn;
+
+    SCOPED_TRACE(test_name);
+    size_t list_index = 0;
+    for (const auto &[list, correct_pos]: test_list) {
+        SCOPED_TRACE(std::format("list_index: {}", list_index++));
+        const auto pos = cb::sub_find(test_text, list);
+        EXPECT_EQ(pos, correct_pos);
+    }
+}
+
+template<class string_type = std::u8string, class from_u8_func_type>
+void test_sub_find_string_type(const std::string &test_name,
+                               const std::array<std::size_t, 4> &vec_pos,
+                               const std::array<std::size_t, 4> &set_pos,
+                               const std::array<std::size_t, 4> &uset_pos,
+                               from_u8_func_type from_u8) {
+    using namespace std::string_literals;
+
+    SCOPED_TRACE(test_name);
+
+    using vector_item_type = std::pair<std::vector<string_type>, std::size_t>;
+    using set_item_type = std::pair<std::set<string_type>, std::size_t>;
+    using uset_item_type = std::pair<std::unordered_set<string_type>, std::size_t>;
+
+    const auto test_text = from_u8(u8"źdźbło trawy ścieka w szczękę dżdżownicy równo"s);
+    const auto test_find_vec_list = std::list<vector_item_type>{
+        {{from_u8(u8"trawy"s), from_u8(u8"ka w s"s), from_u8(u8"dżdżownicy"s), from_u8(u8"ło trawy"s)}, vec_pos[0]},
+        {{from_u8(u8"ka w s"s), from_u8(u8"trawy"s), from_u8(u8"dżdżownicy"s), from_u8(u8"ło trawy"s)}, vec_pos[1]},
+        {{from_u8(u8"dżdżownicy"s), from_u8(u8"trawy"s), from_u8(u8"ka w s"s), from_u8(u8"ło trawy"s)}, vec_pos[2]},
+        {{from_u8(u8"ło trawy"s), from_u8(u8"dżdżownicy"s), from_u8(u8"trawy"s), from_u8(u8"ka w s"s)}, vec_pos[3]},
+    };
+    const auto test_find_set_list = std::list<set_item_type>{
+        {{from_u8(u8"trawy"s), from_u8(u8"ka w s"s), from_u8(u8"dżdżownicy"s), from_u8(u8"ło trawy"s)}, set_pos[0]},
+        {{from_u8(u8"ka w s"s), from_u8(u8"trawy"s), from_u8(u8"dżdżownicy"s), from_u8(u8"ło trawy"s)}, set_pos[1]},
+        {{from_u8(u8"dżdżownicy"s), from_u8(u8"trawy"s), from_u8(u8"ka w s"s), from_u8(u8"ło trawy"s)}, set_pos[2]},
+        {{from_u8(u8"ło trawy"s), from_u8(u8"dżdżownicy"s), from_u8(u8"trawy"s), from_u8(u8"ka w s"s)}, set_pos[3]},
+    };
+    const auto test_find_uset_list = std::list<uset_item_type>{
+        {{from_u8(u8"trawy"s), from_u8(u8"ka w s"s), from_u8(u8"dżdżownicy"s), from_u8(u8"ło trawy"s)}, uset_pos[0]},
+        {{from_u8(u8"ka w s"s), from_u8(u8"trawy"s), from_u8(u8"dżdżownicy"s), from_u8(u8"ło trawy"s)}, uset_pos[1]},
+        {{from_u8(u8"dżdżownicy"s), from_u8(u8"trawy"s), from_u8(u8"ka w s"s), from_u8(u8"ło trawy"s)}, uset_pos[2]},
+        {{from_u8(u8"ło trawy"s), from_u8(u8"dżdżownicy"s), from_u8(u8"trawy"s), from_u8(u8"ka w s"s)}, uset_pos[3]},
+    };
+
+    test_sub_find_container("std::vector", test_text, test_find_vec_list);
+    test_sub_find_container("std::set", test_text, test_find_set_list);
+    test_sub_find_container("std::unordered_set", test_text, test_find_uset_list);
+}
+
+TEST(cbcore_strings, sub_find) {
     using namespace std::string_literals;
     using namespace realn;
 
-    const auto test_text_str = "źdźbło trawy ścieka w szczękę dżdżownicy równo"s;
-    const auto test_what_str = "ścieka"s;
-    const auto test_what_vector_str = std::vector{"ścieka"s, "dżdżownicy"s};
-    const auto test_what_set_str = std::set{"ścieka"s, "dżdżownicy"s};
-    const auto test_what_uset_str = std::unordered_set{"ścieka"s, "dżdżownicy"s};
+    constexpr auto str_vec_pos = std::array<std::size_t, 4>{6, 6, 6, 6};
+    constexpr auto str_set_pos = std::array<std::size_t, 4>{6, 6, 6, 6};
+    constexpr auto str_uset_pos = std::array<std::size_t, 4>{6, 6, 6, 6};
 
-    EXPECT_TRUE(cb::sub_compare(test_text_str, test_what_str, 16));
-    EXPECT_TRUE(cb::sub_compare(test_what_str, test_what_str, 0));
-    EXPECT_TRUE(cb::sub_compare(test_text_str, test_what_vector_str, 16));
-    EXPECT_TRUE(cb::sub_compare(test_text_str, test_what_vector_str, 36));
-    EXPECT_TRUE(cb::sub_compare(test_text_str, test_what_set_str, 16));
-    EXPECT_TRUE(cb::sub_compare(test_text_str, test_what_set_str, 36));
-    EXPECT_TRUE(cb::sub_compare(test_text_str, test_what_uset_str, 16));
-    EXPECT_TRUE(cb::sub_compare(test_text_str, test_what_uset_str, 36));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_str, 10));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_str, 0));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_str, test_text_str.length()));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_vector_str, 13));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_vector_str, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_set_str, 13));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_set_str, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_uset_str, 13));
-    EXPECT_FALSE(cb::sub_compare(test_text_str, test_what_uset_str, 45));
+    constexpr auto utf8_vec_pos = std::array<std::size_t, 4>{6, 6, 6, 6};
+    constexpr auto utf8_set_pos = std::array<std::size_t, 4>{6, 6, 6, 6};
+    constexpr auto utf8_uset_pos = std::array<std::size_t, 4>{6, 6, 6, 6};
 
-    const auto test_text_utf8 = u8"źdźbło trawy ścieka w szczękę dżdżownicy równo"s;
-    const auto test_what_utf8 = u8"ścieka"s;
-    const auto test_what_vector_utf8 = std::vector{u8"ścieka"s, u8"dżdżownicy"s};
-    const auto test_what_set_utf8 = std::set{u8"ścieka"s, u8"dżdżownicy"s};
-    const auto test_what_uset_utf8 = std::unordered_set{u8"ścieka"s, u8"dżdżownicy"s};
+    constexpr auto utf16_vec_pos = std::array<std::size_t, 4>{4, 4, 4, 4};
+    constexpr auto utf16_set_pos = std::array<std::size_t, 4>{4, 4, 4, 4};
+    constexpr auto utf16_uset_pos = std::array<std::size_t, 4>{4, 4, 4, 4};
 
-    EXPECT_TRUE(cb::sub_compare(test_text_utf8, test_what_utf8, 16));
-    EXPECT_TRUE(cb::sub_compare(test_what_utf8, test_what_utf8, 0));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf8, test_what_vector_utf8, 16));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf8, test_what_vector_utf8, 36));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf8, test_what_set_utf8, 16));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf8, test_what_set_utf8, 36));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf8, test_what_uset_utf8, 16));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf8, test_what_uset_utf8, 36));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_utf8, 10));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_utf8, 0));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_utf8, test_text_utf8.length()));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_vector_utf8, 13));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_vector_utf8, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_set_utf8, 13));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_set_utf8, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_uset_utf8, 13));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf8, test_what_uset_utf8, 45));
+    constexpr auto utf32_vec_pos = std::array<std::size_t, 4>{4, 4, 4, 4};
+    constexpr auto utf32_set_pos = std::array<std::size_t, 4>{4, 4, 4, 4};
+    constexpr auto utf32_uset_pos = std::array<std::size_t, 4>{4, 4, 4, 4};
 
-    const auto test_text_utf16 = u"źdźbło trawy ścieka w szczękę dżdżownicy równo"s;
-    const auto test_what_utf16 = u"ścieka"s;
-    const auto test_what_vector_utf16 = std::vector{u"ścieka"s, u"dżdżownicy"s};
-    const auto test_what_set_utf16 = std::set{u"ścieka"s, u"dżdżownicy"s};
-    const auto test_what_uset_utf16 = std::unordered_set{u"ścieka"s, u"dżdżownicy"s};
+    test_sub_find_string_type<std::string>("std::string",
+                                           str_vec_pos,
+                                           str_set_pos,
+                                           str_uset_pos,
+                                           cb::cast_u8_to_string);
 
-    EXPECT_TRUE(cb::sub_compare(test_text_utf16, test_what_utf16, 13));
-    EXPECT_TRUE(cb::sub_compare(test_what_utf16, test_what_utf16, 0));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf16, test_what_vector_utf16, 13));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf16, test_what_vector_utf16, 30));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf16, test_what_set_utf16, 13));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf16, test_what_set_utf16, 30));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf16, test_what_uset_utf16, 13));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf16, test_what_uset_utf16, 30));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_utf16, 10));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_utf16, 0));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_utf16, test_text_utf16.length()));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_vector_utf16, 15));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_vector_utf16, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_set_utf16, 15));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_set_utf16, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_uset_utf16, 15));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf16, test_what_uset_utf16, 45));
+    test_sub_find_string_type<std::u8string>("std::u8string",
+                                             utf8_vec_pos,
+                                             utf8_set_pos,
+                                             utf8_uset_pos,
+                                             [](const std::u8string &text) { return text; });
 
-    const auto test_text_utf32 = U"źdźbło trawy ścieka w szczękę dżdżownicy równo"s;
-    const auto test_what_utf32 = U"ścieka"s;
-    const auto test_what_vector_utf32 = std::vector{U"ścieka"s, U"dżdżownicy"s};
-    const auto test_what_set_utf32 = std::set{U"ścieka"s, U"dżdżownicy"s};
-    const auto test_what_uset_utf32 = std::unordered_set{U"ścieka"s, U"dżdżownicy"s};
+    test_sub_find_string_type<std::u16string>("std::u16string",
+                                              utf16_vec_pos,
+                                              utf16_set_pos,
+                                              utf16_uset_pos,
+                                              [](const std::u8string &text) { return cb::utf_convert_to_u16(text); });
 
-    EXPECT_TRUE(cb::sub_compare(test_text_utf32, test_what_utf32, 13));
-    EXPECT_TRUE(cb::sub_compare(test_what_utf32, test_what_utf32, 0));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf32, test_what_vector_utf32, 13));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf32, test_what_vector_utf32, 30));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf32, test_what_set_utf32, 13));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf32, test_what_set_utf32, 30));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf32, test_what_uset_utf32, 13));
-    EXPECT_TRUE(cb::sub_compare(test_text_utf32, test_what_uset_utf32, 30));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_utf32, 10));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_utf32, 0));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_utf32, test_text_utf32.length()));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_vector_utf32, 15));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_vector_utf32, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_set_utf32, 15));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_set_utf32, 45));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_uset_utf32, 15));
-    EXPECT_FALSE(cb::sub_compare(test_text_utf32, test_what_uset_utf32, 45));
+    test_sub_find_string_type<std::u32string>("std::u32string",
+                                              utf32_vec_pos,
+                                              utf32_set_pos,
+                                              utf32_uset_pos,
+                                              [](const std::u8string &text) { return cb::utf_convert_to_u32(text); });
 }
