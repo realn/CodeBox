@@ -6,13 +6,18 @@ module;
 
 #include <algorithm>
 #include <map>
+#include <string>
 #include <vector>
 
 export module realn.codebox.core:util.functions;
 
 namespace realn::cb {
-    template<class key_type, class value_type, class container_type>
-    concept has_value_pair_type = std::is_same_v<typename container_type::value_type, std::pair<key_type, value_type> >;
+    template<class key_type, class val_type, class container_type>
+    concept has_value_pair_type = requires(container_type container)
+    {
+        typename container_type::value_type;
+        { std::is_same_v<std::pair<key_type, val_type>, typename container_type::value_type> };
+    };
 
     template<class value_type, class container_type>
     concept has_value_type = std::is_same_v<typename container_type::value_type, value_type>;

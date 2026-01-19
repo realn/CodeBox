@@ -60,13 +60,10 @@ namespace realn::cb {
     export template<class string_type = std::u8string, class string_container_type = std::set<string_type> >
         requires is_a_string_type<string_type> && has_value_type<string_type, string_container_type>
     auto sub_find(string_type const &text, string_container_type const &list,
-                  const typename string_type::size_type from_pos = 0) {
-        for (auto pos = from_pos; pos < text.length(); ++pos) {
-            if (sub_compare(text, list, pos)) {
-                return pos;
-            }
-        }
-        return string_type::npos;
+                  const typename string_type::size_type pos) {
+        return std::ranges::find_if(list, [&](const auto &item) {
+            return sub_compare(text, item, pos);
+        });
     }
 
     // string manipulation
@@ -94,7 +91,7 @@ namespace realn::cb {
         auto pos = size_t{0};
         while (pos != string_type::npos) {
             auto next_pos = text.find(what, pos);
-            result += substrpos(text, pos, next_pos);
+            result += sub_string_by_pos(text, pos, next_pos);
 
             if (next_pos != string_type::npos) {
                 result += with;
@@ -107,8 +104,7 @@ namespace realn::cb {
 
     export template<class string_type = std::u8string, class string_container_type =
         std::unordered_map<string_type, string_type> >
-        requires is_a_string_type<string_type> && has_value_pair_type<string_type, string_type,
-                     string_container_type>
+        requires is_a_string_type<string_type>
     string_type replace(string_type const &text, const string_container_type &list) {
         auto result = text;
         for (auto &item: list) {
